@@ -4,6 +4,16 @@ void App::operator () ()
 {
     Window window{};
     Renderer renderer(&window);
+    Texture texture(&renderer, 100, 100);
+
+    renderer.SetRenderTarget(&texture);
+
+    renderer.SetColor(kBlue);
+    renderer.FillRect(Rectangle{0, 0, 100, 100});
+    renderer.SetColor(kRed);
+    renderer.DrawRect(Rectangle{0, 0, 100, 100});
+    
+    renderer.SetRenderTarget(NULL);
 
     bool is_running = true;
 
@@ -26,10 +36,7 @@ void App::operator () ()
 
         renderer.Clear();
 
-        renderer.SetColor(kBlue);
-        renderer.FillRect(Rectangle{100, 100, 200, 200});
-        renderer.SetColor(kRed);
-        renderer.DrawRect(Rectangle{100, 100, 200, 200});
+        renderer.CopyTexture(&texture, Rectangle{200, 200, 300, 300});
 
         renderer.Present();
     }

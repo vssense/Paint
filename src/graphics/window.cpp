@@ -1,12 +1,11 @@
 #include "window.hpp"
 
-static const char* kDefaultTitle = "Chemistry";
+static const char* kDefaultTitle = "Paint";
 
 Window::Window(size_t width, size_t height)
 {
-    window_ = SDL_CreateWindow(kDefaultTitle,
-              SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-              width, height, 0);
+    window_ = SDL_CreateWindow(kDefaultTitle, SDL_WINDOWPOS_CENTERED,
+                               SDL_WINDOWPOS_CENTERED, width, height, 0);
 
     assert(window_ && "Couldn't create window\n");
 }

@@ -2,6 +2,7 @@
 #define _RENDERER_HPP_INCLUDED
 
 #include "window.hpp"
+#include "texture.hpp"
 #include "../math/vector2.hpp"
 
 const uint32_t kBlack       = 0x00'00'00'00;
@@ -21,19 +22,26 @@ const size_t kByteSize = 8;
 class Renderer
 {
 public:
+    Renderer() = delete;
     Renderer(Window* window);
     ~Renderer();
 
-    void DrawLine(float x1, float y1, float x2, float y2);
-    void DrawCircle(Vec2<float> center, float radius);
+    void DrawLine(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2);
+    void DrawCircle(Vec2<uint32_t> center, uint32_t radius);
 
     void FillRect(const Rectangle& rect);
     void DrawRect(const Rectangle& rect);
-    void SetPixel(float x, float y);
-    void SetColor(uint32_t color);
+    void SetPixel(uint32_t x, uint32_t y);
 
+    void CopyTexture(Texture* texture, const Rectangle& dst_rect);
+    void CopyTexture(Texture* texture, const Rectangle& src_rect, const Rectangle& dst_rect);
+
+    void SetColor(uint32_t color);
+    void SetRenderTarget(Texture* texture);
     void Clear();
     void Present();
+
+    SDL_Renderer* GetRenderer() { return renderer_; }
 
 private:
     SDL_Renderer* renderer_;

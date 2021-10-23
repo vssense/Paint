@@ -7,10 +7,10 @@
 #include <time.h>
 #include <stdint.h>
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 const size_t kWindowHeight = 768;
-const size_t kWindowWidth  = 768 * 2;
+const size_t kWindowWidth  = 1024;
 const size_t kTitleSize    = 10;
 
 class Window
