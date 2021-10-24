@@ -21,10 +21,8 @@ void Window::SetTitleFPS(int fps)
 {
     assert(window_);
 
-    char* title[kTitleSize] = "";
+    char title[kTitleSize] = "";
 
     snprintf(title, kTitleSize, "FPS %d", fps);
     SDL_SetWindowTitle(window_, title);
-
-    free(title);
 }

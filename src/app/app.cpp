@@ -7,7 +7,7 @@ void App::operator () ()
     Renderer renderer(&window);
     Texture texture(&renderer, 300, 300);
 
-    Font font("fonts/font.ttf", 72);
+    Font font("fonts/font.ttf", 32);
     Text text(&renderer, &font, "pivo");
 
     renderer.SetRenderTarget(&texture);
@@ -16,11 +16,12 @@ void App::operator () ()
     renderer.FillRect(Rectangle{0, 0, 300, 300});
     renderer.SetColor(kRed);
     renderer.DrawRect(Rectangle{0, 0, 300, 300});
-    text.Render(Vec2<uint32_t>(10, 10));
     
     renderer.SetRenderTarget(NULL);
 
     bool is_running = true;
+
+    int i = 0;
 
     while (is_running)
     {
@@ -42,6 +43,9 @@ void App::operator () ()
         renderer.Clear();
 
         renderer.CopyTexture(&texture, Rectangle{200, 200, 300, 300});
+        text.Render(Vec2<uint32_t>(210, 210));
+        char str[100] = "";
+        text.Load(&font, SDL_itoa(i++, str, 10));
 
         renderer.Present();
     }
