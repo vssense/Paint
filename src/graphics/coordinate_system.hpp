@@ -25,8 +25,8 @@ public:
     Vec2<float> CrossOver(Vec2<float> point);
 
     const Rectangle& GetRectangle () const { return rect_; }
-    Range GetXAxisRange() const { return x_axis_range_; }
-    Range GetYAxisRange() const { return y_axis_range_; }
+    Range GetXAxisRange()            const { return x_axis_range_; }
+    Range GetYAxisRange()            const { return y_axis_range_; }
 
     void SetXAxisRange(Range x_axis_range) { x_axis_range_ = x_axis_range; }
     void SetYAxisRange(Range y_axis_range) { y_axis_range_ = y_axis_range; }

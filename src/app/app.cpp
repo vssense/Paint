@@ -2,16 +2,21 @@
 
 void App::operator () ()
 {
+    SDL_Init(SDL_INIT_EVERYTHING);
     Window window{};
     Renderer renderer(&window);
-    Texture texture(&renderer, 100, 100);
+    Texture texture(&renderer, 300, 300);
+
+    Font font("fonts/font.ttf", 72);
+    Text text(&renderer, &font, "pivo");
 
     renderer.SetRenderTarget(&texture);
 
     renderer.SetColor(kBlue);
-    renderer.FillRect(Rectangle{0, 0, 100, 100});
+    renderer.FillRect(Rectangle{0, 0, 300, 300});
     renderer.SetColor(kRed);
-    renderer.DrawRect(Rectangle{0, 0, 100, 100});
+    renderer.DrawRect(Rectangle{0, 0, 300, 300});
+    text.Render(Vec2<uint32_t>(10, 10));
     
     renderer.SetRenderTarget(NULL);
 

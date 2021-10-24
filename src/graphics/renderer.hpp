@@ -1,28 +1,28 @@
 #ifndef _RENDERER_HPP_INCLUDED
 #define _RENDERER_HPP_INCLUDED
 
-#include "window.hpp"
 #include "texture.hpp"
+#include "window.hpp"
+#include "../math/rectangle.hpp"
 #include "../math/vector2.hpp"
 
-const uint32_t kBlack       = 0x00'00'00'00;
-const uint32_t kWhite       = 0x00'FF'FF'FF;
-const uint32_t kLightPurple = 0x00'E1'E1'FA;
-const uint32_t kDarkGray    = 0x00'40'40'40;
-const uint32_t kLightYellow = 0x00'FF'EE'91;
-const uint32_t kYellow      = 0x00'FF'E6'00;
-const uint32_t kBlue        = 0x00'00'80'FF;
-const uint32_t kGray        = 0x00'66'66'66;
-const uint32_t kRed         = 0x00'FD'59'59;
+const uint32_t kBlack       = 0xFF'00'00'00;
+const uint32_t kWhite       = 0xFF'FF'FF'FF;
+const uint32_t kLightPurple = 0xFF'E1'E1'FA;
+const uint32_t kDarkGray    = 0xFF'40'40'40;
+const uint32_t kLightYellow = 0xFF'FF'EE'91;
+const uint32_t kYellow      = 0xFF'FF'E6'00;
+const uint32_t kBlue        = 0xFF'00'80'FF;
+const uint32_t kGray        = 0xFF'66'66'66;
+const uint32_t kRed         = 0xFF'FD'59'59;
 
 const size_t kByteSize = 8;
 
-#include "../math/rectangle.hpp"
+SDL_Color ConvertColor(uint32_t color);
 
 class Renderer
 {
 public:
-    Renderer() = delete;
     Renderer(Window* window);
     ~Renderer();
 
@@ -41,7 +41,7 @@ public:
     void Clear();
     void Present();
 
-    SDL_Renderer* GetRenderer() { return renderer_; }
+    SDL_Renderer* GetRenderer() const { return renderer_; }
 
 private:
     SDL_Renderer* renderer_;

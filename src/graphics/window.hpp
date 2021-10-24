@@ -19,7 +19,7 @@ public:
     Window(size_t width = kWindowWidth, size_t height = kWindowHeight);
     ~Window();
     void SetTitleFPS(int fps);
-    SDL_Window* GetWindow();
+    SDL_Window* GetWindow() const { return window_; }
 
 private:
     SDL_Window* window_;

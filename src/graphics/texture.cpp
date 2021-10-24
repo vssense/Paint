@@ -13,3 +13,13 @@ Texture::~Texture()
 {
     SDL_DestroyTexture(texture_);
 }
+
+Vec2<uint32_t> Texture::GetSize() const
+{
+    int width = 0;
+    int height = 0;
+
+    assert(!SDL_QueryTexture(texture_, NULL, NULL, &width, &height));
+
+    return Vec2<uint32_t>(width, height);
+}
