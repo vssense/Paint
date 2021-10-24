@@ -1,5 +1,5 @@
-CXXFLAGS = $(shell pkg-config --cflags sdl2 SDL2_ttf) -g -Wall -Wextra -pedantic -fsanitize=address
-LXXFLAGS = $(shell pkg-config --libs   sdl2 SDL2_ttf) -g -fsanitize=address
+CXXFLAGS = $(shell pkg-config --cflags sdl2 SDL2_ttf) -Wall -Wextra -pedantic -fsanitize=address
+LXXFLAGS = $(shell pkg-config --libs   sdl2 SDL2_ttf) -fsanitize=address
 
 SrcDir = src
 BinDir = bin

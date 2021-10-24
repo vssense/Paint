@@ -28,13 +28,47 @@ void App::operator () ()
         Event event;
         while (event.PollEvent())
         {
-            if ((event.GetType() == Quit) || (event.GetType() == KeyDown && event.GetValue().scancode == 20))
+            switch (event.GetType())
             {
-                is_running = false;
-            }
-            else if (event.GetType() == MouseClick)
-            {
-                printf("%u %u\n", event.GetValue().coordinates.x, event.GetValue().coordinates.y);
+                case kQuit:
+                {
+                    is_running = false;
+                    break;
+                } 
+                case kKeyDown:
+                {
+                    printf("scancode %d\n", event.GetValue().scancode);
+                    if (event.GetValue().scancode == kQScancode)
+                    {
+                        is_running = false;
+                    }
+
+                    break;
+                }
+                case kMouseButtonPress:
+                {
+                    printf("pressed  %u %u\n", event.GetValue().coordinates.x,
+                                               event.GetValue().coordinates.y);
+                    break;
+                }
+                case kMouseButtonRelease:
+                {
+                    printf("released %u %u\n", event.GetValue().coordinates.x,
+                                               event.GetValue().coordinates.y);
+                    break;
+                }
+                case kMouseMotion:
+                {
+                    printf("moved    %u %u : %d %d\n", event.GetValue().motion.end.x,
+                                                       event.GetValue().motion.end.y,
+                                                       event.GetValue().motion.d.x,
+                                                       event.GetValue().motion.d.y);
+                    break;
+                }
+                default:
+                {
+                    break;
+                }
             }
         }
 
@@ -43,7 +77,7 @@ void App::operator () ()
         renderer.Clear();
 
         renderer.CopyTexture(&texture, Rectangle{200, 200, 300, 300});
-        text.Render(Vec2<uint32_t>(210, 210));
+        text.Render(Vec2<uint32_t>(200, 200));
         char str[100] = "";
         text.Load(&font, SDL_itoa(i++, str, 10));
 

@@ -12,19 +12,32 @@ bool Event::PollEvent()
     {
         case SDL_QUIT:
         {
-            type_ = Quit;
+            type_ = kQuit;
             break;
         }
         case SDL_KEYDOWN:
         {
-            type_ = KeyDown;
+            type_ = kKeyDown;
             value_.scancode = event.key.keysym.scancode;
             break;
         }
         case SDL_MOUSEBUTTONDOWN:
         {
-            type_ = MouseClick;
+            type_ = kMouseButtonPress;
             value_.coordinates = Vec2<uint32_t>(event.button.x, event.button.y);
+            break;
+        }
+        case SDL_MOUSEBUTTONUP:
+        {
+            type_ = kMouseButtonRelease;
+            value_.coordinates = Vec2<uint32_t>(event.button.x, event.button.y);
+            break;
+        }
+        case SDL_MOUSEMOTION:
+        {
+            type_ = kMouseMotion;
+            value_.motion.end = Vec2<uint32_t>(event.motion.x,    event.motion.y);
+            value_.motion.d   = Vec2<int32_t> (event.motion.xrel, event.motion.yrel);
             break;
         }
         default:

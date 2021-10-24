@@ -4,17 +4,28 @@
 #include <SDL2/SDL.h>
 #include "../math/vector2.hpp"
 
+const int kQScancode = 20;
+
 enum EventType
 {
-    Quit,
-    KeyDown,
-    MouseClick
+    kQuit,
+    kKeyDown,
+    kMouseButtonPress,
+    kMouseButtonRelease,
+    kMouseMotion
+};
+
+struct MotionData
+{
+    Vec2<uint32_t> end;
+    Vec2<int32_t> d;
 };
 
 union EventValue
 {
     int scancode;
     Vec2<uint32_t> coordinates;
+    MotionData motion;
 
     EventValue() {}
     ~EventValue() {}
