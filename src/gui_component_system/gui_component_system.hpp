@@ -11,7 +11,7 @@ public:
 
     ~GUIComponentSystem();
 
-    void ProcessEvent(const Event& event);
+    void ProcessMouseEvent(Vec2<uint32_t> position, const Event& event);
     void Render(Renderer* renderer);
 private:
     Window* window_;

@@ -14,6 +14,23 @@ Texture::~Texture()
     SDL_DestroyTexture(texture_);
 }
 
+Texture::Texture(Renderer* renderer, const char* path)
+{
+    assert(path);
+
+    SDL_Surface* surface = SDL_LoadBMP(path);
+    if (surface == nullptr)
+    {
+        printf("Can't load bmp from %s\n", path);
+        assert(0);
+    }
+
+    texture_ = SDL_CreateTextureFromSurface(renderer->GetRenderer(), surface);
+    assert(texture_);
+
+    SDL_FreeSurface(surface);
+}
+
 Vec2<uint32_t> Texture::GetSize() const
 {
     int width = 0;

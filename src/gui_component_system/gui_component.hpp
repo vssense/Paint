@@ -11,12 +11,11 @@
 class GUIComponent
 {
 public:
-    GUIComponent(Texture* texture, IHitTestCommand* hit_test, IOnEventCommand* on_event);
+    GUIComponent(Texture* texture, IOnMouseEventCommand* on_event, IHitTestCommand* hit_test);
     ~GUIComponent();
 
-    bool HitTest(Vec2<uint32_t> click);
-    bool OnEvent(const Event& event);
-    bool OnMove (const Event& event);
+    bool HitTest(Vec2<uint32_t> position);
+    bool OnMouseEvent(Vec2<uint32_t> position, const Event& event);
 
     void AddChild(GUIComponent* component);
     void Render(Renderer* renderer);
@@ -26,7 +25,7 @@ public:
 private:
     Texture* texture_;
     IHitTestCommand* hit_test_;
-    IOnEventCommand* on_event_;
+    IOnMouseEventCommand* on_event_;
 
     List<GUIComponent*> children_;
 };

@@ -10,7 +10,7 @@ class Texture
 {
 public:
     Texture(Renderer* renderer, size_t width, size_t height);
-    Texture(SDL_Texture* texture);
+    Texture(Renderer* renderer, const char* path);
     ~Texture();
 
     SDL_Texture* GetTexture() const { return texture_; }

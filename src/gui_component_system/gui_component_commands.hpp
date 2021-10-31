@@ -15,12 +15,12 @@ public:
     virtual const Rectangle& GetPlaceToRender() const = 0;
 };
 
-class IOnEventCommand
+class IOnMouseEventCommand
 {
 public:
-    virtual ~IOnEventCommand() {}
+    virtual ~IOnMouseEventCommand() {}
 
-    virtual bool Execute(const Event& event) = 0;
+    virtual bool Execute(Vec2<uint32_t> position, const Event& event) = 0;
 };
 
 #endif /* _GUICOMPONENT_COMMANDS_HPP_INCLUDED */
