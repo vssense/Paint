@@ -2,6 +2,7 @@
 #define _GUICOMPONENT_HPP_INCLUDED
 
 #include "gui_component_commands.hpp"
+#include "default_commands.hpp"
 #include "../math/vector2.hpp"
 #include "../event/event.hpp"
 #include "../graphics/texture.hpp"
@@ -12,6 +13,7 @@ class GUIComponent
 {
 public:
     GUIComponent(Texture* texture, IOnMouseEventCommand* on_event, IHitTestCommand* hit_test);
+    GUIComponent(Texture* texture, IOnMouseEventCommand* on_event, const Rectangle& placement);
     ~GUIComponent();
 
     bool HitTest(Vec2<uint32_t> position);
@@ -24,8 +26,8 @@ public:
     void     SetTexture(Texture* texture);
 private:
     Texture* texture_;
-    IHitTestCommand* hit_test_;
     IOnMouseEventCommand* on_event_;
+    IHitTestCommand* hit_test_;
 
     List<GUIComponent*> children_;
 };

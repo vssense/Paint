@@ -8,6 +8,28 @@ GUIComponentSystem::~GUIComponentSystem()
     delete root_;
 }
 
+void GUIComponentSystem::ProcessEvent(const Event& event)
+{
+    switch (event.GetType())
+    {
+        case kMouseButtonRelease:
+        case kMouseButtonPress:
+        {
+            ProcessMouseEvent(event.GetValue().coordinates, event);
+            break;
+        }
+        case kMouseMotion:
+        {
+            ProcessMouseEvent(event.GetValue().motion.start, event);
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
+}
+
 void GUIComponentSystem::ProcessMouseEvent(Vec2<uint32_t> position, const Event& event)
 {
     root_->OnMouseEvent(position, event);

@@ -1,7 +1,32 @@
 #include "gui_component.hpp"
 
 GUIComponent::GUIComponent(Texture* texture, IOnMouseEventCommand* on_event, IHitTestCommand* hit_test) :
-    texture_(texture), hit_test_(hit_test), on_event_(on_event) {}
+    texture_(texture), on_event_(on_event), hit_test_(hit_test)
+{
+    if (on_event_ == nullptr)
+    {
+        on_event_ = new DefaultOnEvent();
+    }
+
+    assert(texture_);
+    assert(on_event_);
+    assert(hit_test_);
+}
+
+GUIComponent::GUIComponent(Texture* texture, IOnMouseEventCommand* on_event, const Rectangle& placement) :
+    texture_(texture), on_event_(on_event)
+{
+    if (on_event_ == nullptr)
+    {
+        on_event_ = new DefaultOnEvent();
+    }
+
+    hit_test_ = new DefaultHitTest(placement);
+
+    assert(texture_);
+    assert(on_event_);
+    assert(hit_test_);
+}
 
 GUIComponent::~GUIComponent()
 {
@@ -44,7 +69,7 @@ bool GUIComponent::OnMouseEvent(Vec2<uint32_t> position, const Event& event)
         }
     }
 
-    return on_event_->Execute(position, event);
+    return on_event_->Execute(event);
 }
 
 void GUIComponent::AddChild(GUIComponent* component)
