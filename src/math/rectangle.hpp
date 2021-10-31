@@ -12,6 +12,6 @@ struct Rectangle
     uint32_t h;
 };
 
-bool IsInsideRectangle(const Rectangle& rect, Vec2<float> point);
+bool IsInsideRectangle(const Rectangle& rect, Vec2<uint32_t> point);
 
 #endif /* _RECTANGLE_HPP_INCLUDED */

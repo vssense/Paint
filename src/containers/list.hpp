@@ -5,10 +5,7 @@ template <typename T>
 class List
 {
 public:
-    List() : head_(nullptr), tail_(nullptr)
-    {
-        size_ = 0;
-    }
+    List() : head_(nullptr), tail_(nullptr), size_(0) {}
 
     ~List()
     {

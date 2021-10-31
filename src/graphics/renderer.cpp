@@ -48,6 +48,14 @@ void Renderer::SetPixel(uint32_t x, uint32_t y)
     assert(!SDL_RenderDrawPointF(renderer_, x, y));
 }
 
+void Renderer::CopyTexture(Texture* texture)
+{
+    assert(texture);
+
+    SDL_RenderCopy(renderer_, texture->GetTexture(), NULL, NULL);
+}
+
+
 void Renderer::CopyTexture(Texture* texture, const Rectangle& dst_rect)
 {
     assert(texture);

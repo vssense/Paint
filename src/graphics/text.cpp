@@ -50,10 +50,6 @@ void Text::Load(Font* font, const char* text, uint32_t color)
     texture_ = SDL_CreateTextureFromSurface(renderer_->GetRenderer(), load_surface);
     assert(texture_);
 
-    int w = 0;
-    int h = 0;
-    SDL_QueryTexture(texture_, 0, 0, &w, &h);
-
     SDL_FreeSurface(load_surface);
 }
 

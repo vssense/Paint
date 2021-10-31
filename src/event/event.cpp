@@ -36,8 +36,9 @@ bool Event::PollEvent()
         case SDL_MOUSEMOTION:
         {
             type_ = kMouseMotion;
-            value_.motion.end = Vec2<uint32_t>(event.motion.x,    event.motion.y);
-            value_.motion.d   = Vec2<int32_t> (event.motion.xrel, event.motion.yrel);
+            value_.motion.start = Vec2<uint32_t>(event.motion.x - event.motion.xrel,
+                                                 event.motion.y - event.motion.yrel);
+            value_.motion.d     = Vec2<int32_t> (event.motion.xrel, event.motion.yrel);
             break;
         }
         default:

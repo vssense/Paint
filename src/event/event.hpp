@@ -17,7 +17,7 @@ enum EventType
 
 struct MotionData
 {
-    Vec2<uint32_t> end;
+    Vec2<uint32_t> start;
     Vec2<int32_t> d;
 };
 
@@ -37,8 +37,8 @@ public:
     Event() {}
     ~Event() {}
     bool PollEvent();
-    EventType GetType() { return type_; }
-    const EventValue& GetValue() { return value_; }
+    EventType GetType() const { return type_; }
+    const EventValue& GetValue() const { return value_; }
 private:
     EventType type_;
     EventValue value_;

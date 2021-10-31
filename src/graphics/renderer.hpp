@@ -33,6 +33,7 @@ public:
     void DrawRect(const Rectangle& rect);
     void SetPixel(uint32_t x, uint32_t y);
 
+    void CopyTexture(Texture* texture);
     void CopyTexture(Texture* texture, const Rectangle& dst_rect);
     void CopyTexture(Texture* texture, const Rectangle& src_rect, const Rectangle& dst_rect);
 
