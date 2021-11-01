@@ -14,6 +14,7 @@ class GUIComponent
 public:
     GUIComponent(Texture* texture, Renderer* renderer, IOnMouseEventCommand* on_event, IHitTestCommand* hit_test);
     GUIComponent(Texture* texture, Renderer* renderer, IOnMouseEventCommand* on_event, const Rectangle& placement);
+    GUIComponent(const char* path, Renderer* renderer, IOnMouseEventCommand* on_event, const Rectangle& placement);
     ~GUIComponent();
 
     bool HitTest(Vec2<uint32_t> position);

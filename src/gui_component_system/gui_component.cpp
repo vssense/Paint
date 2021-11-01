@@ -18,6 +18,9 @@ GUIComponent::GUIComponent(Texture* texture, Renderer* renderer, IOnMouseEventCo
 GUIComponent::GUIComponent(Texture* texture, Renderer* renderer, IOnMouseEventCommand* on_event, const Rectangle& placement) :
     GUIComponent(texture, renderer, on_event, new DefaultHitTest(placement)) {}
 
+GUIComponent::GUIComponent(const char* path, Renderer* renderer, IOnMouseEventCommand* on_event, const Rectangle& placement) :
+    GUIComponent(new Texture(renderer, path), renderer, on_event, new DefaultHitTest(placement)) {}
+
 GUIComponent::~GUIComponent()
 {
     delete hit_test_;
