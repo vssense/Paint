@@ -30,7 +30,7 @@ class DefaultOnEventTrue : public IOnMouseEventCommand
 {
 public:
     DefaultOnEventTrue() {}
-    virtual bool Execute(const Event& event) override
+    virtual bool Execute(const Event& event, Vec2<uint32_t> origin) override
     {
         return true;
     }
@@ -40,7 +40,7 @@ class DefaultOnEventFalse : public IOnMouseEventCommand
 {
 public:
     DefaultOnEventFalse() {}
-    virtual bool Execute(const Event& event) override
+    virtual bool Execute(const Event& event, Vec2<uint32_t> origin) override
     {
         return false;
     }

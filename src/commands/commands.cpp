@@ -90,8 +90,23 @@ GUIComponent* CreateCanvas(Renderer* renderer, const Rectangle& placement)
                                             renderer, nullptr, placement);
 
     canvas->AddChild(CreateCanvasTitle(renderer, canvas, placement.w, kTitleWidth));
+    canvas->AddChild(CreateScene(renderer, Rectangle{0, kTitleWidth, placement.w, placement.h - kTitleWidth}));
 
     return canvas;
+}
+
+GUIComponent* CreateScene(Renderer* renderer, const Rectangle& placement)
+{
+    assert(renderer);
+
+    Texture* texture = new Texture(renderer, placement.w, placement.h, kWhite);
+    
+    renderer->SetRenderTarget(texture);
+    renderer->SetColor(kRed);
+    renderer->DrawRect(Rectangle{0, 0, placement.w, placement.h});
+    renderer->SetRenderTarget(nullptr);
+
+    return new GUIComponent(texture, renderer, new SceneOnMouseEvent(texture), placement);
 }
 
 GUIComponent* CreateCanvasTitle(Renderer* renderer, GUIComponent* canvas, uint32_t len, uint32_t width)
@@ -110,7 +125,6 @@ GUIComponent* CreateCanvasTitle(Renderer* renderer, GUIComponent* canvas, uint32
     title->AddChild(new GUIComponent("img/close.bmp", renderer,
                                      new CloseCanvasOnMouseEvent(canvas, "img/close2.bmp", renderer),
                                      Rectangle{len - width, 0, width, width}));
-
 
     title->AddChild(new GUIComponent(text_texture, renderer, new DefaultOnEventFalse,
                                      Rectangle{len / 2   - text_size.x / 2,

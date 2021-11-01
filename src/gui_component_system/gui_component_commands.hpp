@@ -23,7 +23,7 @@ class IOnMouseEventCommand
 public:
     virtual ~IOnMouseEventCommand() {}
 
-    virtual bool Execute(const Event& event) = 0;
+    virtual bool Execute(const Event& event, Vec2<uint32_t> origin) = 0;
 
     void SetGUIComponent(GUIComponent* component) { component_ = component; }
 

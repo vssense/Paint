@@ -15,7 +15,7 @@ public:
         delete swap_texture_;
     }
 
-    virtual bool Execute(const Event& event) override
+    virtual bool Execute(const Event& event, Vec2<uint32_t> origin) override
     {
         switch (event.GetType())
         {
@@ -63,7 +63,7 @@ public:
         delete swap_texture_;
     }
 
-    virtual bool Execute(const Event& event) override
+    virtual bool Execute(const Event& event, Vec2<uint32_t> origin) override
     {
         switch (event.GetType())
         {
@@ -109,7 +109,7 @@ public:
         delete swap_texture_;
     }
 
-    virtual bool Execute(const Event& event) override
+    virtual bool Execute(const Event& event, Vec2<uint32_t> origin) override
     {
         switch (event.GetType())
         {

@@ -13,6 +13,7 @@ public:
     Renderer(Window* window);
     ~Renderer();
 
+    void DrawLine(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, uint32_t thickness);
     void DrawLine(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2);
     void DrawCircle(Vec2<uint32_t> center, uint32_t radius);
 

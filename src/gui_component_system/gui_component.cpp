@@ -97,7 +97,7 @@ bool GUIComponent::OnMouseEvent(Vec2<uint32_t> position, const Event& event, con
         }
     }
 
-    return on_event_->Execute(event);
+    return on_event_->Execute(event, children_origin);
 }
 
 void GUIComponent::AddChild(GUIComponent* component)

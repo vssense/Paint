@@ -18,6 +18,20 @@ void Renderer::DrawLine(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2)
     assert(!SDL_RenderDrawLine(renderer_, x1, y1, x2, y2));
 }
 
+void Renderer::DrawLine(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, uint32_t thickness)
+{
+    Vec2<float> normal(y1 - y2, x2 - x1);
+    normal.Normalize();
+
+    for (uint32_t i = 0; i < thickness; ++i)
+    {
+        assert(!SDL_RenderDrawLine(renderer_, x1 + static_cast<int>(i * normal.x / 2 * pow(-1, i)),
+                                              y1 + static_cast<int>(i * normal.y / 2 * pow(-1, i)),
+                                              x2 + static_cast<int>(i * normal.x / 2 * pow(-1, i)),
+                                              y2 + static_cast<int>(i * normal.y / 2 * pow(-1, i))));
+    }
+}
+
 void Renderer::DrawCircle(Vec2<uint32_t> center, uint32_t radius)
 {
     int sradius = static_cast<int>(radius);

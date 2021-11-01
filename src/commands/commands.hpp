@@ -17,5 +17,7 @@ GUIComponent* CreateButton(Renderer* renderer, const char* title, const Rectangl
 
 GUIComponent* CreateCanvas(Renderer* renderer, const Rectangle& placement);
 GUIComponent* CreateCanvasTitle(Renderer* renderer, GUIComponent* canvas, uint32_t len, uint32_t width);
+GUIComponent* CreateScene(Renderer* renderer, const Rectangle& placement);
+
 
 #endif /* _COMMANDS_HPP_INCLUDED */
