@@ -28,6 +28,7 @@ public:
     void Destroy();
     void Load(Font* font, const char* text, uint32_t color = kBlack);
     void Render(Vec2<uint32_t> coordinates);
+    SDL_Texture* GetTexture() const { return texture_; }
 
 private:
     Renderer* renderer_;

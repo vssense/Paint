@@ -38,7 +38,7 @@ void GUIComponentSystem::ProcessMouseEvent(Vec2<uint32_t> position, const Event&
 
 void GUIComponentSystem::Render(Renderer* renderer)
 {
-    root_->Render(renderer);
+    root_->Render(renderer, Vec2<uint32_t>(0, 0));
 }
 
 

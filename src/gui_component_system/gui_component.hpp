@@ -21,7 +21,7 @@ public:
     bool OnMouseEvent(Vec2<uint32_t> position, const Event& event);
 
     void AddChild(GUIComponent* component);
-    void Render(Renderer* renderer);
+    void Render(Renderer* renderer, Vec2<uint32_t> position);
 
     Texture*  GetTexture () const;
     Renderer* GetRenderer() const;

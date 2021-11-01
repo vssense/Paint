@@ -10,7 +10,8 @@ const uint32_t kDarkGray    = 0xFF'40'40'40;
 const uint32_t kLightYellow = 0xFF'FF'EE'91;
 const uint32_t kYellow      = 0xFF'FF'E6'00;
 const uint32_t kBlue        = 0xFF'00'80'FF;
-const uint32_t kGray        = 0xFF'40'40'40;
+const uint32_t kDarkBlue    = 0xFF'00'00'33;
+const uint32_t kGray        = 0xFF'60'60'60;
 const uint32_t kRed         = 0xFF'FD'59'59;
 
 const size_t kByteSize = 8;

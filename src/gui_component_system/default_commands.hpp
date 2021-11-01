@@ -15,13 +15,23 @@ private:
     Rectangle rect_;
 };
 
-class DefaultOnEvent : public IOnMouseEventCommand
+class DefaultOnEventTrue : public IOnMouseEventCommand
 {
 public:
-    DefaultOnEvent() {}
+    DefaultOnEventTrue() {}
     virtual bool Execute(const Event& event) override
     {
         return true;
+    }
+};
+
+class DefaultOnEventFalse : public IOnMouseEventCommand
+{
+public:
+    DefaultOnEventFalse() {}
+    virtual bool Execute(const Event& event) override
+    {
+        return false;
     }
 };
 

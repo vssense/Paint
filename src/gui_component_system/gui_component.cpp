@@ -5,7 +5,7 @@ GUIComponent::GUIComponent(Texture* texture, Renderer* renderer, IOnMouseEventCo
 {
     if (on_event_ == nullptr)
     {
-        on_event_ = new DefaultOnEvent;
+        on_event_ = new DefaultOnEventTrue;
     }
 
     assert(texture_);
@@ -79,11 +79,14 @@ void GUIComponent::AddChild(GUIComponent* component)
     children_.PushBack(component);
 }
 
-void GUIComponent::Render(Renderer* renderer)
+void GUIComponent::Render(Renderer* renderer, Vec2<uint32_t> position)
 {
-    renderer->CopyTexture(texture_, hit_test_->GetPlaceToRender());
+    Rectangle placement = hit_test_->GetPlaceToRender();
+    placement.x0 += position.x;
+    placement.y0 += position.y;
+    renderer->CopyTexture(texture_, placement);
     for (auto it = children_.Begin(); it != children_.End(); ++it)
     {
-        (*it)->Render(renderer);
+        (*it)->Render(renderer, Vec2<uint32_t>(placement.x0, placement.y0));
     }
 }

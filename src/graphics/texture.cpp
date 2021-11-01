@@ -1,3 +1,4 @@
+#include "text.hpp"
 #include "texture.hpp"
 #include "renderer.hpp"
 
@@ -15,11 +16,8 @@ Texture::Texture(Renderer* renderer, size_t width, size_t height, uint32_t color
         renderer->FillRect(Rectangle{0, 0, static_cast<uint32_t>(width), static_cast<uint32_t>(height)});
         renderer->SetRenderTarget(nullptr);
     }
-}
 
-Texture::~Texture()
-{
-    SDL_DestroyTexture(texture_);
+    SDL_SetTextureBlendMode(texture_, SDL_BLENDMODE_BLEND);
 }
 
 Texture::Texture(Renderer* renderer, const char* path)
@@ -47,6 +45,27 @@ Texture::Texture(Renderer* renderer, const char* path)
 
     SDL_DestroyTexture(texture);
     SDL_FreeSurface(surface);
+    SDL_SetTextureBlendMode(texture_, SDL_BLENDMODE_BLEND);
+}
+
+Texture::Texture(Renderer* renderer, Text* text)
+{
+    assert(text);
+    int width = 0;
+    int height = 0;
+    SDL_QueryTexture(text->GetTexture(), NULL, NULL, &width, &height);
+
+    texture_ = SDL_CreateTexture(renderer->GetRenderer(), SDL_PIXELFORMAT_RGBA8888,
+                                 SDL_TEXTUREACCESS_TARGET, width, height);
+    SDL_SetRenderTarget(renderer->GetRenderer(), texture_);
+    SDL_RenderCopy(renderer->GetRenderer(), text->GetTexture(), NULL, NULL);
+    SDL_SetRenderTarget(renderer->GetRenderer(), NULL);
+    SDL_SetTextureBlendMode(texture_, SDL_BLENDMODE_BLEND);
+}
+
+Texture::~Texture()
+{
+    SDL_DestroyTexture(texture_);
 }
 
 Vec2<uint32_t> Texture::GetSize() const

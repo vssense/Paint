@@ -6,12 +6,14 @@
 #include "../math/vector2.hpp"
 
 class Renderer;
+class Text;
 
 class Texture
 {
 public:
     Texture(Renderer* renderer, size_t width, size_t height, uint32_t color = kBlack);
     Texture(Renderer* renderer, const char* path);
+    Texture(Renderer* renderer, Text* text);
     ~Texture();
 
     SDL_Texture* GetTexture() const { return texture_; }

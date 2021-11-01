@@ -1,25 +1,15 @@
-#ifndef _CLOSE_COMMANDS_HPP_INCLUDED
-#define _CLOSE_COMMANDS_HPP_INCLUDED
+#ifndef _BUTTON_COMMANDS_HPP_INCLUDED
+#define _BUTTON_COMMANDS_HPP_INCLUDED
 
 #include "../gui_component_system/gui_component_commands.hpp"
 #include "../graphics/texture.hpp"
 
-class MainCloseOnMouseEvent : public IOnMouseEventCommand
+class ButtonOnMouseEvent : public IOnMouseEventCommand
 {
 public:
-    MainCloseOnMouseEvent(bool* is_running, const char* path = nullptr,
-                          Renderer* renderer = nullptr) :
-                          is_running_(is_running), swap_texture_(nullptr)
-    {
-        assert(is_running_);
-        if (path != nullptr && renderer != nullptr)
-        {
-            swap_texture_ = new Texture(renderer, path);
-            assert(swap_texture_);
-        }
-    }
+    ButtonOnMouseEvent(Texture* texture) : swap_texture_(texture) {}
 
-    ~MainCloseOnMouseEvent()
+    ~ButtonOnMouseEvent()
     {
         delete swap_texture_;
     }
@@ -28,11 +18,6 @@ public:
     {
         switch (event.GetType())
         {
-            case kMouseButtonRelease:
-            {
-                *is_running_ = false;
-                break;
-            }
             case kMouseButtonPress:
             case kMouseButtonOldRelease:
             {
@@ -55,8 +40,7 @@ public:
     }
 
 private:
-    bool* is_running_;
     Texture* swap_texture_;
 };
 
-#endif /* _CLOSE_COMMANDS_HPP_INCLUDED */
+#endif /* _BUTTON_COMMANDS_HPP_INCLUDED */
