@@ -47,6 +47,11 @@ bool Event::PollEvent()
         }
         case SDL_MOUSEMOTION:
         {
+            if (last_press.x == UINT32_MAX)
+            {
+                return PollEvent();
+            }
+
             type_ = kMouseMotion;
             value_.motion.start = Vec2<uint32_t>(event.motion.x - event.motion.xrel,
                                                  event.motion.y - event.motion.yrel);

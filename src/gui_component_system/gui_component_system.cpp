@@ -33,7 +33,7 @@ void GUIComponentSystem::ProcessEvent(const Event& event)
 
 void GUIComponentSystem::ProcessMouseEvent(Vec2<uint32_t> position, const Event& event)
 {
-    root_->OnMouseEvent(position, event);
+    root_->OnMouseEvent(position, event, Vec2<uint32_t>(0, 0));
 }
 
 void GUIComponentSystem::Render(Renderer* renderer)

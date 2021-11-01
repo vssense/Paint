@@ -59,4 +59,61 @@ private:
     Texture* swap_texture_;
 };
 
+class CloseCanvasOnMouseEvent : public IOnMouseEventCommand
+{
+public:
+    CloseCanvasOnMouseEvent(GUIComponent* canvas, const char* path = nullptr, Renderer* renderer = nullptr) :
+        canvas_(canvas) 
+    {
+        assert(canvas_);
+
+        if (path != nullptr && renderer != nullptr)
+        {
+            swap_texture_ = new Texture(renderer, path);
+            assert(swap_texture_);
+        }
+    }
+    ~CloseCanvasOnMouseEvent()
+    {
+        if (swap_texture_ != nullptr)
+        {
+            delete swap_texture_; 
+        }
+    }
+
+    virtual bool Execute(const Event& event) override
+    {
+        switch (event.GetType())
+        {
+            case kMouseButtonRelease:
+            {
+                canvas_->Delete();
+                break;
+            }
+            case kMouseButtonPress:
+            case kMouseButtonOldRelease:
+            {
+                if (swap_texture_ != nullptr)
+                {
+                    Texture* tmp = component_->GetTexture();
+                    component_->SetTexture(swap_texture_);
+                    swap_texture_ = tmp;
+                }
+                
+                break;                
+            }
+            default:
+            {
+                break;
+            }
+        }
+
+        return true;
+    }
+
+private:
+    GUIComponent* canvas_;
+    Texture* swap_texture_;
+};
+
 #endif /* _CLOSE_COMMANDS_HPP_INCLUDED */

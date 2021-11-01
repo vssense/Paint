@@ -13,6 +13,7 @@ public:
     virtual ~IHitTestCommand() {}
 
     virtual bool Execute(Vec2<uint32_t> click) const = 0;
+    virtual void Move(Vec2<int> d) = 0;
 
     virtual const Rectangle& GetPlaceToRender() const = 0;
 };

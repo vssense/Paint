@@ -51,6 +51,17 @@ public:
             return *this;
         }
 
+        Iterator& operator -- ()
+        {
+            if (node_ == nullptr)
+            {
+                return *this;
+            }
+
+            node_ = node_->prev;
+            return *this;
+        }
+
         T& operator * ()
         {
             return node_->key;
