@@ -2,6 +2,7 @@
 #define _TEXTURE_H_INCLUDED
 
 #include <SDL.h>
+#include "../graphics/color.hpp"
 #include "../math/vector2.hpp"
 
 class Renderer;
@@ -9,7 +10,7 @@ class Renderer;
 class Texture
 {
 public:
-    Texture(Renderer* renderer, size_t width, size_t height);
+    Texture(Renderer* renderer, size_t width, size_t height, uint32_t color = kBlack);
     Texture(Renderer* renderer, const char* path);
     ~Texture();
 

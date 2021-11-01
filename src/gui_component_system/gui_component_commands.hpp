@@ -5,6 +5,8 @@
 #include "../math/rectangle.hpp"
 #include "../event/event.hpp"
 
+class GUIComponent;
+
 class IHitTestCommand
 {
 public:
@@ -21,6 +23,11 @@ public:
     virtual ~IOnMouseEventCommand() {}
 
     virtual bool Execute(const Event& event) = 0;
+
+    void SetGUIComponent(GUIComponent* component) { component_ = component; }
+
+protected:
+    GUIComponent* component_;
 };
 
 #endif /* _GUICOMPONENT_COMMANDS_HPP_INCLUDED */

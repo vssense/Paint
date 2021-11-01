@@ -1,32 +1,22 @@
 #include "gui_component.hpp"
 
-GUIComponent::GUIComponent(Texture* texture, IOnMouseEventCommand* on_event, IHitTestCommand* hit_test) :
-    texture_(texture), on_event_(on_event), hit_test_(hit_test)
+GUIComponent::GUIComponent(Texture* texture, Renderer* renderer, IOnMouseEventCommand* on_event, IHitTestCommand* hit_test) :
+    texture_(texture), renderer_(renderer), on_event_(on_event), hit_test_(hit_test)
 {
     if (on_event_ == nullptr)
     {
-        on_event_ = new DefaultOnEvent();
+        on_event_ = new DefaultOnEvent;
     }
 
     assert(texture_);
     assert(on_event_);
     assert(hit_test_);
+
+    on_event_->SetGUIComponent(this);
 }
 
-GUIComponent::GUIComponent(Texture* texture, IOnMouseEventCommand* on_event, const Rectangle& placement) :
-    texture_(texture), on_event_(on_event)
-{
-    if (on_event_ == nullptr)
-    {
-        on_event_ = new DefaultOnEvent();
-    }
-
-    hit_test_ = new DefaultHitTest(placement);
-
-    assert(texture_);
-    assert(on_event_);
-    assert(hit_test_);
-}
+GUIComponent::GUIComponent(Texture* texture, Renderer* renderer, IOnMouseEventCommand* on_event, const Rectangle& placement) :
+    GUIComponent(texture, renderer, on_event, new DefaultHitTest(placement)) {}
 
 GUIComponent::~GUIComponent()
 {
@@ -37,11 +27,18 @@ GUIComponent::~GUIComponent()
     {
          delete (*it);
     }
+
+    delete texture_;
 }
 
 Texture* GUIComponent::GetTexture() const
 {
     return texture_;
+}
+
+Renderer* GUIComponent::GetRenderer() const
+{
+    return renderer_;
 }
 
 void GUIComponent::SetTexture(Texture* texture)

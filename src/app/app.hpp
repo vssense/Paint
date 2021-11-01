@@ -7,6 +7,7 @@
 #include "../graphics/window.hpp"
 #include "../event/event.hpp"
 #include "../gui_component_system/gui_component_system.hpp"
+#include "../commands/commands.hpp"
 
 const float kCoordinateSystemWidth  = 100;
 const float kCoordinateSystemHeight = 100;

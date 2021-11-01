@@ -12,6 +12,7 @@ enum EventType
     kKeyDown,
     kMouseButtonPress,
     kMouseButtonRelease,
+    kMouseButtonOldRelease,
     kMouseMotion
 };
 

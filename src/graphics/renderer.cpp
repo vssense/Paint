@@ -1,16 +1,6 @@
 #include "renderer.hpp"
 #include "coordinate_system.hpp"
 
-uint8_t  GetB(uint32_t color);
-uint8_t  GetG(uint32_t color);
-uint8_t  GetR(uint32_t color);
-uint8_t  GetA(uint32_t color);
-
-SDL_Color ConvertColor(uint32_t color)
-{
-    return SDL_Color{GetR(color), GetG(color), GetB(color), GetA(color)};
-}
-
 Renderer::Renderer(Window* window)
 {
     assert(window);
@@ -30,12 +20,13 @@ void Renderer::DrawLine(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2)
 
 void Renderer::DrawCircle(Vec2<uint32_t> center, uint32_t radius)
 {
+    int sradius = static_cast<int>(radius);
     uint32_t radius_squared = radius * radius;
 
-    for (uint32_t x = - radius; x <= radius; x++)
+    for (int x = -sradius; x <= sradius; ++x)
     {
-        uint32_t y_lenght = sqrt(radius_squared - x * x);
-        for (uint32_t y = -y_lenght; y <= y_lenght; y++)
+        int y_lenght = sqrt(radius_squared - x * x);
+        for (int y = -y_lenght; y <= y_lenght; ++y)
         {
             SetPixel(x + center.x, y + center.y);
             SetPixel(x + center.x, -y + center.y);
@@ -45,7 +36,7 @@ void Renderer::DrawCircle(Vec2<uint32_t> center, uint32_t radius)
 
 void Renderer::SetPixel(uint32_t x, uint32_t y)
 {
-    assert(!SDL_RenderDrawPointF(renderer_, x, y));
+    assert(!SDL_RenderDrawPoint(renderer_, x, y));
 }
 
 void Renderer::CopyTexture(Texture* texture)
@@ -123,24 +114,4 @@ void Renderer::DrawRect(const Rectangle& rect)
     DrawLine(x0, y0, x0, y1);
     DrawLine(x1, y1, x1, y0);
     DrawLine(x1, y1, x0, y1);
-}
-
-uint8_t GetB(uint32_t color)
-{
-    return color & 0xFF;
-}
-
-uint8_t GetG(uint32_t color)
-{
-    return (color >> kByteSize) & 0xFF;
-}
-
-uint8_t GetR(uint32_t color)
-{
-    return (color >> (2 * kByteSize)) & 0xFF;
-}
-
-uint8_t GetA(uint32_t color)
-{
-    return (color >> (3 * kByteSize)) & 0xFF;
 }

@@ -12,6 +12,7 @@ void GUIComponentSystem::ProcessEvent(const Event& event)
 {
     switch (event.GetType())
     {
+        case kMouseButtonOldRelease:
         case kMouseButtonRelease:
         case kMouseButtonPress:
         {
