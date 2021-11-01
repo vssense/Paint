@@ -7,7 +7,7 @@ void App::operator () ()
     Renderer renderer(&window);
     bool is_running = true;
 
-    GUIComponentSystem system(&window, CreatePaintTree(&renderer, &is_running));
+    GUIComponentSystem system(&window, CreatePaintTree(&renderer, &is_running, &system));
 
     while (is_running)
     {

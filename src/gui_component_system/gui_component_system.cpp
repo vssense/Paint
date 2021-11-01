@@ -30,6 +30,14 @@ void GUIComponentSystem::ProcessEvent(const Event& event)
         }
     }
 }
+Brush& GUIComponentSystem::GetBrush()
+{
+    return brush_;
+}
+void GUIComponentSystem::SetBrush(const Brush& brush)
+{
+    brush_ = brush;
+}
 
 void GUIComponentSystem::ProcessMouseEvent(Vec2<uint32_t> position, const Event& event)
 {

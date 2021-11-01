@@ -3,6 +3,7 @@
 
 #include "../gui_component_system/gui_component_commands.hpp"
 #include "../gui_component_system/gui_component.hpp"
+#include "../math/swap.hpp"
 
 const Rectangle kDefaultCanvasPlacement{200, 200, 400, 400}; 
 
@@ -28,7 +29,7 @@ private:
 class SceneOnMouseEvent : public IOnMouseEventCommand
 {
 public:
-    SceneOnMouseEvent(Texture* texture) : texture_(texture) {}
+    SceneOnMouseEvent(Texture* texture, GUIComponentSystem* system) : texture_(texture), system_(system) {}
     virtual bool Execute(const Event& event, Vec2<uint32_t> origin) override
     {
         switch (event.GetType())
@@ -38,7 +39,7 @@ public:
             {
                 Renderer* renderer = component_->GetRenderer();
                 renderer->SetRenderTarget(texture_);
-                renderer->SetColor(kYellow);
+                renderer->SetColor(system_->GetBrush().GetColor());
                 renderer->DrawCircle(event.GetValue().coordinates - origin, 10);
                 renderer->SetRenderTarget(nullptr);
                 break;
@@ -47,7 +48,7 @@ public:
             {
                 Renderer* renderer = component_->GetRenderer();
                 renderer->SetRenderTarget(texture_);
-                renderer->SetColor(kYellow);
+                renderer->SetColor(system_->GetBrush().GetColor());
 
                 Vec2<int> end_line(event.GetValue().motion.start.x - origin.x + event.GetValue().motion.d.x,
                                    event.GetValue().motion.start.y - origin.y + event.GetValue().motion.d.y);
@@ -71,6 +72,7 @@ public:
     }
 private:
     Texture* texture_;
+    GUIComponentSystem* system_;
 };
 
 

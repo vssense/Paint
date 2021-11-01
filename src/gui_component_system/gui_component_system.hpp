@@ -3,6 +3,7 @@
 
 #include "../graphics/window.hpp"
 #include "gui_component.hpp"
+#include "brush.hpp"
 
 class GUIComponentSystem
 {
@@ -13,12 +14,14 @@ public:
 
     void ProcessEvent(const Event& event);
     void Render(Renderer* renderer);
-
+    Brush& GetBrush();
+    void   SetBrush(const Brush& brush);
 private:
     void ProcessMouseEvent(Vec2<uint32_t> position, const Event& event);
 
     Window* window_;
     GUIComponent* root_;
+    Brush brush_;
 };
 
 

@@ -2,6 +2,7 @@
 #define _BUTTON_COMMANDS_HPP_INCLUDED
 
 #include "../gui_component_system/gui_component_commands.hpp"
+#include "../gui_component_system/gui_component_system.hpp"
 #include "../graphics/texture.hpp"
 #include "canvas_commands.hpp"
 
@@ -52,8 +53,9 @@ private:
 class ButtonViewOnMouseEvent : public IOnMouseEventCommand
 {
 public:
-    ButtonViewOnMouseEvent(Texture* texture, GUIComponent* main_component) :
-        swap_texture_(texture), main_component_(main_component)
+    ButtonViewOnMouseEvent(Texture* texture, GUIComponent* main_component,
+                           GUIComponentSystem* system) :
+        swap_texture_(texture), main_component_(main_component), system_(system)
     {
         assert(main_component_);
     }
@@ -70,7 +72,7 @@ public:
             case kMouseButtonRelease:
             {
                 main_component_->AddChild(CreateCanvas(main_component_->GetRenderer(),
-                                                       kDefaultCanvasPlacement));
+                                                       kDefaultCanvasPlacement, system_));
                 break;
             }
             case kMouseButtonPress:
@@ -97,6 +99,7 @@ public:
 private:
     Texture* swap_texture_;
     GUIComponent* main_component_;
+    GUIComponentSystem* system_;
 };
 
 class ButtonHelpOnMouseEvent : public IOnMouseEventCommand

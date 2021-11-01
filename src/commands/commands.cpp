@@ -1,11 +1,12 @@
 #include "commands.hpp"
-#include "../gui_component_system/default_commands.hpp"
 #include "close_commands.hpp"
 #include "button_commands.hpp"
 #include "canvas_commands.hpp"
+#include "../gui_component_system/brush_commands.hpp"
 #include "../graphics/text.hpp"
+#include "../gui_component_system/default_commands.hpp"
 
-GUIComponent* CreatePaintTree(Renderer* renderer, bool* is_running)
+GUIComponent* CreatePaintTree(Renderer* renderer, bool* is_running, GUIComponentSystem* system)
 {
     assert(renderer);
 
@@ -17,12 +18,13 @@ GUIComponent* CreatePaintTree(Renderer* renderer, bool* is_running)
     renderer->DrawRect(Rectangle{0, 0, kWindowWidth, kWindowHeight});
     renderer->SetRenderTarget(nullptr);
 
-    main_component->AddChild(CreateMainWindowTitle(renderer, main_component, is_running, kWindowWidth, kTitleWidth));
+    main_component->AddChild(CreateMainWindowTitle(renderer, main_component, is_running, kWindowWidth, kTitleWidth, system));
+    main_component->AddChild(CreatePalette(renderer, Rectangle{100, 100, 40, 100}, system));
 
     return main_component;
 }
 
-GUIComponent* CreateMainWindowTitle(Renderer* renderer, GUIComponent* main_component, bool* is_running, uint32_t len, uint32_t width)
+GUIComponent* CreateMainWindowTitle(Renderer* renderer, GUIComponent* main_component, bool* is_running, uint32_t len, uint32_t width, GUIComponentSystem* system)
 {
     assert(renderer);
 
@@ -40,8 +42,8 @@ GUIComponent* CreateMainWindowTitle(Renderer* renderer, GUIComponent* main_compo
 
     Rectangle view_button{kButtonsLen, 0, kButtonsLen, width};
     title->AddChild(CreateButton(renderer, "View", view_button,
-                                 new ButtonViewOnMouseEvent(new Texture(renderer, file_button.h, file_button.w, kLightYellow), main_component),
-                                 kWhite, kBlue));
+                                 new ButtonViewOnMouseEvent(new Texture(renderer, file_button.h, file_button.w,
+                                                            kLightYellow), main_component, system), kWhite, kBlue));
 
     Rectangle help_button{kButtonsLen * 2, 0, kButtonsLen, width};
     title->AddChild(CreateButton(renderer, "Help", help_button,
@@ -82,7 +84,7 @@ GUIComponent* CreateButton(Renderer* renderer, const char* title, const Rectangl
     return button_component;
 }
 
-GUIComponent* CreateCanvas(Renderer* renderer, const Rectangle& placement)
+GUIComponent* CreateCanvas(Renderer* renderer, const Rectangle& placement, GUIComponentSystem* system)
 {
     assert(renderer);
 
@@ -90,12 +92,16 @@ GUIComponent* CreateCanvas(Renderer* renderer, const Rectangle& placement)
                                             renderer, nullptr, placement);
 
     canvas->AddChild(CreateCanvasTitle(renderer, canvas, placement.w, kTitleWidth));
-    canvas->AddChild(CreateScene(renderer, Rectangle{0, kTitleWidth, placement.w, placement.h - kTitleWidth}));
+    canvas->AddChild(CreateScene(renderer, Rectangle{0,
+                                                     kTitleWidth,
+                                                     placement.w,
+                                                     placement.h - kTitleWidth},
+                                                     system));
 
     return canvas;
 }
 
-GUIComponent* CreateScene(Renderer* renderer, const Rectangle& placement)
+GUIComponent* CreateScene(Renderer* renderer, const Rectangle& placement, GUIComponentSystem* system)
 {
     assert(renderer);
 
@@ -106,7 +112,7 @@ GUIComponent* CreateScene(Renderer* renderer, const Rectangle& placement)
     renderer->DrawRect(Rectangle{0, 0, placement.w, placement.h});
     renderer->SetRenderTarget(nullptr);
 
-    return new GUIComponent(texture, renderer, new SceneOnMouseEvent(texture), placement);
+    return new GUIComponent(texture, renderer, new SceneOnMouseEvent(texture, system), placement);
 }
 
 GUIComponent* CreateCanvasTitle(Renderer* renderer, GUIComponent* canvas, uint32_t len, uint32_t width)
@@ -132,4 +138,51 @@ GUIComponent* CreateCanvasTitle(Renderer* renderer, GUIComponent* canvas, uint32
                                                text_size.x, text_size.y}));
 
     return title;
+}
+
+GUIComponent* CreatePalette(Renderer* renderer, const Rectangle& placement, GUIComponentSystem* system)
+{
+    assert(renderer);
+    assert(system);
+
+    Texture* palette_texture = new Texture(renderer, placement.w, placement.h, kWhite);
+    
+    renderer->SetRenderTarget(palette_texture);
+    renderer->SetColor(kRed);
+    renderer->DrawRect(Rectangle{0, 0, placement.w, placement.h});
+    renderer->SetRenderTarget(nullptr);
+
+    GUIComponent* palette = new GUIComponent(palette_texture, renderer, nullptr, placement);
+
+    Texture* red_color_texture = new Texture(renderer, 20, 20, kRed);
+    
+    renderer->SetRenderTarget(red_color_texture);
+    renderer->SetColor(kBlack);
+    renderer->DrawRect(Rectangle{0, 0, 20, 20});
+    renderer->SetRenderTarget(nullptr);
+
+    Texture* yellow_color_texture = new Texture(renderer, 20, 20, kYellow);
+    
+    renderer->SetRenderTarget(yellow_color_texture);
+    renderer->SetColor(kBlack);
+    renderer->DrawRect(Rectangle{0, 0, 20, 20});
+    renderer->SetRenderTarget(nullptr);
+
+    Texture* white_color_texture = new Texture(renderer, 20, 20, kWhite);
+    
+    renderer->SetRenderTarget(white_color_texture);
+    renderer->SetColor(kBlack);
+    renderer->DrawRect(Rectangle{0, 0, 20, 20});
+    renderer->SetRenderTarget(nullptr);
+
+    palette->AddChild(new GUIComponent(red_color_texture, renderer, new SquareOnEvent(system, kRed),
+                                       Rectangle{10, 10, 20, 20}));
+
+    palette->AddChild(new GUIComponent(yellow_color_texture, renderer, new SquareOnEvent(system, kYellow),
+                                       Rectangle{10, 40, 20, 20}));
+
+    palette->AddChild(new GUIComponent(white_color_texture, renderer, new SquareOnEvent(system, kWhite),
+                                       Rectangle{10, 70, 20, 20}));
+
+    return palette;
 }
