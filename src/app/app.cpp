@@ -28,6 +28,14 @@ void App::operator () ()
                     {
                         is_running = false;
                     }
+                    else if (event.GetValue().scancode == kMinusScancode)
+                    {
+                        system.GetBrush().GetThickness()--;
+                    }
+                    else if (event.GetValue().scancode == kPlusScancode)
+                    {
+                        system.GetBrush().GetThickness()++;
+                    }
 
                     break;
                 }

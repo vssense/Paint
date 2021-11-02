@@ -40,7 +40,7 @@ public:
                 Renderer* renderer = component_->GetRenderer();
                 renderer->SetRenderTarget(texture_);
                 renderer->SetColor(system_->GetBrush().GetColor());
-                renderer->DrawCircle(event.GetValue().coordinates - origin, 10);
+                renderer->DrawCircle(event.GetValue().coordinates - origin, system_->GetBrush().GetThickness());
                 renderer->SetRenderTarget(nullptr);
                 break;
             }
@@ -58,7 +58,7 @@ public:
 
                 renderer->DrawLine(event.GetValue().motion.start.x - origin.x,
                                    event.GetValue().motion.start.y - origin.y,
-                                   end_line.x, end_line.y, 20);
+                                   end_line.x, end_line.y, system_->GetBrush().GetThickness() * 2);
                 renderer->SetRenderTarget(nullptr);
                 break;
             }

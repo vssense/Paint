@@ -9,6 +9,7 @@
 
 const uint32_t kTitleWidth = 30;
 const uint32_t kButtonsLen = 70;
+const uint32_t kColorSquareSize = 20;
 
 GUIComponent* CreatePaintTree(Renderer* renderer, bool* is_running, GUIComponentSystem* system);
 

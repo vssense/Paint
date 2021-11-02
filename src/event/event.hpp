@@ -5,6 +5,8 @@
 #include "../math/vector2.hpp"
 
 const int kQScancode = 20;
+const int kPlusScancode = 46;
+const int kMinusScancode = 45;
 
 enum EventType
 {

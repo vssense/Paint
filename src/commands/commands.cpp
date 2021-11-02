@@ -152,37 +152,37 @@ GUIComponent* CreatePalette(Renderer* renderer, const Rectangle& placement, GUIC
     renderer->DrawRect(Rectangle{0, 0, placement.w, placement.h});
     renderer->SetRenderTarget(nullptr);
 
-    GUIComponent* palette = new GUIComponent(palette_texture, renderer, nullptr, placement);
+    GUIComponent* palette = new GUIComponent(palette_texture, renderer, new PaletteOnEvent, placement);
 
-    Texture* red_color_texture = new Texture(renderer, 20, 20, kRed);
+    Texture* red_color_texture = new Texture(renderer, kColorSquareSize, kColorSquareSize, kRed);
     
     renderer->SetRenderTarget(red_color_texture);
     renderer->SetColor(kBlack);
-    renderer->DrawRect(Rectangle{0, 0, 20, 20});
+    renderer->DrawRect(Rectangle{0, 0, kColorSquareSize, kColorSquareSize});
     renderer->SetRenderTarget(nullptr);
 
-    Texture* yellow_color_texture = new Texture(renderer, 20, 20, kYellow);
+    Texture* yellow_color_texture = new Texture(renderer, kColorSquareSize, kColorSquareSize, kYellow);
     
     renderer->SetRenderTarget(yellow_color_texture);
     renderer->SetColor(kBlack);
-    renderer->DrawRect(Rectangle{0, 0, 20, 20});
+    renderer->DrawRect(Rectangle{0, 0, kColorSquareSize, kColorSquareSize});
     renderer->SetRenderTarget(nullptr);
 
-    Texture* white_color_texture = new Texture(renderer, 20, 20, kWhite);
+    Texture* white_color_texture = new Texture(renderer, kColorSquareSize, kColorSquareSize, kWhite);
     
     renderer->SetRenderTarget(white_color_texture);
     renderer->SetColor(kBlack);
-    renderer->DrawRect(Rectangle{0, 0, 20, 20});
+    renderer->DrawRect(Rectangle{0, 0, kColorSquareSize, kColorSquareSize});
     renderer->SetRenderTarget(nullptr);
 
     palette->AddChild(new GUIComponent(red_color_texture, renderer, new SquareOnEvent(system, kRed),
-                                       Rectangle{10, 10, 20, 20}));
+                                       Rectangle{10, 10, kColorSquareSize, kColorSquareSize}));
 
     palette->AddChild(new GUIComponent(yellow_color_texture, renderer, new SquareOnEvent(system, kYellow),
-                                       Rectangle{10, 40, 20, 20}));
+                                       Rectangle{10, 40, kColorSquareSize, kColorSquareSize}));
 
     palette->AddChild(new GUIComponent(white_color_texture, renderer, new SquareOnEvent(system, kWhite),
-                                       Rectangle{10, 70, 20, 20}));
+                                       Rectangle{10, 70, kColorSquareSize, kColorSquareSize}));
 
     return palette;
 }

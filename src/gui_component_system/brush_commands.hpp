@@ -24,22 +24,20 @@ private:
     uint32_t color_;
 };
 
-// class YellowSquareOnEvent : public IOnMouseEventCommand
-// {
-// public:
-//     YellowSquareOnEvent(GUIComponentSystem* system) : system_(system) {}
+class PaletteOnEvent : public IOnMouseEventCommand
+{
+public:
+    PaletteOnEvent() {}
 
-//     virtual bool Execute(const Event& event, Vec2<uint32_t> origin) override
-//     {
-//         if (event.GetType() == kMouseButtonPress)
-//         {
-//             system_->GetBrush().SetColor(kYellow);
-//         }
+    virtual bool Execute(const Event& event, Vec2<uint32_t> origin) override
+    {
+        if (event.GetType() == kMouseMotion)
+        {
+            component_->Move(event.GetValue().motion.d);
+        }
 
-//         return true;
-//     }
-// private:
-//     GUIComponentSystem* system_;
-// };
+        return true;
+    }
+};
 
 #endif /* _BRUSH_COMMANDS_HPP_INCLUDED */
