@@ -11,7 +11,8 @@ class Text;
 class Texture
 {
 public:
-    Texture(Renderer* renderer, size_t width, size_t height, uint32_t color = kBlack);
+    Texture(Renderer* renderer, size_t width, size_t height);
+    Texture(Renderer* renderer, size_t width, size_t height, uint32_t color);
     Texture(Renderer* renderer, const char* path);
     Texture(Renderer* renderer, Text* text);
     ~Texture();

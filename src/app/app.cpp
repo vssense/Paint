@@ -20,10 +20,9 @@ void App::operator () ()
                 {
                     is_running = false;
                     break;
-                } 
+                }
                 case kKeyDown:
                 {
-                    printf("scancode %d\n", event.GetValue().scancode);
                     if (event.GetValue().scancode == kQScancode)
                     {
                         is_running = false;

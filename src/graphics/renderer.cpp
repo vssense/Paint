@@ -13,23 +13,48 @@ Renderer::~Renderer()
     SDL_DestroyRenderer(renderer_);
 }
 
+void Renderer::DrawLine(Texture* texture, uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2)
+{
+    assert(texture);
+    SetRenderTarget(texture);
+    DrawLine(x1, y1, x2, y2);
+    SetRenderTarget(nullptr);
+}
+
 void Renderer::DrawLine(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2)
 {
     assert(!SDL_RenderDrawLine(renderer_, x1, y1, x2, y2));
 }
 
+void Renderer::DrawLine(Texture* texture, uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, uint32_t thickness)
+{
+    assert(texture);
+    SetRenderTarget(texture);
+    DrawLine(x1, y1, x2, y2, thickness);
+    SetRenderTarget(nullptr);
+}
+
 void Renderer::DrawLine(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, uint32_t thickness)
 {
-    Vec2<float> normal(y1 - y2, x2 - x1);
-    normal.Normalize();
+    Vec2<float> start(x1, y1);
+    Vec2<float> vec(x2 + 0.0 - x1, y2 + 0.0 - y1);
+    uint32_t len = static_cast<uint32_t>(vec.GetLength());
 
-    for (uint32_t i = 0; i < thickness; ++i)
+    vec.Normalize();
+
+    for (uint32_t i = 0; i < len; ++i)
     {
-        assert(!SDL_RenderDrawLine(renderer_, x1 + static_cast<int>(i * normal.x / 2 * pow(-1, i)),
-                                              y1 + static_cast<int>(i * normal.y / 2 * pow(-1, i)),
-                                              x2 + static_cast<int>(i * normal.x / 2 * pow(-1, i)),
-                                              y2 + static_cast<int>(i * normal.y / 2 * pow(-1, i))));
+        DrawCircle(Vec2<uint32_t>(static_cast<uint32_t>(start.x + i * vec.x),
+                                  static_cast<uint32_t>(start.y + i * vec.y)), thickness);
     }
+}
+
+void Renderer::DrawCircle(Texture* texture, Vec2<uint32_t> center, uint32_t radius)
+{
+    assert(texture);
+    SetRenderTarget(texture);
+    DrawCircle(center, radius);
+    SetRenderTarget(nullptr);
 }
 
 void Renderer::DrawCircle(Vec2<uint32_t> center, uint32_t radius)
@@ -48,18 +73,45 @@ void Renderer::DrawCircle(Vec2<uint32_t> center, uint32_t radius)
     }
 }
 
+void Renderer::SetPixel(Texture* texture, uint32_t x, uint32_t y)
+{
+    assert(texture);
+    SetRenderTarget(texture);
+    SetPixel(x, y);
+    SetRenderTarget(nullptr);
+}
+
 void Renderer::SetPixel(uint32_t x, uint32_t y)
 {
     assert(!SDL_RenderDrawPoint(renderer_, x, y));
+}
+
+void Renderer::CopyTexture(Texture* src, Texture* dst)
+{
+    assert(src);
+    assert(dst);
+
+    SetRenderTarget(src);
+    CopyTexture(dst);
+    SetRenderTarget(nullptr);
 }
 
 void Renderer::CopyTexture(Texture* texture)
 {
     assert(texture);
 
-    SDL_RenderCopy(renderer_, texture->GetTexture(), NULL, NULL);
+    assert(!SDL_RenderCopy(renderer_, texture->GetTexture(), NULL, NULL));
 }
 
+void Renderer::CopyTexture(Texture* src, Texture* dst, const Rectangle& dst_rect)
+{
+    assert(src);
+    assert(dst);
+
+    SetRenderTarget(src);
+    CopyTexture(dst, dst_rect);
+    SetRenderTarget(nullptr);
+}
 
 void Renderer::CopyTexture(Texture* texture, const Rectangle& dst_rect)
 {
@@ -67,7 +119,17 @@ void Renderer::CopyTexture(Texture* texture, const Rectangle& dst_rect)
     SDL_Rect dst_rectangle{static_cast<int>(dst_rect.x0), static_cast<int>(dst_rect.y0),
                            static_cast<int>(dst_rect.w),  static_cast<int>(dst_rect.h)};
 
-    SDL_RenderCopy(renderer_, texture->GetTexture(), NULL, &dst_rectangle);
+    assert(!SDL_RenderCopy(renderer_, texture->GetTexture(), NULL, &dst_rectangle));
+}
+
+void Renderer::CopyTexture(Texture* src, Texture* dst, const Rectangle& src_rect, const Rectangle& dst_rect)
+{
+    assert(src);
+    assert(dst);
+
+    SetRenderTarget(src);
+    CopyTexture(dst, src_rect, dst_rect);
+    SetRenderTarget(nullptr);
 }
 
 void Renderer::CopyTexture(Texture* texture, const Rectangle& src_rect, const Rectangle& dst_rect)
@@ -79,7 +141,7 @@ void Renderer::CopyTexture(Texture* texture, const Rectangle& src_rect, const Re
     SDL_Rect dst_rectangle{static_cast<int>(dst_rect.x0), static_cast<int>(dst_rect.y0),
                            static_cast<int>(dst_rect.w),  static_cast<int>(dst_rect.h)};
 
-    SDL_RenderCopy(renderer_, texture->GetTexture(), &src_rectangle, &dst_rectangle);
+    assert(!SDL_RenderCopy(renderer_, texture->GetTexture(), &src_rectangle, &dst_rectangle));
 }
 
 void Renderer::SetColor(uint32_t color)
@@ -110,11 +172,27 @@ void Renderer::Present()
     SDL_RenderPresent(renderer_);
 }
 
+void Renderer::FillRect(Texture* texture, const Rectangle& rect)
+{
+    assert(texture);
+    SetRenderTarget(texture);
+    FillRect(rect);
+    SetRenderTarget(nullptr);
+}
+
 void Renderer::FillRect(const Rectangle& rect)
 {
     SDL_Rect rectangle{static_cast<int>(rect.x0), static_cast<int>(rect.y0),
                        static_cast<int>(rect.w),  static_cast<int>(rect.h)};
     assert(!SDL_RenderFillRect(renderer_, &rectangle));
+}
+
+void Renderer::DrawRect(Texture* texture, const Rectangle& rect)
+{
+    assert(texture);
+    SetRenderTarget(texture);
+    DrawRect(rect);
+    SetRenderTarget(nullptr);
 }
 
 void Renderer::DrawRect(const Rectangle& rect)

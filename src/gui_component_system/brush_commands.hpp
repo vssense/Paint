@@ -19,6 +19,7 @@ public:
 
         return true;
     }
+
 private:
     GUIComponentSystem* system_;
     uint32_t color_;

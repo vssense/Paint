@@ -2,22 +2,20 @@
 #include "texture.hpp"
 #include "renderer.hpp"
 
-Texture::Texture(Renderer* renderer, size_t width, size_t height, uint32_t color)
+Texture::Texture(Renderer* renderer, size_t width, size_t height)
 {
     texture_ = SDL_CreateTexture(renderer->GetRenderer(), SDL_PIXELFORMAT_RGBA8888,
                                  SDL_TEXTUREACCESS_TARGET,
                                  static_cast<int>(width),
                                  static_cast<int>(height));
 
-    if (color != kBlack)
-    {
-        renderer->SetRenderTarget(this);
-        renderer->SetColor(color);
-        renderer->FillRect(Rectangle{0, 0, static_cast<uint32_t>(width), static_cast<uint32_t>(height)});
-        renderer->SetRenderTarget(nullptr);
-    }
-
     SDL_SetTextureBlendMode(texture_, SDL_BLENDMODE_BLEND);
+}
+
+Texture::Texture(Renderer* renderer, size_t width, size_t height, uint32_t color) : Texture(renderer, width, height)
+{
+    renderer->SetColor(color);
+    renderer->FillRect(this, Rectangle{0, 0, static_cast<uint32_t>(width), static_cast<uint32_t>(height)});
 }
 
 Texture::Texture(Renderer* renderer, const char* path)
