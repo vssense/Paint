@@ -1,20 +1,19 @@
 #ifndef _CLOSE_COMMANDS_HPP_INCLUDED
 #define _CLOSE_COMMANDS_HPP_INCLUDED
 
-#include "../gui_component_system/gui_component_commands.hpp"
+#include "../gui_system/gui_component_commands.hpp"
 #include "../graphics/texture.hpp"
 
 class MainCloseOnMouseEvent : public IOnMouseEventCommand
 {
 public:
-    MainCloseOnMouseEvent(bool* is_running, const char* path = nullptr,
-                          Renderer* renderer = nullptr) :
+    MainCloseOnMouseEvent(bool* is_running, const char* path = nullptr) :
                           is_running_(is_running), swap_texture_(nullptr)
     {
         assert(is_running_);
-        if (path != nullptr && renderer != nullptr)
+        if (path != nullptr)
         {
-            swap_texture_ = new Texture(renderer, path);
+            swap_texture_ = new Texture(path);
             assert(swap_texture_);
         }
     }
@@ -62,17 +61,18 @@ private:
 class CloseCanvasOnMouseEvent : public IOnMouseEventCommand
 {
 public:
-    CloseCanvasOnMouseEvent(GUIComponent* canvas, const char* path = nullptr, Renderer* renderer = nullptr) :
+    CloseCanvasOnMouseEvent(GUIComponent* canvas, const char* path = nullptr) :
         canvas_(canvas) 
     {
         assert(canvas_);
 
-        if (path != nullptr && renderer != nullptr)
+        if (path != nullptr)
         {
-            swap_texture_ = new Texture(renderer, path);
+            swap_texture_ = new Texture(path);
             assert(swap_texture_);
         }
     }
+    
     ~CloseCanvasOnMouseEvent()
     {
         if (swap_texture_ != nullptr)

@@ -1,14 +1,14 @@
-#include "gui_component_system.hpp"
+#include "gui_system.hpp"
 
-GUIComponentSystem::GUIComponentSystem(Window* window, GUIComponent* root) :
+GUISystem::GUISystem(Window* window, GUIComponent* root) :
     window_(window), root_(root) {}
 
-GUIComponentSystem::~GUIComponentSystem()
+GUISystem::~GUISystem()
 {
     delete root_;
 }
 
-void GUIComponentSystem::ProcessEvent(const Event& event)
+void GUISystem::ProcessEvent(const Event& event)
 {
     switch (event.GetType())
     {
@@ -30,23 +30,15 @@ void GUIComponentSystem::ProcessEvent(const Event& event)
         }
     }
 }
-Brush& GUIComponentSystem::GetBrush()
-{
-    return brush_;
-}
-void GUIComponentSystem::SetBrush(const Brush& brush)
-{
-    brush_ = brush;
-}
 
-void GUIComponentSystem::ProcessMouseEvent(Vec2<uint32_t> position, const Event& event)
+void GUISystem::ProcessMouseEvent(Vec2<uint32_t> position, const Event& event)
 {
     root_->OnMouseEvent(position, event, Vec2<uint32_t>(0, 0));
 }
 
-void GUIComponentSystem::Render(Renderer* renderer)
+void GUISystem::Render()
 {
-    root_->Render(renderer, Vec2<uint32_t>(0, 0));
+    root_->Render(Vec2<uint32_t>(0, 0));
 }
 
 

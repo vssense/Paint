@@ -10,7 +10,12 @@
 class Renderer
 {
 public:
+    static Renderer* GetInstance();
+    static void      Construct(Window* window);
+private:
     Renderer(Window* window);
+
+public:
     ~Renderer();
 
     void DrawLine(Texture* texture, uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, uint32_t thickness);
@@ -48,6 +53,7 @@ public:
     SDL_Renderer* GetRenderer() const { return renderer_; }
 
 private:
+    static Renderer* instance_;
     SDL_Renderer* renderer_;
 };
 

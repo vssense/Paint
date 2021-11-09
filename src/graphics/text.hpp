@@ -21,8 +21,8 @@ private:
 class Text
 {
 public:
-    Text(Renderer* renderer);
-    Text(Renderer* renderer, Font* font, const char* text, uint32_t color = kBlack);
+    Text();
+    Text(Font* font, const char* text, uint32_t color = kBlack);
     ~Text();
 
     void Destroy();
@@ -31,7 +31,6 @@ public:
     SDL_Texture* GetTexture() const { return texture_; }
 
 private:
-    Renderer* renderer_;
     SDL_Texture* texture_;
     Vec2<uint32_t> size_;
 };

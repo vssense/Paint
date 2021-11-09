@@ -16,18 +16,10 @@ Font::~Font()
     TTF_CloseFont(font_);
 }
 
-Text::Text(Renderer* renderer) : renderer_(renderer),
-                                 texture_(nullptr),
-                                 size_(0, 0)
-{
-    assert(renderer);
-}
+Text::Text() : texture_(nullptr), size_(0, 0) {}
 
-Text::Text(Renderer* renderer, Font* font, const char* text, uint32_t color) : renderer_(renderer),
-                                                                               texture_(nullptr),
-                                                                               size_(0, 0)
+Text::Text(Font* font, const char* text, uint32_t color) : Text()
 {
-    assert(renderer);
     assert(font);
     assert(text);
 
@@ -47,7 +39,10 @@ void Text::Load(Font* font, const char* text, uint32_t color)
     size_.x = load_surface->w;
     size_.y = load_surface->h;
 
-    texture_ = SDL_CreateTextureFromSurface(renderer_->GetRenderer(), load_surface);
+    Renderer* renderer = Renderer::GetInstance();
+    assert(renderer);
+
+    texture_ = SDL_CreateTextureFromSurface(renderer->GetRenderer(), load_surface);
     assert(texture_);
 
     SDL_FreeSurface(load_surface);
@@ -55,10 +50,13 @@ void Text::Load(Font* font, const char* text, uint32_t color)
 
 void Text::Render(Vec2<uint32_t> coordinates)
 {
+    Renderer* renderer = Renderer::GetInstance();
+    assert(renderer);
+
     SDL_Rect rect{static_cast<int>(coordinates.x), static_cast<int>(coordinates.y),
                   static_cast<int>(size_.x),       static_cast<int>(size_.y)};
 
-    SDL_RenderCopy(renderer_->GetRenderer(), texture_, NULL, &rect);
+    SDL_RenderCopy(renderer->GetRenderer(), texture_, NULL, &rect);
 }
 
 void Text::Destroy()

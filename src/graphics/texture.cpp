@@ -2,9 +2,9 @@
 #include "texture.hpp"
 #include "renderer.hpp"
 
-Texture::Texture(Renderer* renderer, size_t width, size_t height)
+Texture::Texture(size_t width, size_t height)
 {
-    texture_ = SDL_CreateTexture(renderer->GetRenderer(), SDL_PIXELFORMAT_RGBA8888,
+    texture_ = SDL_CreateTexture(Renderer::GetInstance()->GetRenderer(), SDL_PIXELFORMAT_RGBA8888,
                                  SDL_TEXTUREACCESS_TARGET,
                                  static_cast<int>(width),
                                  static_cast<int>(height));
@@ -12,13 +12,14 @@ Texture::Texture(Renderer* renderer, size_t width, size_t height)
     SDL_SetTextureBlendMode(texture_, SDL_BLENDMODE_BLEND);
 }
 
-Texture::Texture(Renderer* renderer, size_t width, size_t height, uint32_t color) : Texture(renderer, width, height)
+Texture::Texture(size_t width, size_t height, uint32_t color) : Texture(width, height)
 {
+    Renderer* renderer = Renderer::GetInstance();
     renderer->SetColor(color);
     renderer->FillRect(this, Rectangle{0, 0, static_cast<uint32_t>(width), static_cast<uint32_t>(height)});
 }
 
-Texture::Texture(Renderer* renderer, const char* path)
+Texture::Texture(const char* path)
 {
     assert(path);
 
@@ -29,6 +30,7 @@ Texture::Texture(Renderer* renderer, const char* path)
         assert(0);
     }
 
+    Renderer* renderer = Renderer::GetInstance();
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer->GetRenderer(), surface);
     assert(texture);
 
@@ -46,12 +48,15 @@ Texture::Texture(Renderer* renderer, const char* path)
     SDL_SetTextureBlendMode(texture_, SDL_BLENDMODE_BLEND);
 }
 
-Texture::Texture(Renderer* renderer, Text* text)
+Texture::Texture(Text* text)
 {
     assert(text);
+
     int width = 0;
     int height = 0;
     SDL_QueryTexture(text->GetTexture(), NULL, NULL, &width, &height);
+
+    Renderer* renderer = Renderer::GetInstance();
 
     texture_ = SDL_CreateTexture(renderer->GetRenderer(), SDL_PIXELFORMAT_RGBA8888,
                                  SDL_TEXTUREACCESS_TARGET, width, height);

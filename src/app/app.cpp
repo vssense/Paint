@@ -4,10 +4,12 @@ void App::operator () ()
 {
 
     Window window{};
-    Renderer renderer(&window);
+    Renderer::Construct(&window);
+    Renderer* renderer = Renderer::GetInstance();
+
     bool is_running = true;
 
-    GUIComponentSystem system(&window, CreatePaintTree(&renderer, &is_running, &system));
+    PaintGUISystem system(&window, CreatePaintTree(&is_running, &system));
 
     while (is_running)
     {
@@ -53,10 +55,10 @@ void App::operator () ()
             }
         }
 
-        renderer.Clear();
+        renderer->SetRenderTarget(nullptr);
 
-        system.Render(&renderer);
-
-        renderer.Present();
+        renderer->Clear();
+        system.Render();
+        renderer->Present();
     }
 }
