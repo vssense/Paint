@@ -10,8 +10,9 @@ class Text;
 class Texture
 {
 public:
-    Texture(size_t width, size_t height);
-    Texture(size_t width, size_t height, uint32_t color);
+    Texture(uint32_t width, uint32_t height);
+    Texture(uint32_t width, uint32_t height, Color bg);
+    Texture(uint32_t width, uint32_t height, Color bg, Color border);
     Texture(const char* path);
     Texture(Text* text);
     ~Texture();

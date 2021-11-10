@@ -1,5 +1,4 @@
 #include "renderer.hpp"
-#include "coordinate_system.hpp"
 
 Renderer* Renderer::instance_ = nullptr;
 

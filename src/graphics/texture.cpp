@@ -2,7 +2,7 @@
 #include "texture.hpp"
 #include "renderer.hpp"
 
-Texture::Texture(size_t width, size_t height)
+Texture::Texture(uint32_t width, uint32_t height)
 {
     texture_ = SDL_CreateTexture(Renderer::GetInstance()->GetRenderer(), SDL_PIXELFORMAT_RGBA8888,
                                  SDL_TEXTUREACCESS_TARGET,
@@ -12,11 +12,20 @@ Texture::Texture(size_t width, size_t height)
     SDL_SetTextureBlendMode(texture_, SDL_BLENDMODE_BLEND);
 }
 
-Texture::Texture(size_t width, size_t height, uint32_t color) : Texture(width, height)
+Texture::Texture(uint32_t width, uint32_t height, Color color) :
+    Texture(width, height)
 {
     Renderer* renderer = Renderer::GetInstance();
     renderer->SetColor(color);
-    renderer->FillRect(this, Rectangle{0, 0, static_cast<uint32_t>(width), static_cast<uint32_t>(height)});
+    renderer->FillRect(this, Rectangle{0, 0, width, height});
+}
+
+Texture::Texture(uint32_t width, uint32_t height, Color bg, Color border) :
+    Texture(width, height, bg)
+{
+    Renderer* renderer = Renderer::GetInstance();
+    renderer->SetColor(border);
+    renderer->DrawRect(this, Rectangle{0, 0, width, height});
 }
 
 Texture::Texture(const char* path)
@@ -36,7 +45,7 @@ Texture::Texture(const char* path)
 
     texture_ = SDL_CreateTexture(renderer->GetRenderer(), SDL_PIXELFORMAT_RGBA8888,
                                  SDL_TEXTUREACCESS_TARGET,
-                                 surface->w, surface->h);            
+                                 surface->w, surface->h);
     assert(texture_);
 
     SDL_SetRenderTarget(renderer->GetRenderer(), texture_);

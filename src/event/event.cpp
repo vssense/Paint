@@ -2,7 +2,7 @@
 
 bool Event::PollEvent()
 {
-    static Vec2<uint32_t> last_press{UINT32_MAX, 0};
+    static bool button_pressed = false; 
     SDL_Event event;
 
     if (!SDL_PollEvent(&event))
@@ -25,29 +25,21 @@ bool Event::PollEvent()
         }
         case SDL_MOUSEBUTTONDOWN:
         {
+            button_pressed = true;
             type_ = kMouseButtonPress;
             value_.coordinates = Vec2<uint32_t>(event.button.x, event.button.y);
-            last_press = value_.coordinates;
             break;
         }
         case SDL_MOUSEBUTTONUP:
         {
-            if (last_press.x != UINT32_MAX)
-            {
-                type_ = kMouseButtonOldRelease;
-                value_.coordinates = last_press;
-                SDL_PushEvent(&event);
-                last_press.x = UINT32_MAX;
-                break;
-            }
-
+            button_pressed = false;
             type_ = kMouseButtonRelease;
             value_.coordinates = Vec2<uint32_t>(event.button.x, event.button.y);
             break;
         }
         case SDL_MOUSEMOTION:
         {
-            if (last_press.x == UINT32_MAX)
+            if (!button_pressed)
             {
                 return PollEvent();
             }

@@ -12,7 +12,6 @@ void GUISystem::ProcessEvent(const Event& event)
 {
     switch (event.GetType())
     {
-        case kMouseButtonOldRelease:
         case kMouseButtonRelease:
         case kMouseButtonPress:
         {
@@ -33,12 +32,12 @@ void GUISystem::ProcessEvent(const Event& event)
 
 void GUISystem::ProcessMouseEvent(Vec2<uint32_t> position, const Event& event)
 {
-    root_->OnMouseEvent(position, event, Vec2<uint32_t>(0, 0));
+    root_->OnMouseEvent(position, event);
 }
 
 void GUISystem::Render()
 {
-    root_->Render(Vec2<uint32_t>(0, 0));
+    root_->Render();
 }
 
 

@@ -12,9 +12,9 @@ enum EventType
 {
     kQuit,
     kKeyDown,
+    kMouseHover,
     kMouseButtonPress,
     kMouseButtonRelease,
-    kMouseButtonOldRelease,
     kMouseMotion
 };
 

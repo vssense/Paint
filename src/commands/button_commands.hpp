@@ -71,7 +71,7 @@ public:
         {
             case kMouseButtonRelease:
             {
-                main_component_->AddChild(CreateCanvas(kDefaultCanvasPlacement, system_));
+                main_component_->Attach(CreateCanvas(kDefaultCanvasPlacement, system_));
                 break;
             }
             case kMouseButtonPress:
