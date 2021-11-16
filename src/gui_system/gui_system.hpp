@@ -13,11 +13,14 @@ public:
 
     void ProcessEvent(const Event& event);
     void Render();
+    void Subscribe(GUIComponent* component, EventType type);
+
 private:
     void ProcessMouseEvent(Vec2<uint32_t> position, const Event& event);
 
     Window* window_;
     GUIComponent* root_;
+    std::vector<GUIComponent*> listeners_;
 };
 
 

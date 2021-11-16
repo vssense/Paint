@@ -8,7 +8,7 @@
 // 5) class App { PaintGUISystem*, Instuments }
 // 6) subscribe to events
 // 7) remove border from buttons, it should be another GUIComponent
-// 8) implement on hover event. Should it be on timer? Or just every mouse motion
+// DONE 8) implement on hover event. Should it be on timer? Or just every mouse motion
 
 class ButtonCommand : public ICommand
 {
@@ -29,7 +29,7 @@ void App::operator () ()
     GUIComponent* main_component = new GUIComponent(new Texture("img/pic.bmp"),
                                                     Rectangle{0, 0, kWindowWidth, kWindowHeight});
 
-    main_component->Attach(new BasicButton(Rectangle{10,  10,  100, 30}, new ButtonCommand, kWhite, kRed, "button"));
+    main_component->Attach(new BasicButton(Rectangle{ 10,  10, 100, 30}, new ButtonCommand, kWhite, kRed, "button"));
     main_component->Attach(new Button     (Rectangle{200, 400, 100, 30}, new ButtonCommand, kRed, kWhite, kBlack, "xaxaxa", kLightPurple));
 
     PaintGUISystem system(&window, main_component);
@@ -63,15 +63,9 @@ void App::operator () ()
 
                     break;
                 }
-                case kMouseButtonPress:
-                case kMouseButtonRelease:
-                case kMouseMotion:
-                {
-                    system.ProcessEvent(event);
-                    break;
-                }
                 default:
                 {
+                    system.ProcessEvent(event);
                     break;
                 }
             }

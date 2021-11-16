@@ -1,7 +1,7 @@
 #include "gui_component.hpp"
 
 GUIComponent::GUIComponent(Texture* texture, const Rectangle& relative_placement) :
-    texture_(texture), placement_(relative_placement), parent_(nullptr)
+    texture_(texture), placement_(relative_placement), parent_(nullptr), system_(nullptr)
 {
     is_deleted_ = false;
 }
@@ -53,7 +53,6 @@ bool GUIComponent::OnMouseEvent(Vec2<uint32_t> coordinates, const Event& event)
 
 bool GUIComponent::ProcessMouseEvent(const Event& event)
 {
-    printf("Process event!\n");
     return true;
 }
 
@@ -99,4 +98,16 @@ void GUIComponent::Delete()
 bool GUIComponent::IsDeleted() const
 {
     return is_deleted_;
+}
+
+void GUIComponent::SetGUISystem(GUISystem* system)
+{
+    assert(system);
+
+    system_ = system;
+
+    for (auto it = children_.end(); it != children_.begin();)
+    {
+        (*it)->SetGUISystem(system);
+    }
 }

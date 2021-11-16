@@ -2,6 +2,7 @@
 #define _EVENT_HPP_INCLUDED
 
 #include <SDL2/SDL.h>
+#include <queue>
 #include "../math/vector2.hpp"
 
 const int kQScancode = 20;
@@ -15,7 +16,9 @@ enum EventType
     kMouseHover,
     kMouseButtonPress,
     kMouseButtonRelease,
-    kMouseMotion
+    kMouseMotion,
+
+    kEventsCount
 };
 
 struct MotionData
@@ -42,9 +45,13 @@ public:
     bool PollEvent();
     EventType GetType() const { return type_; }
     const EventValue& GetValue() const { return value_; }
+
 private:
+    bool PollSDLEvent();
+    
     EventType type_;
     EventValue value_;
+    static std::queue<Event> queue_;
 };
 
 #endif /* _EVENT_HPP_INCLUDED */

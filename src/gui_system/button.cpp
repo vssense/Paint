@@ -1,4 +1,5 @@
 #include "button.hpp"
+#include "gui_system.hpp"
 
 BasicButton::BasicButton(const Rectangle& placement, ICommand* command, Texture* texture) :
     GUIComponent(texture, placement), command_(command)
@@ -94,24 +95,30 @@ bool Button::ProcessMouseEvent(const Event& event)
         {
             texture_ = on_release_;
             command_->Execute();
-            break;
-        }
+        } break;
         case kMouseButtonPress:
         {
             if (on_press_ != nullptr)
             {
                 texture_ = on_press_;
             }
-            break;
-        }
+        } break;
         case kMouseHover:
         {
-            if (on_hover_ != nullptr)
+            if (HitTest(event.GetValue().coordinates))
             {
-                texture_ = on_hover_;
+                if (on_hover_ != nullptr)
+                {
+                    texture_ = on_hover_;
+                    system_->Subscribe(this, kMouseHover);
+                }
             }
-            break;
-        }
+            else
+            {
+                texture_ = 
+                return false;
+            }
+        } break;
         default:
         {
             break;

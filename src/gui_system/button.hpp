@@ -23,6 +23,7 @@ public:
 
 protected:
     ICommand* command_;
+    bool pressed_;
 };
 
 class Button : public BasicButton

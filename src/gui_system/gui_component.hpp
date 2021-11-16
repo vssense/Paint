@@ -7,6 +7,8 @@
 #include "../graphics/renderer.hpp"
 #include <list>
 
+class GUISystem;
+
 class GUIComponent
 {
 public:
@@ -19,15 +21,11 @@ public:
 
     virtual void Move(Vec2<int32_t> d);
     virtual void Render();
+ 
     void Attach(GUIComponent* component);
-
+    void SetGUISystem(GUISystem* system);
     void Delete();
     bool IsDeleted() const;
-
-    // const Rectangle& GetPlacement();
-
-    // void SetParent();
-    // GUIComponent* GetParent();
 
 protected:
     Texture* texture_;
@@ -35,7 +33,8 @@ protected:
 
     bool is_deleted_;
     GUIComponent* parent_;
-    std::list<GUIComponent*> children_; 
+    GUISystem* system_;
+    std::list<GUIComponent*> children_;
 };
 
 #endif /* _GUICOMPONENT_HPP_INCLUDED */
