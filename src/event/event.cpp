@@ -1,8 +1,41 @@
 #include "event.hpp"
 
-std::queue<Event> Event::queue_;
+EventManager* EventManager::instance_ = nullptr;
 
 bool Event::PollEvent()
+{
+    return EventManager::GetInstance()->PollEvent(this);
+}
+
+EventType Event::GetType() const
+{
+    return type_;
+}
+
+const EventValue& Event::GetValue() const
+{
+    return value_;
+}
+
+EventManager* EventManager::GetInstance()
+{
+    if (instance_ == nullptr)
+    {
+        instance_ = new EventManager;
+        assert(instance_);
+    }
+
+    return instance_;
+}
+
+EventManager::EventManager() {}
+
+void EventManager::PushEvent(const Event& event)
+{
+    queue_.push(event);
+}
+
+bool EventManager::PollEvent(Event* event)
 {
     while (PollSDLEvent());
 
@@ -11,12 +44,12 @@ bool Event::PollEvent()
         return false;
     }
 
-    *this = queue_.front();
+    *event = queue_.front();
     queue_.pop();
     return true;
 }
 
-bool Event::PollSDLEvent()
+bool EventManager::PollSDLEvent()
 {
     static bool mouse_button_pressed = false; 
     SDL_Event event;
@@ -30,47 +63,41 @@ bool Event::PollSDLEvent()
     {
         case SDL_QUIT:
         {
-            type_ = kQuit;
+            queue_.push(Event(kQuit));
             break;
         }
         case SDL_KEYDOWN:
         {
-            type_ = kKeyDown;
-            value_.scancode = event.key.keysym.scancode;
+            queue_.push(Event(kKeyDown, EventValue(event.key.keysym.scancode)));
             break;
         }
         case SDL_MOUSEBUTTONDOWN:
         {
             mouse_button_pressed = true;
-            type_ = kMouseButtonPress;
-            value_.coordinates = Vec2<uint32_t>(event.button.x, event.button.y);
+            queue_.push(Event(kMouseButtonPress, EventValue(Vec2<uint32_t>(event.button.x, event.button.y))));
             break;
         }
         case SDL_MOUSEBUTTONUP:
         {
             mouse_button_pressed = false;
-            type_ = kMouseButtonRelease;
-            value_.coordinates = Vec2<uint32_t>(event.button.x, event.button.y);
+            queue_.push(Event(kMouseButtonRelease, EventValue(Vec2<uint32_t>(event.button.x, event.button.y))));
             break;
         }
         case SDL_MOUSEMOTION:
         {
-            type_ = kMouseHover;
             int x = 0;
             int y = 0;
             SDL_GetMouseState(&x, &y);
-            value_.coordinates.x = static_cast<uint32_t>(x);
-            value_.coordinates.y = static_cast<uint32_t>(y);
-            queue_.push(*this);
+            queue_.push(Event(kMouseHover, EventValue(Vec2<uint32_t>(x, y))));
+
             if (!mouse_button_pressed)
             {
                 return true;
             }
 
-            type_ = kMouseMotion;
-            value_.motion.start = Vec2<uint32_t>(event.motion.x - event.motion.xrel,
-                                                 event.motion.y - event.motion.yrel);
-            value_.motion.d     = Vec2<int32_t> (event.motion.xrel, event.motion.yrel);
+            queue_.push(Event(kMouseMotion, EventValue(MotionData{Vec2<uint32_t>(event.motion.x - event.motion.xrel,
+                                                                                 event.motion.y - event.motion.yrel),
+                                                                  Vec2<int32_t> (event.motion.xrel, event.motion.yrel)})));
             break;
         }
         default:
@@ -79,6 +106,5 @@ bool Event::PollSDLEvent()
         }
     }
 
-    queue_.push(*this);
     return true;
 }

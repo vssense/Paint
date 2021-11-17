@@ -2,13 +2,12 @@
 
 //TODO:
 // DONE 1) ADD absolute coordinates(or use it INSTEAD of relative ////////////// ADD OR REPLACE)
-// 2) rewrite everything
 // DONE 3) class GUIComponent - all methods are virtual, all windows should be inherited from it
-// 4) think how to avoid non-linear inheritance - which methods should be in base classes
 // 5) class App { PaintGUISystem*, Instuments }
-// 6) subscribe to events
+// DONE 6) subscribe to events
 // 7) remove border from buttons, it should be another GUIComponent
 // DONE 8) implement on hover event. Should it be on timer? Or just every mouse motion
+// 9) Event Manager - singleton - main window close pushes kQuit event  
 
 class ButtonCommand : public ICommand
 {
@@ -26,13 +25,7 @@ void App::operator () ()
 
     bool is_running = true;
 
-    GUIComponent* main_component = new GUIComponent(new Texture("img/pic.bmp"),
-                                                    Rectangle{0, 0, kWindowWidth, kWindowHeight});
-
-    main_component->Attach(new BasicButton(Rectangle{ 10,  10, 100, 30}, new ButtonCommand, kWhite, kRed, "button"));
-    main_component->Attach(new Button     (Rectangle{200, 400, 100, 30}, new ButtonCommand, kRed, kWhite, kBlack, "xaxaxa", kLightPurple));
-
-    PaintGUISystem system(&window, main_component);
+    PaintGUISystem system(&window, new PaintMainComponent(new Texture("img/pic.bmp")));
 
     while (is_running)
     {
@@ -44,8 +37,7 @@ void App::operator () ()
                 case kQuit:
                 {
                     is_running = false;
-                    break;
-                }
+                } break;
                 case kKeyDown:
                 {
                     if (event.GetValue().scancode == kQScancode)
@@ -60,14 +52,11 @@ void App::operator () ()
                     {
                         system.GetBrush().GetThickness()++;
                     }
-
-                    break;
-                }
+                } break;
                 default:
                 {
                     system.ProcessEvent(event);
-                    break;
-                }
+                } break;
             }
         }
 

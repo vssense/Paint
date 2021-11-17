@@ -4,6 +4,7 @@
 #include "gui_component.hpp"
 #include "command.hpp"
 #include "icon.hpp"
+#include "border.hpp"
 #include "../graphics/color.hpp"
 
 class BasicButton : public GUIComponent
@@ -18,6 +19,7 @@ public:
                 const char* text, Color font_color = kBlack);
 
     virtual ~BasicButton();
+    void AddBorder(Color color);
 
     virtual bool ProcessMouseEvent(const Event& event) override;
 

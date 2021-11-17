@@ -1,15 +1,15 @@
 #include "gui_component.hpp"
+#include "gui_system.hpp"
 
 GUIComponent::GUIComponent(Texture* texture, const Rectangle& relative_placement) :
-    texture_(texture), placement_(relative_placement), parent_(nullptr), system_(nullptr)
-{
-    is_deleted_ = false;
-}
+    texture_(texture), placement_(relative_placement), parent_(nullptr), system_(nullptr) {}
 
 GUIComponent::~GUIComponent()
 {
-    assert(texture_);
-    delete texture_;
+    if (texture_ != nullptr)
+    {
+        delete texture_;
+    }
 
     for (auto it = children_.begin(); it != children_.end(); ++it)
     {
@@ -35,14 +35,7 @@ bool GUIComponent::OnMouseEvent(Vec2<uint32_t> coordinates, const Event& event)
         {
             GUIComponent* processed_event = *it;
             children_.erase(it);
-            if (processed_event->IsDeleted())
-            {
-                delete processed_event;
-            }
-            else
-            {
-                Attach(processed_event);
-            }
+            children_.push_front(processed_event);
 
             return true;
         }
@@ -54,6 +47,11 @@ bool GUIComponent::OnMouseEvent(Vec2<uint32_t> coordinates, const Event& event)
 bool GUIComponent::ProcessMouseEvent(const Event& event)
 {
     return true;
+}
+
+bool GUIComponent::ProcessListenerEvent(const Event& event)
+{
+    return ProcessMouseEvent(event);
 }
 
 void GUIComponent::Move(Vec2<int32_t> d)
@@ -69,10 +67,10 @@ void GUIComponent::Move(Vec2<int32_t> d)
 
 void GUIComponent::Render()
 {
-    Renderer* renderer = Renderer::GetInstance();
-    assert(renderer);
-
-    renderer->CopyTexture(texture_, placement_);
+    if (texture_ != nullptr)
+    {
+        Renderer::GetInstance()->CopyTexture(texture_, placement_);
+    }
 
     for (auto it = children_.end(); it != children_.begin();)
     {
@@ -87,27 +85,40 @@ void GUIComponent::Attach(GUIComponent* component)
 
     children_.push_front(component);
     component->parent_ = this;
+    component->SetGUISystem(system_);
     component->Move(Vec2<int32_t>(placement_.x0, placement_.y0));
 }
 
-void GUIComponent::Delete()
+void GUIComponent::Detach(GUIComponent* component)
 {
-    is_deleted_ = true;
-}
+    assert(component);
 
-bool GUIComponent::IsDeleted() const
-{
-    return is_deleted_;
+    for (auto it = children_.begin(); it != children_.end(); ++it)
+    {
+        if (*it == component)
+        {
+            children_.erase(it);
+            break;
+        }
+    }    
 }
 
 void GUIComponent::SetGUISystem(GUISystem* system)
 {
-    assert(system);
-
     system_ = system;
 
-    for (auto it = children_.end(); it != children_.begin();)
+    for (auto it = children_.begin(); it != children_.end(); ++it)
     {
         (*it)->SetGUISystem(system);
     }
+}
+
+GUIComponent* GUIComponent::GetParent() const
+{
+    return parent_;
+}
+
+GUISystem* GUIComponent::GetSystem()
+{
+    return system_;
 }

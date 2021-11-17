@@ -2,16 +2,18 @@
 #include "gui_system.hpp"
 
 BasicButton::BasicButton(const Rectangle& placement, ICommand* command, Texture* texture) :
-    GUIComponent(texture, placement), command_(command)
+    GUIComponent(texture, placement), command_(command), pressed_(false)
 {
     assert(command_);
     assert(texture_);
 }
 
 BasicButton::BasicButton(const Rectangle& placement, ICommand* command, uint32_t bg, uint32_t border) :
-    BasicButton(placement, command, new Texture(placement.w, placement.h, bg, border))
+    BasicButton(placement, command, new Texture(placement.w, placement.h, bg))
 {
     assert(command);
+
+    AddBorder(border);
 }
 
 BasicButton::BasicButton(const Rectangle& placement, ICommand* command, uint32_t bg,
@@ -33,11 +35,39 @@ BasicButton::BasicButton(const Rectangle& placement, ICommand* command, uint32_t
     Attach(new TextIcon(placement, text, font_color));
 }
 
+void BasicButton::AddBorder(Color color)
+{
+    Attach(new Border(color, Rectangle{0, 0, placement_.w, placement_.h}));
+}
+
 bool BasicButton::ProcessMouseEvent(const Event& event)
 {
-    if (event.GetType() == kMouseButtonRelease)
+    switch (event.GetType())
     {
-        command_->Execute();
+        case kMouseButtonRelease:
+        {
+            if (HitTest(event.GetValue().coordinates))
+            {
+                if (pressed_)
+                {
+                    command_->Execute();
+                }
+            }
+
+            pressed_ = false;
+            system_->UnSubscribe(kMouseButtonRelease);
+            system_->Subscribe(this, kMouseMotion);
+        } break;
+        case kMouseButtonPress:
+        {
+            system_->Subscribe(this, kMouseButtonRelease);
+            system_->Subscribe(this, kMouseMotion);
+            pressed_ = true;
+        } break;
+        default:
+        {
+            break;
+        }
     }
 
     return true;
@@ -93,30 +123,60 @@ bool Button::ProcessMouseEvent(const Event& event)
     {
         case kMouseButtonRelease:
         {
-            texture_ = on_release_;
-            command_->Execute();
-        } break;
-        case kMouseButtonPress:
-        {
-            if (on_press_ != nullptr)
-            {
-                texture_ = on_press_;
-            }
-        } break;
-        case kMouseHover:
-        {
             if (HitTest(event.GetValue().coordinates))
             {
-                if (on_hover_ != nullptr)
+                if (pressed_)
                 {
-                    texture_ = on_hover_;
-                    system_->Subscribe(this, kMouseHover);
+                    command_->Execute();
+                    if (on_hover_ != nullptr)
+                    {
+                        texture_ = on_hover_;
+                    }
+                    else
+                    {
+                        texture_ = on_release_;
+                    }
                 }
             }
             else
             {
-                texture_ = 
-                return false;
+                texture_ = on_release_;
+            }
+
+            pressed_ = false;
+            system_->UnSubscribe(this); //TODO:Fix hover
+        } break;
+        case kMouseButtonPress:
+        {
+            pressed_ = true;
+            if (on_press_ != nullptr)
+            {
+                texture_ = on_press_;
+            }
+
+            system_->Subscribe(this, kMouseButtonRelease);
+        } break;
+        case kMouseHover:
+        {
+            if (!pressed_)
+            {
+                if (HitTest(event.GetValue().coordinates))
+                {
+                    if (on_hover_ != nullptr)
+                    {
+                        texture_ = on_hover_;
+                    }
+
+                    system_->Subscribe(this, kMouseHover);
+                    system_->Subscribe(this, kMouseMotion);
+                }
+                else
+                {
+                    texture_ = on_release_;
+                    system_->UnSubscribe(kMouseHover);
+                    system_->UnSubscribe(kMouseMotion);
+                    return false;
+                }
             }
         } break;
         default:
