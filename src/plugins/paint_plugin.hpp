@@ -11,6 +11,7 @@ typedef Tool* (*GetToolPtr)();
 typedef const char* (*GetNamePtr)();
 
 const uint32_t kDefaultThickness = 5;
+const uint32_t kDefaultToolColor = 0xFF'00'00'00;
 
 class IRenderTarget
 {
@@ -30,7 +31,7 @@ public:
 class Tool
 {
 public:
-    Tool() : color_(0xFF'00'00'00), thickness_(5) {}
+    Tool() : color_(kDefaultToolColor), thickness_(kDefaultThickness) {}
     Tool(uint32_t color) : color_(color), thickness_(1) {}
     Tool(uint32_t color, uint32_t thickness) : color_(color), thickness_(thickness) {}
 
