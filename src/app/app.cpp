@@ -37,7 +37,8 @@ void App::operator () ()
                 case kQuit:
                 {
                     is_running = false;
-                } break;
+                    break;
+                }
                 case kKeyDown:
                 {
                     if (event.GetValue().scancode == kQScancode)
@@ -52,11 +53,13 @@ void App::operator () ()
                     {
                         system.GetBrush().GetThickness()++;
                     }
-                } break;
+                    break;
+                }
                 default:
                 {
                     system.ProcessEvent(event);
-                } break;
+                    break;
+                }
             }
         }
 

@@ -16,10 +16,10 @@ public:
     void Render();
     void Subscribe(GUIComponent* component, EventType type);
     void UnSubscribe(EventType type);
-    void UnSubscribe(GUIComponent* component);
+    virtual void Reset();
 
-private:
-    void ProcessMouseEvent(Vec2<uint32_t> position, const Event& event);
+protected:
+    void ProcessMouseEvent(const Event& event);
 
     Window* window_;
     GUIComponent* root_;

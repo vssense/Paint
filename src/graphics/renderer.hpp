@@ -18,14 +18,14 @@ private:
 public:
     ~Renderer();
 
-    void DrawLine(Texture* texture, uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, uint32_t thickness);
-    void DrawLine(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, uint32_t thickness);
+    void DrawLine(Texture* texture, int x1, int y1, int x2, int y2, uint32_t thickness);
+    void DrawLine(int x1, int y1, int x2, int y2, uint32_t thickness);
 
-    void DrawLine(Texture* texture, uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2);
-    void DrawLine(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2);
+    void DrawLine(Texture* texture, int x1, int y1, int x2, int y2);
+    void DrawLine(int x1, int y1, int x2, int y2);
 
-    void DrawCircle(Texture* texture, Vec2<uint32_t> center, uint32_t radius);
-    void DrawCircle(Vec2<uint32_t> center, uint32_t radius);
+    void DrawCircle(Texture* texture, Vec2<int> center, uint32_t radius);
+    void DrawCircle(Vec2<int> center, uint32_t radius);
 
     void FillRect(Texture* texture, const Rectangle& rect);
     void FillRect(const Rectangle& rect);
@@ -33,8 +33,8 @@ public:
     void DrawRect(Texture* texture, const Rectangle& rect);
     void DrawRect(const Rectangle& rect);
 
-    void SetPixel(Texture* texture, uint32_t x, uint32_t y);
-    void SetPixel(uint32_t x, uint32_t y);
+    void SetPixel(Texture* texture, int x, int y);
+    void SetPixel(int x, int y);
 
     void CopyTexture(Texture* src, Texture* dst);
     void CopyTexture(Texture* texture);

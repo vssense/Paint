@@ -11,6 +11,8 @@ public:
     PaintGUISystem(Window* window, GUIComponent* root);
     virtual ~PaintGUISystem();
 
+    virtual void Reset() override;
+
     Brush& GetBrush();
     void   SetBrush(const Brush& brush);
 

@@ -18,7 +18,7 @@ Font::~Font()
 
 Text::Text() : texture_(nullptr), size_(0, 0) {}
 
-Text::Text(Font* font, const char* text, uint32_t color) : Text()
+Text::Text(Font* font, const char* text, Color color) : Text()
 {
     assert(font);
     assert(text);
@@ -26,7 +26,7 @@ Text::Text(Font* font, const char* text, uint32_t color) : Text()
     Load(font, text, color);
 }
 
-void Text::Load(Font* font, const char* text, uint32_t color)
+void Text::Load(Font* font, const char* text, Color color)
 {
     assert(font);
     assert(text);

@@ -74,13 +74,16 @@ bool EventManager::PollSDLEvent()
         case SDL_MOUSEBUTTONDOWN:
         {
             mouse_button_pressed = true;
-            queue_.push(Event(kMouseButtonPress, EventValue(Vec2<uint32_t>(event.button.x, event.button.y))));
+            queue_.push(Event(kMouseButtonPress, EventValue(Vec2<int>(event.button.x, event.button.y))));
             break;
         }
         case SDL_MOUSEBUTTONUP:
         {
             mouse_button_pressed = false;
-            queue_.push(Event(kMouseButtonRelease, EventValue(Vec2<uint32_t>(event.button.x, event.button.y))));
+            queue_.push(Event(kMouseButtonRelease,
+                              EventValue(Vec2<int>(event.button.x, event.button.y))));
+            queue_.push(Event(kMouseHover,
+                              EventValue(Vec2<int>(event.button.x, event.button.y))));
             break;
         }
         case SDL_MOUSEMOTION:
@@ -88,16 +91,17 @@ bool EventManager::PollSDLEvent()
             int x = 0;
             int y = 0;
             SDL_GetMouseState(&x, &y);
-            queue_.push(Event(kMouseHover, EventValue(Vec2<uint32_t>(x, y))));
+            queue_.push(Event(kMouseHover, EventValue(Vec2<int>(x, y))));
 
             if (!mouse_button_pressed)
             {
                 return true;
             }
 
-            queue_.push(Event(kMouseMotion, EventValue(MotionData{Vec2<uint32_t>(event.motion.x - event.motion.xrel,
-                                                                                 event.motion.y - event.motion.yrel),
-                                                                  Vec2<int32_t> (event.motion.xrel, event.motion.yrel)})));
+            queue_.push(Event(kMouseMotion,
+                              EventValue(Vec2<int>(event.motion.x - event.motion.xrel,
+                                                   event.motion.y - event.motion.yrel),
+                                         Vec2<int>(event.motion.xrel, event.motion.yrel))));
             break;
         }
         default:

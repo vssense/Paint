@@ -1,20 +1,5 @@
 #include "gui_system.hpp"
 
-class CanvasCloser : public IListener
-{
-public:
-    virtual bool ProcessListenerEvent(const Event& event) override
-    {
-        assert(event.GetType() == kCanvasClose);
-
-        GUIComponent* canvas = event.GetValue().canvas;
-        canvas->GetSystem()->UnSubscribe(canvas);
-        canvas->GetParent()->Detach(canvas);
-        delete canvas;
-        return true;
-    }
-};
-
 GUISystem::GUISystem(Window* window, GUIComponent* root) :
     window_(window), root_(root), listeners_(kEventsCount, nullptr)
 {
@@ -22,13 +7,11 @@ GUISystem::GUISystem(Window* window, GUIComponent* root) :
     assert(root_);
 
     root_->SetGUISystem(this);
-    listeners_[kCanvasClose] = new CanvasCloser;
 }
 
 GUISystem::~GUISystem()
 {
     delete root_;
-    delete listeners_[kCanvasClose];
 }
 
 void GUISystem::ProcessEvent(const Event& event)
@@ -41,30 +24,12 @@ void GUISystem::ProcessEvent(const Event& event)
         }
     }
 
-    switch (event.GetType())
-    {
-        case kMouseHover:
-        case kMouseButtonRelease:
-        case kMouseButtonPress:
-        {
-            ProcessMouseEvent(event.GetValue().coordinates, event);
-            break;
-        }
-        case kMouseMotion:
-        {
-            ProcessMouseEvent(event.GetValue().motion.start, event);
-            break;
-        }
-        default:
-        {
-            break;
-        }
-    }
+    ProcessMouseEvent(event);
 }
 
-void GUISystem::ProcessMouseEvent(Vec2<uint32_t> position, const Event& event)
+void GUISystem::ProcessMouseEvent(const Event& event)
 {
-    root_->OnMouseEvent(position, event);
+    root_->OnMouseEvent(event);
 }
 
 void GUISystem::Subscribe(GUIComponent* component, EventType type)
@@ -74,14 +39,11 @@ void GUISystem::Subscribe(GUIComponent* component, EventType type)
     listeners_[type] = component;
 }
 
-void GUISystem::UnSubscribe(GUIComponent* component)
+void GUISystem::Reset()
 {
-    for (size_t i = 0; i < listeners_.size(); ++i)
+    for (int i = 0; i < kEventsCount; ++i)
     {
-        if (listeners_[i] == component)
-        {
-            listeners_[i] = nullptr;
-        }
+        listeners_[i] = nullptr;
     }
 }
 

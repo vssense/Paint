@@ -18,6 +18,9 @@ struct Vec2
 
     Vec2 MulByCoords(const Vec2& lhs, const Vec2& rhs);
 
+    template <typename To>
+    explicit operator Vec2<To>();
+
     float GetLength() const;
     void Normalize();
     void Rotate(float alpha);
@@ -25,6 +28,13 @@ struct Vec2
     T x;
     T y;
 };
+
+template<typename T>
+template<typename To>
+Vec2<T>::operator Vec2<To>()
+{
+    return Vec2<To>(To(x), To(y));
+}
 
 template <typename T>
 Vec2<T> operator+(Vec2<T> lhs, const Vec2<T>& rhs)

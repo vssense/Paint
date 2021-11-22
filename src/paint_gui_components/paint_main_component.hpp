@@ -4,11 +4,11 @@
 #include "../gui_system/gui_component.hpp"
 #include "../gui_system/button.hpp"
 
-const Color kBorderColor   = kBlue;
-const Color kTitleColor    = kLightPurple;
+const Color kBorderColor = kBlue;
+const Color kTitleColor  = kLightPurple;
 
-const uint32_t kTitleButtonsWidth = 90;
-const uint32_t kTitleWidth        = 30;
+const int kTitleButtonsWidth = 90;
+const int kTitleWidth        = 30;
 
 const Rectangle kDefaultPlacement{200, 200, 400, 400};
 

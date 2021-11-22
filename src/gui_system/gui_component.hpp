@@ -16,17 +16,18 @@ public:
     GUIComponent(Texture* texture, const Rectangle& relative_placement);
     virtual ~GUIComponent();
 
-    virtual bool HitTest     (Vec2<uint32_t> coordinates) const;
-    virtual bool OnMouseEvent(Vec2<uint32_t> coordinates, const Event& event);
+    virtual bool HitTest     (Vec2<int> coordinates) const;
+    virtual bool OnMouseEvent(const Event& event);
     virtual bool ProcessMouseEvent(const Event& event);
     virtual bool ProcessListenerEvent(const Event& event) override;
 
-    virtual void Move(Vec2<int32_t> d);
+    virtual void Move(Vec2<int> d);
     virtual void Render();
  
     void Attach(GUIComponent* component);
     void Detach(GUIComponent* component);
     void SetGUISystem(GUISystem* system);
+
     GUIComponent* GetParent() const;
     GUISystem* GetSystem();
 

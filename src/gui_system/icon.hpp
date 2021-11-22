@@ -27,7 +27,7 @@ public:
         Text title(&font, text, font_color);
         texture_ = new Texture(&title);
 
-        Vec2<uint32_t> size = texture_->GetSize();
+        Vec2<int> size = Vec2<int>(texture_->GetSize());
         size.x = Min(size.x, placement.w);
         size.y = Min(size.y, placement.h);
 

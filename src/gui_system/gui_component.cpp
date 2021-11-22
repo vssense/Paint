@@ -17,26 +17,29 @@ GUIComponent::~GUIComponent()
     }
 }
 
-bool GUIComponent::HitTest(Vec2<uint32_t> coordinates) const
+bool GUIComponent::HitTest(Vec2<int> coordinates) const
 {
     return IsInsideRectangle(placement_, coordinates);
 }
 
-bool GUIComponent::OnMouseEvent(Vec2<uint32_t> coordinates, const Event& event)
+bool GUIComponent::OnMouseEvent(const Event& event)
 {
-    if (!HitTest(coordinates))
+    if (!HitTest(event.GetValue().mouse.coordinates))
     {
         return false;
     }
 
     for (auto it = children_.begin(); it != children_.end(); ++it)
     {
-        if ((*it)->OnMouseEvent(coordinates, event))
+        if ((*it)->OnMouseEvent(event))
         {
-            GUIComponent* processed_event = *it;
-            children_.erase(it);
-            children_.push_front(processed_event);
-
+            if (event.GetType() == kMouseButtonPress)
+            {
+                GUIComponent* processed_event = *it;
+                children_.erase(it);
+                children_.push_front(processed_event);
+            }
+            
             return true;
         }
     }
@@ -54,7 +57,7 @@ bool GUIComponent::ProcessListenerEvent(const Event& event)
     return ProcessMouseEvent(event);
 }
 
-void GUIComponent::Move(Vec2<int32_t> d)
+void GUIComponent::Move(Vec2<int> d)
 {
     placement_.x0 += d.x;
     placement_.y0 += d.y;

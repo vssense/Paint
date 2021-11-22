@@ -40,30 +40,30 @@ void BasicButton::AddBorder(Color color)
     Attach(new Border(color, Rectangle{0, 0, placement_.w, placement_.h}));
 }
 
+bool BasicButton::ProcessListenerEvent(const Event& event)
+{
+    return true;
+}
+
 bool BasicButton::ProcessMouseEvent(const Event& event)
 {
     switch (event.GetType())
     {
         case kMouseButtonRelease:
         {
-            if (HitTest(event.GetValue().coordinates))
+            if (pressed_)
             {
-                if (pressed_)
-                {
-                    command_->Execute();
-                }
+                command_->Execute();
             }
 
             pressed_ = false;
-            system_->UnSubscribe(kMouseButtonRelease);
-            system_->Subscribe(this, kMouseMotion);
-        } break;
+            break;
+        }
         case kMouseButtonPress:
         {
-            system_->Subscribe(this, kMouseButtonRelease);
-            system_->Subscribe(this, kMouseMotion);
             pressed_ = true;
-        } break;
+            break;
+        }
         default:
         {
             break;
@@ -86,6 +86,16 @@ Button::Button(const Rectangle& placement, ICommand* command, Texture* on_releas
     on_press_(on_press), on_hover_(on_hover)
 {
     assert(on_release_);
+
+    if (on_press_ == nullptr)
+    {
+        on_press_ = on_release_;
+    }
+    
+    if (on_hover_ == nullptr)
+    {
+        on_hover_ = on_release_;
+    }
 }
 
 Button::Button(const Rectangle& placement, ICommand* command, Color on_release, Color on_press,
@@ -106,79 +116,76 @@ Button::~Button()
 {
     texture_ = on_release_;
 
-    if (on_press_ != nullptr)
+    if (on_press_ != on_release_)
     {
         delete on_press_;
     }
 
-    if (on_hover_ != nullptr)
+    if (on_hover_ != on_release_)
     {
         delete on_hover_;
     }
+}
+
+bool Button::ProcessListenerEvent(const Event& event)
+{
+    if (event.GetType() == kMouseButtonRelease)
+    {
+        if (!HitTest(event.GetValue().mouse.coordinates))
+        {
+            pressed_ = false;
+            texture_ = on_release_;
+            return false;
+        }
+    }
+    else if (event.GetType() == kMouseHover)
+    {
+        system_->UnSubscribe(kMouseHover);
+        if (!pressed_)
+        {
+            texture_ = on_release_;
+        }
+
+        return false;
+    }
+
+    return ProcessMouseEvent(event);
 }
 
 bool Button::ProcessMouseEvent(const Event& event)
 {
     switch (event.GetType())
     {
-        case kMouseButtonRelease:
-        {
-            if (HitTest(event.GetValue().coordinates))
-            {
-                if (pressed_)
-                {
-                    command_->Execute();
-                    if (on_hover_ != nullptr)
-                    {
-                        texture_ = on_hover_;
-                    }
-                    else
-                    {
-                        texture_ = on_release_;
-                    }
-                }
-            }
-            else
-            {
-                texture_ = on_release_;
-            }
-
-            pressed_ = false;
-            system_->UnSubscribe(this); //TODO:Fix hover
-        } break;
         case kMouseButtonPress:
         {
+            texture_ = on_press_;
+
+            system_->Subscribe(this, kMouseHover);
+            system_->Subscribe(this, kMouseButtonRelease);
             pressed_ = true;
-            if (on_press_ != nullptr)
+            break;
+        }
+        case kMouseButtonRelease:
+        {
+            if (pressed_)
             {
-                texture_ = on_press_;
+                command_->Execute();
             }
 
-            system_->Subscribe(this, kMouseButtonRelease);
-        } break;
+            texture_ = on_release_;
+            pressed_ = false;
+            break;
+        }
         case kMouseHover:
         {
             if (!pressed_)
             {
-                if (HitTest(event.GetValue().coordinates))
-                {
-                    if (on_hover_ != nullptr)
-                    {
-                        texture_ = on_hover_;
-                    }
-
-                    system_->Subscribe(this, kMouseHover);
-                    system_->Subscribe(this, kMouseMotion);
-                }
-                else
-                {
-                    texture_ = on_release_;
-                    system_->UnSubscribe(kMouseHover);
-                    system_->UnSubscribe(kMouseMotion);
-                    return false;
-                }
+                texture_ = on_hover_;
             }
-        } break;
+
+            system_->Subscribe(this, kMouseHover);
+            break;
+        }
         default:
         {
             break;

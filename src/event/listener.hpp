@@ -5,9 +5,6 @@
 
 class IListener
 {
-protected:
-    IListener() {}
-
 public:
     virtual ~IListener() {}
     virtual bool ProcessListenerEvent(const Event& event) = 0;

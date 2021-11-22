@@ -24,23 +24,28 @@ enum EventType
     kEventsCount
 };
 
-struct MotionData
+struct MouseData
 {
-    Vec2<uint32_t> start;
-    Vec2<int32_t> d;
+    Vec2<int> coordinates;
+    Vec2<int> d;
+
+    MouseData(Vec2<int> coordinates) :
+        coordinates(coordinates), d(0, 0) {}
+    MouseData(Vec2<int> coordinates, Vec2<int> d) :
+        coordinates(coordinates), d(d) {}
 };
 
 union EventValue
 {
     int scancode;
-    Vec2<uint32_t> coordinates;
-    MotionData motion;
+    MouseData mouse;
     GUIComponent* canvas;
 
     EventValue() {}
     EventValue(int scancode) : scancode(scancode) {}
-    EventValue(Vec2<uint32_t> coordinates) : coordinates(coordinates) {}
-    EventValue(const MotionData& motion) : motion(motion) {}
+    EventValue(Vec2<int> coordinates) : mouse(coordinates) {}
+    EventValue(Vec2<int> coordinates, Vec2<int> d) :
+               mouse(coordinates, d) {}
     EventValue(GUIComponent* canvas) : canvas(canvas) {}
     ~EventValue() {}
 };

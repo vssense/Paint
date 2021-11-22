@@ -19,9 +19,11 @@ public:
                 const char* text, Color font_color = kBlack);
 
     virtual ~BasicButton();
+
     void AddBorder(Color color);
 
-    virtual bool ProcessMouseEvent(const Event& event) override;
+    virtual bool ProcessMouseEvent   (const Event& event) override;
+    virtual bool ProcessListenerEvent(const Event& event) override;
 
 protected:
     ICommand* command_;
@@ -37,7 +39,8 @@ public:
            Color on_press, Color on_hover, const char* text, Color font_color);
 
     virtual ~Button();
-    virtual bool ProcessMouseEvent(const Event& event) override;
+    virtual bool ProcessMouseEvent   (const Event& event) override;
+    virtual bool ProcessListenerEvent(const Event& event) override;
 
 protected:
     Texture* on_release_;

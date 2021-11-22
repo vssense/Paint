@@ -6,12 +6,12 @@
 
 struct Rectangle
 {
-    uint32_t x0;
-    uint32_t y0;
-    uint32_t w;
-    uint32_t h;
+    int x0;
+    int y0;
+    int w;
+    int h;
 };
 
-bool IsInsideRectangle(const Rectangle& rect, Vec2<uint32_t> point);
+bool IsInsideRectangle(const Rectangle& rect, Vec2<int> point);
 
 #endif /* _RECTANGLE_HPP_INCLUDED */

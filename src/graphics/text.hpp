@@ -22,11 +22,11 @@ class Text
 {
 public:
     Text();
-    Text(Font* font, const char* text, uint32_t color = kBlack);
+    Text(Font* font, const char* text, Color color = kBlack);
     ~Text();
 
     void Destroy();
-    void Load(Font* font, const char* text, uint32_t color = kBlack);
+    void Load(Font* font, const char* text, Color color = kBlack);
     void Render(Vec2<uint32_t> coordinates);
     SDL_Texture* GetTexture() const { return texture_; }
 

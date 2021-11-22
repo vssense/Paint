@@ -17,7 +17,7 @@ Texture::Texture(uint32_t width, uint32_t height, Color color) :
 {
     Renderer* renderer = Renderer::GetInstance();
     renderer->SetColor(color);
-    renderer->FillRect(this, Rectangle{0, 0, width, height});
+    renderer->FillRect(this, Rectangle{0, 0, static_cast<int>(width), static_cast<int>(height)});
 }
 
 Texture::Texture(uint32_t width, uint32_t height, Color bg, Color border) :
@@ -25,7 +25,7 @@ Texture::Texture(uint32_t width, uint32_t height, Color bg, Color border) :
 {
     Renderer* renderer = Renderer::GetInstance();
     renderer->SetColor(border);
-    renderer->DrawRect(this, Rectangle{0, 0, width, height});
+    renderer->DrawRect(this, Rectangle{0, 0, static_cast<int>(width), static_cast<int>(height)});
 }
 
 Texture::Texture(const char* path)
