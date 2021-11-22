@@ -1,7 +1,6 @@
 #include "canvas.hpp"
 #include "../gui_system/button.hpp"
-#include "../paint_gui_system/paint_gui_system.hpp"
-#include "../tool_manager/tool_manager.hpp"
+#include "../tool_manager/tool_texture.hpp"
 
 class CanvasClose : public ICommand
 {
@@ -79,10 +78,14 @@ class Canvas : public GUIComponent
 {
 public:
     Canvas(const Rectangle& placement) :
-        GUIComponent(new Texture(placement.w, placement.h, kWhite), placement) {}
+        GUIComponent(new Texture(placement.w, placement.h, kWhite), placement),
+        tool_texture_(texture_) {}
 
     virtual bool ProcessMouseEvent   (const Event& event) override;
     virtual bool ProcessListenerEvent(const Event& event) override;
+
+private:
+    ToolTexture tool_texture_;
 };
 
 bool Canvas::ProcessListenerEvent(const Event& event)
@@ -97,8 +100,9 @@ bool Canvas::ProcessMouseEvent(const Event& event)
         case kMouseButtonPress:
         {
             Vec2<int> coordinates = event.GetValue().mouse.coordinates - placement_.Start();
-            ToolManager::GetInstance()->GetActiveTool()->BeginDraw(texture_, coordinates);
+            ToolManager::GetInstance()->GetActiveTool()->BeginDraw(&tool_texture_, coordinates);
 
+            system_->Subscribe(this, kMouseHover);
             system_->Subscribe(this, kMouseMotion);
             system_->Subscribe(this, kMouseButtonRelease);
             break;
@@ -106,8 +110,9 @@ bool Canvas::ProcessMouseEvent(const Event& event)
         case kMouseButtonRelease:
         {
             Vec2<int> coordinates = event.GetValue().mouse.coordinates - placement_.Start();
-            ToolManager::GetInstance()->GetActiveTool()->EndDraw(texture_, coordinates);
+            ToolManager::GetInstance()->GetActiveTool()->EndDraw(&tool_texture_, coordinates);
 
+            system_->UnSubscribe(kMouseHover);
             system_->UnSubscribe(kMouseMotion);
             system_->UnSubscribe(kMouseButtonRelease);
             break;
@@ -115,8 +120,9 @@ bool Canvas::ProcessMouseEvent(const Event& event)
         case kMouseMotion:
         {
             Vec2<int> start = event.GetValue().mouse.coordinates - placement_.Start();
-            
-            ToolManager::GetInstance()->GetActiveTool()->Draw(texture_, start, event.GetValue().mouse.d);
+
+            ToolManager::GetInstance()->GetActiveTool()->Draw(&tool_texture_, start,
+                                                         event.GetValue().mouse.d);
             break;
         }
         default:

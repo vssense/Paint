@@ -10,7 +10,8 @@ const Color kTitleColor  = kLightPurple;
 const int kTitleButtonsWidth = 90;
 const int kTitleWidth        = 30;
 
-const Rectangle kDefaultPlacement{200, 200, 400, 400};
+const Rectangle kDefaultCanvasPlacement{200, 200, 500, 500};
+const Rectangle kDefaultPalettePlacement{200, 100, 100, 200};
 
 class PaintMainComponent : public GUIComponent
 {

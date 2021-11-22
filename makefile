@@ -1,7 +1,7 @@
 SANITIZE_FLAGS = #-fsanitize=address -fsanitize=leak -fsanitize=undefined
 
 CXXFLAGS = $(shell pkg-config --cflags sdl2 SDL2_ttf) -Wall -Wextra -pedantic -Wno-unused-parameter $(SANITIZE_FLAGS)
-LXXFLAGS = $(shell pkg-config --libs   sdl2 SDL2_ttf) $(SANITIZE_FLAGS)
+LXXFLAGS = $(shell pkg-config --libs   sdl2 SDL2_ttf) $(SANITIZE_FLAGS) -ldl
 
 
 SrcDir = src

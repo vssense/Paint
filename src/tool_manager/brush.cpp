@@ -1,29 +1,25 @@
 #include "brush.hpp"
-#include "../graphics/texture.hpp"
-#include "../graphics/renderer.hpp"
 
-void Brush::BeginDraw(Texture* texture, Vec2<int> coordinates)
+void Brush::BeginDraw(IRenderTarget* texture, Vec2<int> coordinates)
 {
     assert(texture);
     
-    Renderer::GetInstance()->SetColor(color_);
-    Renderer::GetInstance()->DrawCircle(texture, coordinates, thickness_);
+    // texture->DrawRect(coordinates.x, coordinates.y, thickness_, thickness_);
 }
 
-void Brush::Draw(Texture* texture, Vec2<int> start, Vec2<int> displacement)
+void Brush::Draw(IRenderTarget* texture, Vec2<int> start, Vec2<int> displacement)
 {
     assert(texture);
 
     Vec2<int> end = start + displacement;
 
-    Renderer::GetInstance()->SetColor(color_);
-    Renderer::GetInstance()->DrawLine(texture, start.x, start.y, end.x, end.y, thickness_);
+    texture->DrawLine(start.x, start.y, end.x, end.y, color_, thickness_);
 }
 
-void Brush::EndDraw(Texture* texture, Vec2<int> coordinates)
+void Brush::EndDraw(IRenderTarget* texture, Vec2<int> coordinates)
 {
     assert(texture);
 
-    Renderer::GetInstance()->SetColor(color_);
-    Renderer::GetInstance()->DrawCircle(texture, coordinates, thickness_);
+    // Renderer::GetInstance()->SetColor(color_);
+    // Renderer::GetInstance()->DrawCircle(texture, coordinates, thickness_);
 }

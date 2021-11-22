@@ -15,6 +15,7 @@ const Color kBlue        = 0xFF'00'80'FF;
 const Color kDarkBlue    = 0xFF'00'00'33;
 const Color kGray        = 0xFF'60'60'60;
 const Color kRed         = 0xFF'FD'59'59;
+const Color kGreen       = 0xFF'00'FF'00;
 const Color kTransparent = 0x00'00'00'00;
 
 const size_t kByteSize = 8;

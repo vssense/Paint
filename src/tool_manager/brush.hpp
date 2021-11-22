@@ -1,19 +1,19 @@
 #ifndef _BRUSH_HPP_INCLUDED
 #define _BRUSH_HPP_INCLUDED
 
-#include "tool.hpp"
-
-const uint32_t kDefaultThickness = 5;
+// #include "tool.hpp"
+// #include "tool_texture.hpp"
+#include "../plugins/paint_plugin.hpp"
 
 class Brush : public Tool
 {
 public:
-    Brush() : Tool(kBlack, kDefaultThickness) {}
+    Brush() {}
     virtual ~Brush() {}
 
-    virtual void BeginDraw(Texture* texture, Vec2<int> coordinates) override;
-    virtual void Draw     (Texture* texture, Vec2<int> start, Vec2<int> displacement) override;
-    virtual void EndDraw  (Texture* texture, Vec2<int> coordinates) override;
+    virtual void BeginDraw(IRenderTarget* texture, Vec2<int> coordinates) override;
+    virtual void Draw     (IRenderTarget* texture, Vec2<int> start, Vec2<int> displacement) override;
+    virtual void EndDraw  (IRenderTarget* texture, Vec2<int> coordinates) override;
 
 };
 

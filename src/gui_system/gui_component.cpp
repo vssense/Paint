@@ -125,3 +125,83 @@ GUISystem* GUIComponent::GetSystem()
 {
     return system_;
 }
+
+
+Bagel::Bagel(Vec2<int> center, uint32_t r1, uint32_t r2, Color color) :
+    GUIComponent(new Texture(2 * r1, 2 * r1),
+    Rectangle{center.x - static_cast<int>(r1),
+              center.y - static_cast<int>(r1),
+              2 * static_cast<int>(r1),
+              2 * static_cast<int>(r1)}),
+    center_(center), r1_(r1), r2_(r2)
+{
+    Renderer* renderer = Renderer::GetInstance();
+    renderer->SetColor(color);
+    renderer->DrawCircle(texture_, Vec2<int>(r1, r1), r1);
+    renderer->SetColor(kTransparent);
+    renderer->DrawCircle(texture_, Vec2<int>(r1, r1), r2);
+}
+
+bool Bagel::ProcessListenerEvent(const Event& event)
+{
+    return ProcessMouseEvent(event);
+}
+
+bool Bagel::ProcessMouseEvent(const Event& event)
+{
+    switch (event.GetType())
+    {
+        case kMouseButtonPress:
+        {
+            system_->Subscribe(this, kMouseHover);
+            system_->Subscribe(this, kMouseMotion);
+            system_->Subscribe(this, kMouseButtonRelease);            
+            break;
+        }
+        case kMouseButtonRelease:
+        {
+            system_->UnSubscribe(kMouseHover);
+            system_->UnSubscribe(kMouseMotion);
+            system_->UnSubscribe(kMouseButtonRelease);            
+            break;
+        }
+        case kMouseMotion:
+        {
+            Move(event.GetValue().mouse.d);
+            break;
+        }
+        default:
+        {
+            break;
+        }
+        
+    }
+
+    return true;
+}
+
+bool IsInsideCircle(Vec2<int> center, uint32_t radius, Vec2<int> point)
+{
+    Vec2<int> r = center - point;
+    return r.GetLength() <= static_cast<float>(radius);
+}
+
+bool Bagel::HitTest(Vec2<int> coordinates) const
+{
+    return IsInsideCircle(center_, r1_, coordinates) &&
+          !IsInsideCircle(center_, r2_, coordinates);
+}
+
+void Bagel::Move(Vec2<int> d)
+{
+    placement_.x0 += d.x;
+    placement_.y0 += d.y;
+    center_ += d;
+
+    for (auto it = children_.begin(); it != children_.end(); ++it)
+    {
+        (*it)->Move(d);
+    }
+}
+
+
