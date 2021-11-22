@@ -32,7 +32,7 @@ class Tool
 {
 public:
     Tool() : color_(kDefaultToolColor), thickness_(kDefaultThickness) {}
-    Tool(uint32_t color) : color_(color), thickness_(1) {}
+    Tool(uint32_t color) : color_(color), thickness_(kDefaultThickness) {}
     Tool(uint32_t color, uint32_t thickness) : color_(color), thickness_(thickness) {}
 
     virtual ~Tool() {}
