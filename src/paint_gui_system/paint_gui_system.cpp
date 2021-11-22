@@ -36,14 +36,3 @@ void PaintGUISystem::Reset()
         }
     }
 }
-
-
-Brush& PaintGUISystem::GetBrush()
-{
-    return brush_;
-}
-
-void PaintGUISystem::SetBrush(const Brush& brush)
-{
-    brush_ = brush;
-}

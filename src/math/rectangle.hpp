@@ -10,6 +10,9 @@ struct Rectangle
     int y0;
     int w;
     int h;
+
+    Vec2<int> Start();
+    Vec2<int> Size();
 };
 
 bool IsInsideRectangle(const Rectangle& rect, Vec2<int> point);

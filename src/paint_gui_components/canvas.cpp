@@ -1,6 +1,7 @@
 #include "canvas.hpp"
 #include "../gui_system/button.hpp"
 #include "../paint_gui_system/paint_gui_system.hpp"
+#include "../tool_manager/tool_manager.hpp"
 
 class CanvasClose : public ICommand
 {
@@ -86,19 +87,6 @@ public:
 
 bool Canvas::ProcessListenerEvent(const Event& event)
 {
-    if (event.GetType() == kMouseMotion)
-    {
-        Vec2<int> start = event.GetValue().mouse.coordinates;
-        start.x -= placement_.x0;
-        start.y -= placement_.y0;
-
-        Vec2<int> end = start + event.GetValue().mouse.d;
-        Renderer::GetInstance()->SetColor(kRed);
-        Renderer::GetInstance()->DrawLine(texture_, start.x, start.y, end.x, end.y, 13);
-        
-        return true;
-    }
-
     return ProcessMouseEvent(event);
 }
 
@@ -108,14 +96,27 @@ bool Canvas::ProcessMouseEvent(const Event& event)
     {
         case kMouseButtonPress:
         {
+            Vec2<int> coordinates = event.GetValue().mouse.coordinates - placement_.Start();
+            ToolManager::GetInstance()->GetActiveTool()->BeginDraw(texture_, coordinates);
+
             system_->Subscribe(this, kMouseMotion);
             system_->Subscribe(this, kMouseButtonRelease);
             break;
         }
         case kMouseButtonRelease:
         {
+            Vec2<int> coordinates = event.GetValue().mouse.coordinates - placement_.Start();
+            ToolManager::GetInstance()->GetActiveTool()->EndDraw(texture_, coordinates);
+
             system_->UnSubscribe(kMouseMotion);
             system_->UnSubscribe(kMouseButtonRelease);
+            break;
+        }
+        case kMouseMotion:
+        {
+            Vec2<int> start = event.GetValue().mouse.coordinates - placement_.Start();
+            
+            ToolManager::GetInstance()->GetActiveTool()->Draw(texture_, start, event.GetValue().mouse.d);
             break;
         }
         default:
@@ -131,7 +132,7 @@ CanvasComponent::CanvasComponent(const Rectangle& placement) : GUIComponent(null
 {
     Attach(new CanvasTitle(Rectangle{0, 0, placement_.w, kTitleWidth}, this));
 
-    Attach(new Border(kBorderColor, Rectangle{0, 0, placement_.w, placement.h}));
-
     Attach(new Canvas(Rectangle{0, kTitleWidth, placement_.w, placement_.h - kTitleWidth}));
+
+    Attach(new Border(kBorderColor, Rectangle{0, 0, placement_.w, placement.h}));
 }

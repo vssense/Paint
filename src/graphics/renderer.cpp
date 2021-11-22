@@ -8,13 +8,15 @@ void Renderer::Construct(Window* window)
 
     if (instance_ == nullptr)
     {
-        instance_ = new Renderer(window);
+        instance_ = new Renderer(window); //FIXME: memory leak for all singletons
         assert(instance_);
     }
 }
 
 Renderer* Renderer::GetInstance()
 {
+    assert(instance_);
+
     return instance_;
 }
 
