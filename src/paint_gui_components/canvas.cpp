@@ -61,8 +61,8 @@ bool CanvasTitle::ProcessMouseEvent(const Event& event)
         }
         case kMouseButtonRelease:
         {
-            system_->UnSubscribe(kMouseButtonRelease);
-            system_->UnSubscribe(kMouseMotion);
+            system_->Unsubscribe(kMouseButtonRelease);
+            system_->Unsubscribe(kMouseMotion);
             break;
         }
         default:
@@ -112,9 +112,9 @@ bool Canvas::ProcessMouseEvent(const Event& event)
             Vec2<int> coordinates = event.GetValue().mouse.coordinates - placement_.Start();
             ToolManager::GetInstance()->GetActiveTool()->EndDraw(&tool_texture_, coordinates);
 
-            system_->UnSubscribe(kMouseHover);
-            system_->UnSubscribe(kMouseMotion);
-            system_->UnSubscribe(kMouseButtonRelease);
+            system_->Unsubscribe(kMouseHover);
+            system_->Unsubscribe(kMouseMotion);
+            system_->Unsubscribe(kMouseButtonRelease);
             break;
         }
         case kMouseMotion:

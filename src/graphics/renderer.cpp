@@ -24,7 +24,7 @@ Renderer::Renderer(Window* window)
 {
     assert(window);
 
-    renderer_ = SDL_CreateRenderer(window->GetWindow(), -1, SDL_RENDERER_SOFTWARE);
+    renderer_ = SDL_CreateRenderer(window->GetWindow(), -1, SDL_RENDERER_ACCELERATED);
 }
 
 Renderer::~Renderer()

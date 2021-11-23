@@ -4,7 +4,7 @@
 #include "../gui_system/gui_component.hpp"
 #include "../gui_system/button.hpp"
 
-const Color kBorderColor = kBlue;
+const Color kBorderColor = kBlack;
 const Color kTitleColor  = kLightPurple;
 
 const int kTitleButtonsWidth = 90;

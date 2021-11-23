@@ -6,26 +6,26 @@ class SquareTool : public Tool
 public:
     SquareTool() {}
 
-    virtual void BeginDraw(IRenderTarget* texture, Vec2<int> coordinates);
-    virtual void Draw     (IRenderTarget* texture, Vec2<int> coordinates, Vec2<int> displacement);
-    virtual void EndDraw  (IRenderTarget* texture, Vec2<int> coordinates);
+    virtual void BeginDraw(ITexture* texture, Vec2<int> coordinates);
+    virtual void Draw     (ITexture* texture, Vec2<int> coordinates, Vec2<int> displacement);
+    virtual void EndDraw  (ITexture* texture, Vec2<int> coordinates);
 };
 
-void SquareTool::BeginDraw(IRenderTarget* texture, Vec2<int> coordinates)
+void SquareTool::BeginDraw(ITexture* texture, Vec2<int> coordinates)
 {
     assert(texture);
 
     texture->DrawRect(coordinates.x, coordinates.y, 2 * thickness_, 2 * thickness_, color_);
 }
 
-void SquareTool::Draw(IRenderTarget* texture, Vec2<int> coordinates, Vec2<int> displacement)
+void SquareTool::Draw(ITexture* texture, Vec2<int> coordinates, Vec2<int> displacement)
 {
     assert(texture);
 
     texture->DrawRect(coordinates.x, coordinates.y, 2 * thickness_, 2 * thickness_, color_);
 }
 
-void SquareTool::EndDraw(IRenderTarget* texture, Vec2<int> coordinates)
+void SquareTool::EndDraw(ITexture* texture, Vec2<int> coordinates)
 {
     assert(texture);
 

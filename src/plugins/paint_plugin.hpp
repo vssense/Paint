@@ -13,7 +13,7 @@ typedef const char* (*GetNamePtr)();
 const uint32_t kDefaultThickness = 5;
 const uint32_t kDefaultToolColor = 0xFF'00'00'00;
 
-class IRenderTarget
+class ITexture
 {
 public:
     virtual void SetPixel(uint32_t x, uint32_t y, uint32_t color) = 0;
@@ -22,7 +22,7 @@ public:
     virtual void DrawLine(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, uint32_t color,
                           uint32_t thickness) = 0;
 
-    virtual ~IRenderTarget() {}
+    virtual ~ITexture() {}
 
     virtual uint32_t GetXSize() const = 0;
     virtual uint32_t GetYSize() const = 0;
@@ -37,9 +37,9 @@ public:
 
     virtual ~Tool() {}
 
-    virtual void BeginDraw(IRenderTarget* texture, Vec2<int> coordinates) = 0;
-    virtual void Draw     (IRenderTarget* texture, Vec2<int> coordinates, Vec2<int> displacement) = 0;
-    virtual void EndDraw  (IRenderTarget* texture, Vec2<int> coordinates) = 0;
+    virtual void BeginDraw(ITexture* texture, Vec2<int> coordinates) = 0;
+    virtual void Draw     (ITexture* texture, Vec2<int> coordinates, Vec2<int> displacement) = 0;
+    virtual void EndDraw  (ITexture* texture, Vec2<int> coordinates) = 0;
 
     void SetThickness(uint32_t thickness)
     {

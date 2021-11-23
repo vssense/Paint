@@ -135,9 +135,9 @@ bool Palette::ProcessMouseEvent(const Event& event)
         }
         case kMouseButtonRelease:
         {
-            system_->UnSubscribe(kMouseHover);
-            system_->UnSubscribe(kMouseMotion);
-            system_->UnSubscribe(kMouseButtonRelease);
+            system_->Unsubscribe(kMouseHover);
+            system_->Unsubscribe(kMouseMotion);
+            system_->Unsubscribe(kMouseButtonRelease);
             break;
         }
         case kMouseMotion:
@@ -156,6 +156,7 @@ bool Palette::ProcessMouseEvent(const Event& event)
 PaintMainComponent::PaintMainComponent(Texture* texture) :
     GUIComponent(texture, Rectangle{0, 0, kWindowWidth, kWindowHeight})
 {
+
     Attach(new MainTitleBar(this));
     Attach(new Border(kBorderColor, placement_));
     Attach(new Palette(kDefaultPalettePlacement));

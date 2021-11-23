@@ -87,14 +87,14 @@ Button::Button(const Rectangle& placement, ICommand* command, Texture* on_releas
 {
     assert(on_release_);
 
-    if (on_press_ == nullptr)
-    {
-        on_press_ = on_release_;
-    }
-    
     if (on_hover_ == nullptr)
     {
         on_hover_ = on_release_;
+    }
+
+    if (on_press_ == nullptr)
+    {
+        on_press_ = on_hover_;
     }
 }
 
@@ -121,10 +121,14 @@ Button::~Button()
         delete on_press_;
     }
 
-    if (on_hover_ != on_release_)
+    if (on_hover_ != on_press_)
     {
         delete on_hover_;
     }
+
+    on_release_ = nullptr;
+    on_press_   = nullptr;
+    on_hover_   = nullptr;
 }
 
 bool Button::ProcessListenerEvent(const Event& event)
@@ -140,7 +144,7 @@ bool Button::ProcessListenerEvent(const Event& event)
     }
     else if (event.GetType() == kMouseHover)
     {
-        system_->UnSubscribe(kMouseHover);
+        system_->Unsubscribe(kMouseHover);
         if (!pressed_)
         {
             texture_ = on_release_;

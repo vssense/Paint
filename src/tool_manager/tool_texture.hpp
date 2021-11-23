@@ -5,7 +5,7 @@
 #include "../graphics/texture.hpp"
 #include "../graphics/renderer.hpp"
 
-class ToolTexture : public IRenderTarget
+class ToolTexture : public ITexture
 {
 public:
     ToolTexture(Texture* texture) : texture_(texture) {}

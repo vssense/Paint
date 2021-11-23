@@ -15,7 +15,7 @@ public:
     void ProcessEvent(const Event& event);
     void Render();
     void Subscribe(GUIComponent* component, EventType type);
-    void UnSubscribe(EventType type);
+    void Unsubscribe(EventType type);
     virtual void Reset();
 
 protected:

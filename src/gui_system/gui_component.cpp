@@ -39,7 +39,7 @@ bool GUIComponent::OnMouseEvent(const Event& event)
                 children_.erase(it);
                 children_.push_front(processed_event);
             }
-            
+
             return true;
         }
     }
@@ -160,9 +160,9 @@ bool Bagel::ProcessMouseEvent(const Event& event)
         }
         case kMouseButtonRelease:
         {
-            system_->UnSubscribe(kMouseHover);
-            system_->UnSubscribe(kMouseMotion);
-            system_->UnSubscribe(kMouseButtonRelease);            
+            system_->Unsubscribe(kMouseHover);
+            system_->Unsubscribe(kMouseMotion);
+            system_->Unsubscribe(kMouseButtonRelease);            
             break;
         }
         case kMouseMotion:
@@ -203,5 +203,3 @@ void Bagel::Move(Vec2<int> d)
         (*it)->Move(d);
     }
 }
-
-

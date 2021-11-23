@@ -47,7 +47,7 @@ void GUISystem::Reset()
     }
 }
 
-void GUISystem::UnSubscribe(EventType type)
+void GUISystem::Unsubscribe(EventType type)
 {
     listeners_[type] = nullptr;
 }
