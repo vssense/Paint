@@ -1,24 +1,32 @@
-// #ifndef _DROP_DOWN_LIST_HPP_INCLUDED
-// #define _DROP_DOWN_LIST_HPP_INCLUDED
+#ifndef _DROP_DOWN_LIST_HPP_INCLUDED
+#define _DROP_DOWN_LIST_HPP_INCLUDED
 
-// #include "gui_component.hpp"
-// #include "button.hpp"
+#include "gui_component.hpp"
+#include "button.hpp"
 
-// class DropDownList : public GUIComponent
-// {
-// public:
-//     DropDownList(const Rectangle& placement, uint32_t button_height,
-//                  Color button_color, Color button_hover_color);
+class DropDownList : public GUIComponent
+{
+public:
+    DropDownList(const Rectangle& placement, uint32_t button_height,
+                 Color button_color, Color button_hover_color);
 
-//     virtual bool HitTest(Vec2<int> coordinates) const override;
+    virtual bool HitTest(Vec2<int> coordinates) const override;
+    virtual void Render() override;
 
-//     void AttachButton(const char* title, ICommand* command);
-// private:
-//     uint32_t current_height_;
+    void AttachButton(const char* title, ICommand* command);
 
-//     uint32_t button_height_;
-//     Color button_color_;
-//     Color button_hover_color_;
-// };
+    void Hide();
+    void Show();
+    void ChangeVisibility();
 
-// #endif /* _DROP_DOWN_LIST_HPP_INCLUDED */
+private:
+    int current_height_;
+
+    int button_height_;
+    Color button_color_;
+    Color button_hover_color_;
+    
+    bool is_hidden_;
+};
+
+#endif /* _DROP_DOWN_LIST_HPP_INCLUDED */

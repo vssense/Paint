@@ -20,6 +20,10 @@ public:
     SDL_Texture* GetTexture() const { return texture_; }
     Vec2<uint32_t> GetSize() const;
 
+    Color* ReadBuffer();
+    void   LoadBuffer(Color* buffer);
+    void   ReleaseBuffer(Color* buffer);
+
 private:
     SDL_Texture* texture_;
 };

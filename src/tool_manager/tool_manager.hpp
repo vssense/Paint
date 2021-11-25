@@ -4,6 +4,8 @@
 #include "tool.hpp"
 #include <vector>
 
+typedef plugin::ITool ITool;
+
 class ToolManager
 {
 private:
@@ -12,14 +14,14 @@ public:
     static ToolManager* GetInstance();
     ~ToolManager();
 
-    void AddTool(Tool* tool);
-    void SetActiveTool(Tool* tool);
-    Tool* GetActiveTool() const;
+    void AddTool(ITool* tool);
+    void SetActiveTool(ITool* tool);
+    ITool* GetActiveTool() const;
 
 private:
-    Tool* active_;
+    ITool* active_;
     
-    std::vector<Tool*> tools_;
+    std::vector<ITool*> tools_;
     static ToolManager* instance_;
 };
 

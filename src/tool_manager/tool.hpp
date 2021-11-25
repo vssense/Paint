@@ -4,6 +4,6 @@
 #include "../graphics/color.hpp"
 #include "../math/vector2.hpp"
 
-#include "../plugins/paint_plugin.hpp"
+#include "../plugins/plugin.hpp"
 
 #endif /* _TOOL_HPP_INCLUDED */

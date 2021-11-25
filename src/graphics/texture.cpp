@@ -89,3 +89,25 @@ Vec2<uint32_t> Texture::GetSize() const
 
     return Vec2<uint32_t>(width, height);
 }
+
+Color* Texture::ReadBuffer()
+{
+    Vec2<uint32_t> size = GetSize();
+    Color* buffer = new Color[size.x * size.y];
+
+    Renderer* renderer = Renderer::GetInstance();
+    renderer->SetRenderTarget(this);
+    assert(!SDL_RenderReadPixels(renderer->GetRenderer(), NULL, 0, buffer, size.x));
+
+    return buffer;
+}
+
+void Texture::LoadBuffer(Color* buffer)
+{
+    ;
+}
+
+void Texture::ReleaseBuffer(Color* buffer)
+{
+    delete buffer;
+}

@@ -16,7 +16,7 @@ ToolManager* ToolManager::GetInstance()
     return instance_;
 }
 
-void ToolManager::AddTool(Tool* tool)
+void ToolManager::AddTool(ITool* tool)
 {
     assert(tool);
 
@@ -24,14 +24,14 @@ void ToolManager::AddTool(Tool* tool)
     active_ = tool;
 }
 
-void ToolManager::SetActiveTool(Tool* tool)
+void ToolManager::SetActiveTool(ITool* tool)
 {
     assert(tool);
 
     active_ = tool;
 }
 
-Tool* ToolManager::GetActiveTool() const
+ITool* ToolManager::GetActiveTool() const
 {
     return active_;
 }
@@ -40,7 +40,7 @@ ToolManager::~ToolManager()
 {
     active_ = nullptr;
 
-    for (Tool* tool : tools_)
+    for (ITool* tool : tools_)
     {
         delete tool;
     }

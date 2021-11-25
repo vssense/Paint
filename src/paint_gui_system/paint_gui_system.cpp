@@ -11,6 +11,7 @@ public:
         canvas->GetSystem()->Reset();
         canvas->GetParent()->Detach(canvas);
         delete canvas;
+
         return true;
     }
 };

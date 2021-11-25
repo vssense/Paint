@@ -90,7 +90,37 @@ private:
 
 bool Canvas::ProcessListenerEvent(const Event& event)
 {
-    return ProcessMouseEvent(event);
+    switch (event.GetType())
+    {
+        case kMouseMotion:
+        {
+            Vec2<int> start = event.GetValue().mouse.coordinates - placement_.Start();
+
+            ITool* active_tool = ToolManager::GetInstance()->GetActiveTool();
+            active_tool->Action(&tool_texture_, start.x, start.y,
+                                event.GetValue().mouse.d.x,
+                                event.GetValue().mouse.d.y);
+            break;
+        }
+        case kMouseButtonRelease:
+        {
+            Vec2<int> coordinates = event.GetValue().mouse.coordinates - placement_.Start();
+
+            ITool* active_tool = ToolManager::GetInstance()->GetActiveTool();
+
+            active_tool->ActionEnd(&tool_texture_, coordinates.x, coordinates.y);
+
+            system_->Unsubscribe(kMouseMotion);
+            system_->Unsubscribe(kMouseButtonRelease);
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
+
+    return true;
 }
 
 bool Canvas::ProcessMouseEvent(const Event& event)
@@ -100,29 +130,13 @@ bool Canvas::ProcessMouseEvent(const Event& event)
         case kMouseButtonPress:
         {
             Vec2<int> coordinates = event.GetValue().mouse.coordinates - placement_.Start();
-            ToolManager::GetInstance()->GetActiveTool()->BeginDraw(&tool_texture_, coordinates);
 
-            system_->Subscribe(this, kMouseHover);
+            ITool* active_tool = ToolManager::GetInstance()->GetActiveTool();
+
+            active_tool->ActionBegin(&tool_texture_, coordinates.x, coordinates.y);
+
             system_->Subscribe(this, kMouseMotion);
             system_->Subscribe(this, kMouseButtonRelease);
-            break;
-        }
-        case kMouseButtonRelease:
-        {
-            Vec2<int> coordinates = event.GetValue().mouse.coordinates - placement_.Start();
-            ToolManager::GetInstance()->GetActiveTool()->EndDraw(&tool_texture_, coordinates);
-
-            system_->Unsubscribe(kMouseHover);
-            system_->Unsubscribe(kMouseMotion);
-            system_->Unsubscribe(kMouseButtonRelease);
-            break;
-        }
-        case kMouseMotion:
-        {
-            Vec2<int> start = event.GetValue().mouse.coordinates - placement_.Start();
-
-            ToolManager::GetInstance()->GetActiveTool()->Draw(&tool_texture_, start,
-                                                         event.GetValue().mouse.d);
             break;
         }
         default:

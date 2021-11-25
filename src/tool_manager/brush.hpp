@@ -1,20 +1,24 @@
 #ifndef _BRUSH_HPP_INCLUDED
 #define _BRUSH_HPP_INCLUDED
 
-// #include "tool.hpp"
-// #include "tool_texture.hpp"
-#include "../plugins/paint_plugin.hpp"
+#include "../plugins/plugin.hpp"
+#include <cassert>
 
-class Brush : public Tool
+typedef plugin::ITexture ITexture;
+typedef plugin::IPreferencesPanel IPreferencesPanel;
+typedef plugin::Buffer Buffer;
+
+class Brush : public plugin::ITool
 {
 public:
     Brush() {}
     virtual ~Brush() {}
+    virtual void ActionBegin(ITexture* canvas, int x, int y) override;
+    virtual void Action     (ITexture* canvas, int x, int y, int dx, int dy) override;
+    virtual void ActionEnd  (ITexture* canvas, int x, int y) override;
 
-    virtual void BeginDraw(ITexture* texture, Vec2<int> coordinates) override;
-    virtual void Draw     (ITexture* texture, Vec2<int> start, Vec2<int> displacement) override;
-    virtual void EndDraw  (ITexture* texture, Vec2<int> coordinates) override;
-
+    virtual const char* GetIconFileName() const override;
+    virtual IPreferencesPanel* GetPreferencesPanel() const override;
 };
 
 #endif /* _BRUSH_HPP_INCLUDED */

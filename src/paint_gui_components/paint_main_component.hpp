@@ -1,8 +1,12 @@
 #ifndef _PAINT_MAIN_COMPONENT_HPP_INCLUDED
 #define _PAINT_MAIN_COMPONENT_HPP_INCLUDED
 
+#include <dlfcn.h>
+
 #include "../gui_system/gui_component.hpp"
 #include "../gui_system/button.hpp"
+#include "../gui_system/drop_down_list.hpp"
+#include "../plugins/plugin.hpp"
 
 const Color kBorderColor = kBlack;
 const Color kTitleColor  = kLightPurple;

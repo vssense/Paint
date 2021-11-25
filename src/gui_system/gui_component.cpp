@@ -24,11 +24,6 @@ bool GUIComponent::HitTest(Vec2<int> coordinates) const
 
 bool GUIComponent::OnMouseEvent(const Event& event)
 {
-    if (!HitTest(event.GetValue().mouse.coordinates))
-    {
-        return false;
-    }
-
     for (auto it = children_.begin(); it != children_.end(); ++it)
     {
         if ((*it)->OnMouseEvent(event))
@@ -42,6 +37,11 @@ bool GUIComponent::OnMouseEvent(const Event& event)
 
             return true;
         }
+    }
+
+    if (!HitTest(event.GetValue().mouse.coordinates))
+    {
+        return false;
     }
 
     return ProcessMouseEvent(event);

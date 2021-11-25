@@ -1,25 +1,32 @@
 #include "brush.hpp"
 
-void Brush::BeginDraw(ITexture* texture, Vec2<int> coordinates)
+void Brush::ActionBegin(ITexture* canvas, int x, int y)
 {
-    assert(texture);
+    assert(canvas);
     
-    // texture->DrawRect(coordinates.x, coordinates.y, thickness_, thickness_);
+    canvas->DrawCircle(x, y, 10, 0xFF'00'00'00);
 }
 
-void Brush::Draw(ITexture* texture, Vec2<int> start, Vec2<int> displacement)
+void Brush::Action(ITexture* canvas, int x, int y, int dx, int dy)
 {
-    assert(texture);
+    assert(canvas);
 
-    Vec2<int> end = start + displacement;
-
-    texture->DrawLine(start.x, start.y, end.x, end.y, color_, thickness_);
+    canvas->DrawThickLine(x, y, x + dx, y + dy, 10, 0xFF'00'00'00);
 }
 
-void Brush::EndDraw(ITexture* texture, Vec2<int> coordinates)
+void Brush::ActionEnd(ITexture* canvas, int x, int y)
 {
-    assert(texture);
+    assert(canvas);
 
-    // Renderer::GetInstance()->SetColor(color_);
-    // Renderer::GetInstance()->DrawCircle(texture, coordinates, thickness_);
+    canvas->DrawCircle(x, y, 10, 0xFF'00'00'00);
+}
+
+const char* Brush::GetIconFileName() const
+{
+    return "Brush";
+}
+
+IPreferencesPanel* Brush::GetPreferencesPanel() const
+{
+    return nullptr;
 }
