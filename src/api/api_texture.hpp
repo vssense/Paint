@@ -1,7 +1,7 @@
 #ifndef _TOOL_TEXTURE_HPP_INCLUDED
 #define _TOOL_TEXTURE_HPP_INCLUDED
 
-#include "../plugins/plugin.hpp"
+#include "../../plugins/plugin.hpp"
 #include "../graphics/texture.hpp"
 #include "../graphics/renderer.hpp"
 
@@ -11,10 +11,10 @@ typedef plugin::Buffer Buffer;
 
 #define GetHeight GetHieght
 
-class ToolTexture : public ITexture
+class APITexture : public ITexture
 {
 public:
-    ToolTexture(Texture* texture) : texture_(texture) {}
+    APITexture(Texture* texture) : texture_(texture) {}
     
     virtual int32_t GetWidth() override;
     virtual int32_t GetHeight() override;

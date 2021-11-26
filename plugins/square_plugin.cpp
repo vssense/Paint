@@ -3,6 +3,9 @@
 
 namespace plugin
 {
+
+IAPI* api = nullptr;
+
 class SquareTool : public ITool
 {
 public:
@@ -82,6 +85,7 @@ std::list<ITool*> Plugin::GetTools() const
 
 extern "C" IPlugin* Create(IAPI* api)
 {
+    plugin::api = api;
     return new Plugin(new SquareTool);
 }
 

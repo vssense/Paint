@@ -15,7 +15,7 @@ class App
 public:
     App() {}
     ~App() {}
-    void operator () ();
+    void operator()();
 };
 
 #endif /* _APP_HPP_INCLUDED */

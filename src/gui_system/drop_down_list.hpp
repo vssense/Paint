@@ -2,6 +2,7 @@
 #define _DROP_DOWN_LIST_HPP_INCLUDED
 
 #include "gui_component.hpp"
+#include "gui_system.hpp"
 #include "button.hpp"
 
 class DropDownList : public GUIComponent
@@ -10,6 +11,8 @@ public:
     DropDownList(const Rectangle& placement, uint32_t button_height,
                  Color button_color, Color button_hover_color);
 
+    virtual bool OnMouseEvent(const Event& event) override;
+    virtual bool ProcessListenerEvent(const Event& event) override;
     virtual bool HitTest(Vec2<int> coordinates) const override;
     virtual void Render() override;
 

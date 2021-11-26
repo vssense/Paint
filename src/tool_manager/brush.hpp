@@ -1,7 +1,7 @@
 #ifndef _BRUSH_HPP_INCLUDED
 #define _BRUSH_HPP_INCLUDED
 
-#include "../plugins/plugin.hpp"
+#include "../../plugins/plugin.hpp"
 #include <cassert>
 
 typedef plugin::ITexture ITexture;

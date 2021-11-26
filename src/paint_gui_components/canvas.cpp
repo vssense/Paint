@@ -1,6 +1,6 @@
 #include "canvas.hpp"
 #include "../gui_system/button.hpp"
-#include "../tool_manager/tool_texture.hpp"
+#include "../api/api_texture.hpp"
 
 class CanvasClose : public ICommand
 {
@@ -85,7 +85,7 @@ public:
     virtual bool ProcessListenerEvent(const Event& event) override;
 
 private:
-    ToolTexture tool_texture_;
+    APITexture tool_texture_;
 };
 
 bool Canvas::ProcessListenerEvent(const Event& event)

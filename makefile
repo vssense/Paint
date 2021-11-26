@@ -12,6 +12,7 @@ MathDir               = $(SrcDir)/math
 ContainersDir         = $(SrcDir)/containers
 EventDir              = $(SrcDir)/event
 AppDir                = $(SrcDir)/app
+ApiDir                = $(SrcDir)/api
 ToolsDir              = $(SrcDir)/tool_manager
 GUISystemDir          = $(SrcDir)/gui_system
 PaintGUISystemDir     = $(SrcDir)/paint_gui_system
@@ -26,7 +27,8 @@ CppSrc  = $(notdir $(wildcard $(SrcDir)/*.cpp))                \
           $(notdir $(wildcard $(GUISystemDir)/*.cpp))          \
           $(notdir $(wildcard $(PaintGUISystemDir)/*.cpp))     \
           $(notdir $(wildcard $(PaintGUIComponentsDir)/*.cpp)) \
-          $(notdir $(wildcard $(AppDir)/*.cpp))
+          $(notdir $(wildcard $(AppDir)/*.cpp))                \
+          $(notdir $(wildcard $(ApiDir)/*.cpp))
 
 Headers = $(wildcard $(SrcDir)/*.hpp)                \
           $(wildcard $(GraphicsDir)/*.hpp)           \
@@ -37,14 +39,15 @@ Headers = $(wildcard $(SrcDir)/*.hpp)                \
           $(wildcard $(GUISystemDir)/*.hpp)          \
           $(wildcard $(PaintGUISystemDir)/*.hpp)     \
           $(wildcard $(PaintGUIComponentsDir)/*.hpp) \
-          $(wildcard $(AppDir)/*.hpp)
+          $(wildcard $(AppDir)/*.hpp)                \
+          $(wildcard $(ApiDir)/*.hpp)
 
 Intermediates = $(addprefix $(BinDir)/, $(CppSrc:.cpp=.o))
 
 paint: $(Intermediates)
 	g++ -o paint $(Intermediates) $(LXXFLAGS)
 
-vpath %.cpp $(SrcDir) $(GraphicsDir) $(ToolsDir) $(MathDir) $(ContainersDir) $(EventDir) $(AppDir) $(GUISystemDir) $(PaintGUIComponentsDir) $(PaintGUISystemDir)
+vpath %.cpp $(SrcDir) $(ApiDir) $(GraphicsDir) $(ToolsDir) $(MathDir) $(ContainersDir) $(EventDir) $(AppDir) $(GUISystemDir) $(PaintGUIComponentsDir) $(PaintGUISystemDir)
 $(BinDir)/%.o: %.cpp $(Headers) makefile
 	g++ -c $< $(CXXFLAGS) -o $@
 

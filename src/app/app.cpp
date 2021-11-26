@@ -2,12 +2,10 @@
 
 //TODO:
 // Add border as a field to GUIComponent?
-// class App { PaintGUISystem*, Instuments }
-// Abstract tool
-// Tool manager
-// Who creates tool? He should register it in tool manager and set pointer to it to button
+// PluginManager - loads all plugins from plugins directory
+// FilterManager - as tool manager, just for filters
 
-void App::operator () ()
+void App::operator()()
 {
     Window window{};
     Renderer::Construct(&window);
@@ -19,6 +17,8 @@ void App::operator () ()
 
     while (is_running)
     {
+        // clock_t t = clock();
+
         Event event;
         while (event.PollEvent() && is_running)
         {
