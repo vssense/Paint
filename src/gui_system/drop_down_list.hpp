@@ -32,4 +32,21 @@ private:
     bool is_hidden_;
 };
 
+class DropDownListOpener : public ICommand
+{
+public:
+    DropDownListOpener(DropDownList* list) : list_(list)
+    {
+        assert(list);
+    }
+
+    virtual void Execute() override
+    {
+        list_->ChangeVisibility();
+    }
+
+private:
+    DropDownList* list_;
+};
+
 #endif /* _DROP_DOWN_LIST_HPP_INCLUDED */

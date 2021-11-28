@@ -3,8 +3,8 @@
 
 #include "../gui_system/gui_component.hpp"
 #include "../paint_gui_system/paint_gui_system.hpp"
-#include "../instrument_manager/instrument_manager.hpp"
-#include "../instrument_manager/brush.hpp"
+#include "../instruments/instrument_manager.hpp"
+#include "../instruments/brush.hpp"
 #include "paint_main_component.hpp"
 
 class CanvasComponent : public GUIComponent

@@ -7,8 +7,7 @@
 #include "../event/event.hpp"
 #include "../paint_gui_system/paint_gui_system.hpp"
 #include "../paint_gui_components/paint_main_component.hpp"
-#include "../instrument_manager/instrument_manager.hpp"
-#include "../instrument_manager/brush.hpp"
+#include "../instruments/instrument_manager.hpp"
 
 class App
 {

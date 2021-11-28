@@ -1,10 +1,13 @@
 #include "paint_main_component.hpp"
 #include "canvas.hpp"
+#include "../instruments/plugin_manager.hpp"
 
 class MainTitleBar : public GUIComponent
 {
 public:
     MainTitleBar(PaintMainComponent* component);
+    Button* CreateTools(const Rectangle& placement);
+    void AttachPluginsTools(DropDownList* tools);
 };
 
 class MainTitleClose : public ICommand
@@ -18,21 +21,18 @@ public:
     }
 };
 
-class MainTitleFile : public ICommand
+class ListButtonCommand : public ICommand
 {
 public:
-    MainTitleFile(DropDownList* list) : list_(list)
-    {
-        assert(list);
-    }
+    ListButtonCommand(const char* str) : str_(str) {}
 
     virtual void Execute() override
     {
-        list_->ChangeVisibility();
+        printf("%s\n", str_);
     }
 
 private:
-    DropDownList* list_;
+    const char* str_;
 };
 
 class MainTitleCanvas : public ICommand
@@ -50,19 +50,59 @@ private:
     PaintMainComponent* component_;
 };
 
-class ListButtonCommand : public ICommand
+class ToolSetter : public ICommand
 {
 public:
-    ListButtonCommand(const char* str) : str_(str) {}
-
+    ToolSetter(ITool* tool) : tool_(tool) {}
     virtual void Execute() override
     {
-        printf("%s\n", str_);
+        Manager<ITool>::GetInstance()->SetActive(tool_);
     }
 
 private:
-    const char* str_;
+    ITool* tool_;
 };
+
+Button* MainTitleBar::CreateTools(const Rectangle& placement)
+{
+    DropDownList* tools = new DropDownList(Rectangle{0, placement.h, 3 * placement.w / 2, kWindowHeight / 2},
+                                                     kTitleWidth, kLightPurple, kWhite);
+
+    Brush* brush = new Brush;
+    tools->AttachButton("Brush", new ToolSetter(brush));
+
+    Manager<ITool>::GetInstance()->Add(brush);
+    Button* tool = new Button(placement, new DropDownListOpener(tools), kTitleColor,
+                              kGray, kWhite, "Tool", kBlack);
+
+    AttachPluginsTools(tools);
+
+    tool->Attach(tools);
+    tool->AddBorder(kBorderColor);
+
+    return tool;
+}
+
+void MainTitleBar::AttachPluginsTools(DropDownList* tools)
+{
+    assert(tools);
+
+    PluginManager* manager = PluginManager::GetInstance();
+    for (Plugin* loaded : manager->GetPlugins())
+    {
+        IPlugin* plugin = loaded->GetPlugin();
+
+        if (plugin == nullptr)
+        {
+            continue;
+        }
+
+        for (ITool* tool : plugin->GetTools())
+        {
+            tools->AttachButton(tool->GetIconFileName(), new ToolSetter(tool));
+        }
+    }
+}
 
 MainTitleBar::MainTitleBar(PaintMainComponent* component) :
     GUIComponent(new Texture(kWindowWidth, kTitleWidth, kTitleColor),
@@ -80,7 +120,7 @@ MainTitleBar::MainTitleBar(PaintMainComponent* component) :
     list->AttachButton("button3", new ListButtonCommand("button3"));
 
     Button* file = new Button(Rectangle{0, 0, kTitleButtonsWidth, kTitleWidth},
-                              new MainTitleFile(list), kTitleColor, kGray, kWhite, "File", kBlack);
+                              new DropDownListOpener(list), kTitleColor, kGray, kWhite, "File", kBlack);
 
     file->AddBorder(kBorderColor);
     file->Attach(list);
@@ -90,31 +130,10 @@ MainTitleBar::MainTitleBar(PaintMainComponent* component) :
 
     canvas->AddBorder(kBorderColor);
     Attach(canvas);
-
+    Attach(CreateTools(Rectangle{2 * kTitleButtonsWidth, 0, kTitleButtonsWidth, kTitleWidth}));
     Attach(new Border(kBorderColor, placement_));
     Attach(new TextIcon(placement_, "Paint", kBlack));
 }
-
-class ToolSetter : public ICommand
-{
-public:
-    ToolSetter(ITool* tool) : tool_(tool) {}
-    virtual void Execute() override
-    {
-        Manager<ITool>::GetInstance()->SetActive(tool_);
-    }
-
-private:
-    ITool* tool_;
-};
-
-class Palette : public GUIComponent
-{
-public:
-    Palette(const Rectangle& placement);
-
-    virtual bool ProcessMouseEvent(const Event& event);
-};
 
 PaintMainComponent::PaintMainComponent(Texture* texture) :
     GUIComponent(texture, Rectangle{0, 0, kWindowWidth, kWindowHeight})
@@ -122,60 +141,29 @@ PaintMainComponent::PaintMainComponent(Texture* texture) :
 
     Attach(new MainTitleBar(this));
     Attach(new Border(kBorderColor, placement_));
-    Attach(new Palette(kDefaultPalettePlacement));
+    // Attach(new Palette(kDefaultPalettePlacement));
 
     Attach(new Bagel(Vec2<int>(400, 400), 200, 150, kRed));
 }
 
-bool Palette::ProcessMouseEvent(const Event& event)
-{
-    switch (event.GetType())
-    {
-        case kMouseButtonPress:
-        {
-            system_->Subscribe(this, kMouseHover);
-            system_->Subscribe(this, kMouseMotion);
-            system_->Subscribe(this, kMouseButtonRelease);
-            break;
-        }
-        case kMouseButtonRelease:
-        {
-            system_->Unsubscribe(kMouseHover);
-            system_->Unsubscribe(kMouseMotion);
-            system_->Unsubscribe(kMouseButtonRelease);
-            break;
-        }
-        case kMouseMotion:
-        {
-            Move(event.GetValue().mouse.d);
-        }
-        default:
-        {
-            break;
-        }
-    }
+// Palette::Palette(const Rectangle& placement)
+//     : GUIComponent(new Texture(placement.w, placement.h, kWhite), placement)
+// {
+//     ITool* brush = new Brush;
+//     Manager<ITool>::GetInstance()->Add(brush);
+//     Attach(new BasicButton({10, 100, 80, 30}, new ToolSetter(brush), kWhite, kBlack, "Brush"));
 
-    return true;
-}
+//     void* plugin_so = dlopen("plugins/square.so", RTLD_NOW);
+//     assert(plugin_so);
 
-Palette::Palette(const Rectangle& placement)
-    : GUIComponent(new Texture(placement.w, placement.h, kWhite), placement)
-{
-    ITool* brush = new Brush;
-    Manager<ITool>::GetInstance()->Add(brush);
-    Attach(new BasicButton({10, 100, 80, 30}, new ToolSetter(brush), kWhite, kBlack, "Brush"));
+//     plugin::CreateFunction create = (plugin::CreateFunction)dlsym(plugin_so, "Create");
+//     assert(create);
 
-    void* plugin_so = dlopen("plugins/square.so", RTLD_NOW);
-    assert(plugin_so);
+//     plugin::IPlugin* new_plugin = create(nullptr);
 
-    plugin::CreateFunction create = (plugin::CreateFunction)dlsym(plugin_so, "Create");
-    assert(create);
+//     ITool* loaded_tool = *new_plugin->GetTools().begin();
+//     Attach(new BasicButton({10, 140, 80, 30}, new ToolSetter(loaded_tool), kWhite, kBlack,
+//                             loaded_tool->GetIconFileName()));
 
-    plugin::IPlugin* new_plugin = create(nullptr);
-
-    ITool* loaded_tool = *new_plugin->GetTools().begin();
-    Attach(new BasicButton({10, 140, 80, 30}, new ToolSetter(loaded_tool), kWhite, kBlack,
-                            loaded_tool->GetIconFileName()));
-
-    Attach(new Border(kBorderColor, Rectangle{0, 0, placement.w, placement.h}));
-}
+//     Attach(new Border(kBorderColor, Rectangle{0, 0, placement.w, placement.h}));
+// }
