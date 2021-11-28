@@ -13,7 +13,7 @@ ContainersDir         = $(SrcDir)/containers
 EventDir              = $(SrcDir)/event
 AppDir                = $(SrcDir)/app
 ApiDir                = $(SrcDir)/api
-ToolsDir              = $(SrcDir)/tool_manager
+InstrumentsDir        = $(SrcDir)/instrument_manager
 GUISystemDir          = $(SrcDir)/gui_system
 PaintGUISystemDir     = $(SrcDir)/paint_gui_system
 PaintGUIComponentsDir = $(SrcDir)/paint_gui_components
@@ -23,7 +23,7 @@ CppSrc  = $(notdir $(wildcard $(SrcDir)/*.cpp))                \
           $(notdir $(wildcard $(MathDir)/*.cpp))               \
           $(notdir $(wildcard $(ContainersDir)/*.cpp))         \
           $(notdir $(wildcard $(EventDir)/*.cpp))              \
-          $(notdir $(wildcard $(ToolsDir)/*.cpp))              \
+          $(notdir $(wildcard $(InstrumentsDir)/*.cpp))        \
           $(notdir $(wildcard $(GUISystemDir)/*.cpp))          \
           $(notdir $(wildcard $(PaintGUISystemDir)/*.cpp))     \
           $(notdir $(wildcard $(PaintGUIComponentsDir)/*.cpp)) \
@@ -35,7 +35,7 @@ Headers = $(wildcard $(SrcDir)/*.hpp)                \
           $(wildcard $(MathDir)/*.hpp)               \
           $(wildcard $(ContainersDir)/*.hpp)         \
           $(wildcard $(EventDir)/*.hpp)              \
-          $(wildcard $(ToolsDir)/*.hpp)              \
+          $(wildcard $(InstrumentsDir)/*.hpp)        \
           $(wildcard $(GUISystemDir)/*.hpp)          \
           $(wildcard $(PaintGUISystemDir)/*.hpp)     \
           $(wildcard $(PaintGUIComponentsDir)/*.hpp) \
@@ -47,7 +47,7 @@ Intermediates = $(addprefix $(BinDir)/, $(CppSrc:.cpp=.o))
 paint: $(Intermediates)
 	g++ -o paint $(Intermediates) $(LXXFLAGS)
 
-vpath %.cpp $(SrcDir) $(ApiDir) $(GraphicsDir) $(ToolsDir) $(MathDir) $(ContainersDir) $(EventDir) $(AppDir) $(GUISystemDir) $(PaintGUIComponentsDir) $(PaintGUISystemDir)
+vpath %.cpp $(SrcDir) $(ApiDir) $(GraphicsDir) $(InstrumentsDir) $(MathDir) $(ContainersDir) $(EventDir) $(AppDir) $(GUISystemDir) $(PaintGUIComponentsDir) $(PaintGUISystemDir)
 $(BinDir)/%.o: %.cpp $(Headers) makefile
 	g++ -c $< $(CXXFLAGS) -o $@
 

@@ -3,6 +3,6 @@
 int main()
 {
     App app{};
-    app();
+    app.Run();
     return 0;
 }

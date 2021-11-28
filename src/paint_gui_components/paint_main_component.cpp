@@ -101,7 +101,7 @@ public:
     ToolSetter(ITool* tool) : tool_(tool) {}
     virtual void Execute() override
     {
-        ToolManager::GetInstance()->SetActiveTool(tool_);
+        Manager<ITool>::GetInstance()->SetActive(tool_);
     }
 
 private:
@@ -162,7 +162,7 @@ Palette::Palette(const Rectangle& placement)
     : GUIComponent(new Texture(placement.w, placement.h, kWhite), placement)
 {
     ITool* brush = new Brush;
-    ToolManager::GetInstance()->AddTool(brush);
+    Manager<ITool>::GetInstance()->Add(brush);
     Attach(new BasicButton({10, 100, 80, 30}, new ToolSetter(brush), kWhite, kBlack, "Brush"));
 
     void* plugin_so = dlopen("plugins/square.so", RTLD_NOW);

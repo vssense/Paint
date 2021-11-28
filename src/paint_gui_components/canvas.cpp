@@ -96,7 +96,7 @@ bool Canvas::ProcessListenerEvent(const Event& event)
         {
             Vec2<int> start = event.GetValue().mouse.coordinates - placement_.Start();
 
-            ITool* active_tool = ToolManager::GetInstance()->GetActiveTool();
+            ITool* active_tool = Manager<ITool>::GetInstance()->GetActive();
             active_tool->Action(&tool_texture_, start.x, start.y,
                                 event.GetValue().mouse.d.x,
                                 event.GetValue().mouse.d.y);
@@ -106,7 +106,7 @@ bool Canvas::ProcessListenerEvent(const Event& event)
         {
             Vec2<int> coordinates = event.GetValue().mouse.coordinates - placement_.Start();
 
-            ITool* active_tool = ToolManager::GetInstance()->GetActiveTool();
+            ITool* active_tool = Manager<ITool>::GetInstance()->GetActive();
 
             active_tool->ActionEnd(&tool_texture_, coordinates.x, coordinates.y);
 
@@ -131,7 +131,7 @@ bool Canvas::ProcessMouseEvent(const Event& event)
         {
             Vec2<int> coordinates = event.GetValue().mouse.coordinates - placement_.Start();
 
-            ITool* active_tool = ToolManager::GetInstance()->GetActiveTool();
+            ITool* active_tool = Manager<ITool>::GetInstance()->GetActive();
 
             active_tool->ActionBegin(&tool_texture_, coordinates.x, coordinates.y);
 
