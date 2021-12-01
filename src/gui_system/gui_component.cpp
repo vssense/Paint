@@ -144,6 +144,12 @@ Bagel::Bagel(Vec2<int> center, uint32_t r1, uint32_t r2, Color color) :
 
 bool Bagel::ProcessListenerEvent(const Event& event)
 {
+    if (event.GetType() == kMouseMotion)
+    {
+        Move(event.GetValue().mouse.d);
+        return true;
+    }
+
     return ProcessMouseEvent(event);
 }
 
@@ -163,11 +169,6 @@ bool Bagel::ProcessMouseEvent(const Event& event)
             system_->Unsubscribe(kMouseHover);
             system_->Unsubscribe(kMouseMotion);
             system_->Unsubscribe(kMouseButtonRelease);            
-            break;
-        }
-        case kMouseMotion:
-        {
-            Move(event.GetValue().mouse.d);
             break;
         }
         default:

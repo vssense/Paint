@@ -1,6 +1,7 @@
 #include "paint_main_component.hpp"
 #include "canvas.hpp"
 #include "../instruments/plugin_manager.hpp"
+#include "../gui_system/slider.hpp"
 
 class MainTitleBar : public GUIComponent
 {
@@ -129,11 +130,22 @@ MainTitleBar::MainTitleBar(PaintMainComponent* component) :
                                 new MainTitleCanvas(component), kTitleColor, kGray, kWhite, "Canvas", kBlack);
 
     canvas->AddBorder(kBorderColor);
+
     Attach(canvas);
     Attach(CreateTools(Rectangle{2 * kTitleButtonsWidth, 0, kTitleButtonsWidth, kTitleWidth}));
     Attach(new Border(kBorderColor, placement_));
     Attach(new TextIcon(placement_, "Paint", kBlack));
 }
+
+class Callback : public ISliderCallback
+{
+public:
+    Callback() {}
+    virtual void Respond(float old_value, float cur) override
+    {
+        printf("%lf\n", old_value);
+    }
+};
 
 PaintMainComponent::PaintMainComponent(Texture* texture) :
     GUIComponent(texture, Rectangle{0, 0, kWindowWidth, kWindowHeight})
@@ -144,26 +156,5 @@ PaintMainComponent::PaintMainComponent(Texture* texture) :
     // Attach(new Palette(kDefaultPalettePlacement));
 
     Attach(new Bagel(Vec2<int>(400, 400), 200, 150, kRed));
+    Attach(new Slider({100, 100, 400, 50}, new Texture(400, 50, kBlue), new Callback));
 }
-
-// Palette::Palette(const Rectangle& placement)
-//     : GUIComponent(new Texture(placement.w, placement.h, kWhite), placement)
-// {
-//     ITool* brush = new Brush;
-//     Manager<ITool>::GetInstance()->Add(brush);
-//     Attach(new BasicButton({10, 100, 80, 30}, new ToolSetter(brush), kWhite, kBlack, "Brush"));
-
-//     void* plugin_so = dlopen("plugins/square.so", RTLD_NOW);
-//     assert(plugin_so);
-
-//     plugin::CreateFunction create = (plugin::CreateFunction)dlsym(plugin_so, "Create");
-//     assert(create);
-
-//     plugin::IPlugin* new_plugin = create(nullptr);
-
-//     ITool* loaded_tool = *new_plugin->GetTools().begin();
-//     Attach(new BasicButton({10, 140, 80, 30}, new ToolSetter(loaded_tool), kWhite, kBlack,
-//                             loaded_tool->GetIconFileName()));
-
-//     Attach(new Border(kBorderColor, Rectangle{0, 0, placement.w, placement.h}));
-// }

@@ -1,0 +1,60 @@
+#ifndef _SLIDER_HPP_INCLUDED
+#define _SLIDER_HPP_INCLUDED
+
+#include "gui_component.hpp"
+
+class Slider;
+
+class ISliderCallback
+{
+public:
+    virtual ~ISliderCallback() {}
+    virtual void Respond(float old_value, float current_value) = 0;
+};
+
+class Thumb : public GUIComponent
+{
+public:
+    Thumb(Vec2<int> size, Texture* texture);
+    Thumb(Vec2<int> size);
+
+    int GetWidth() const;
+    void SetSlider(Slider* slider);
+    void SetPosition(Vec2<int> position);
+    virtual bool ProcessMouseEvent(const Event& event) override;
+    virtual bool ProcessListenerEvent(const Event& event) override;
+
+private:
+    Slider* slider_;
+};
+
+class Slider : public GUIComponent
+{
+public:
+    Slider(const Rectangle& rectangle, Texture* texture, ISliderCallback* callback,
+           float range_min = 0, float range_max = 1);
+    Slider(const Rectangle& rectangle, Texture* texture, ISliderCallback* callback,
+           Thumb* thumb, float range_min = 0, float range_max = 1);
+
+    virtual ~Slider();
+
+    virtual bool ProcessMouseEvent(const Event& event) override;
+
+    float GetValue() const;
+    float GetStep() const;
+    int GetTrackStart() const;
+    void SetValue(float value);
+
+
+private:
+    Thumb* thumb_;
+    ISliderCallback* callback_;
+    
+    float range_min_;
+    float range_max_;
+    float cur_value_;
+
+    Vec2<int> track_;
+};
+
+#endif /* _SLIDER_HPP_INCLUDED */

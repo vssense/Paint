@@ -104,7 +104,7 @@ Color* Texture::ReadBuffer()
 
 void Texture::LoadBuffer(Color* buffer)
 {
-    ;
+    ;//FIXME:
 }
 
 void Texture::ReleaseBuffer(Color* buffer)

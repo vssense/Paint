@@ -11,7 +11,7 @@ public:
 
     virtual ~Border() override {}
 
-    virtual bool ProcessMouseEvent(const Event& event)
+    virtual bool ProcessMouseEvent(const Event& event) override
     {
         return false;
     }
