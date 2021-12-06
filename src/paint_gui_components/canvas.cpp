@@ -77,14 +77,21 @@ bool CanvasTitle::ProcessMouseEvent(const Event& event)
 
 class Canvas;
 
-class CanvasSliderCallback : public ISliderCallback
+class CanvasHorizontalSliderCallback : public ISliderCallback
 {
 public:
-    CanvasSliderCallback(Canvas* canvas) : canvas_(canvas) {}
-    virtual void Respond(float old_value, float current_value) override
-    {
-        printf("%lf\n", current_value);
-    }
+    CanvasHorizontalSliderCallback(Canvas* canvas) : canvas_(canvas) {}
+    virtual void Respond(float old_value, float current_value) override;
+
+private:
+    Canvas* canvas_;
+};
+
+class CanvasVerticalSliderCallback : public ISliderCallback
+{
+public:
+    CanvasVerticalSliderCallback(Canvas* canvas) : canvas_(canvas) {}
+    virtual void Respond(float old_value, float current_value) override;
 
 private:
     Canvas* canvas_;
@@ -93,23 +100,93 @@ private:
 class Canvas : public GUIComponent
 {
 public:
-    Canvas(const Rectangle& placement) :
-        GUIComponent(new Texture(placement.w, placement.h, kWhite), placement),
-        tool_texture_(texture_)
+    Canvas(const Rectangle& placement, Vec2<int> max_size = Vec2<int>(kWindowWidth, kWindowHeight)) :
+        GUIComponent(new Texture(max_size.x, max_size.y, kWhite), placement),
+        tool_texture_(texture_),
+        shown_part_{0, 0, placement.w, placement.h},
+        max_size_(max_size)
     {
         Attach(new HorizontalSlider(Rectangle{0, placement_.h, placement_.w, 30},
-                                    new Texture(placement_.w, 30, kWhite), new CanvasSliderCallback(this)));
+                                    new Texture(placement_.w, 30, kWhite), new CanvasHorizontalSliderCallback(this)));
         Attach(new VerticalSlider  (Rectangle{placement_.w, 0, 30, placement_.h},
-                                    new Texture(30, placement_.h, kWhite), new CanvasSliderCallback(this)));
+                                    new Texture(30, placement_.h, kWhite), new CanvasVerticalSliderCallback(this)));
 
     }
+
+    virtual void Render() override;
 
     virtual bool ProcessMouseEvent   (const Event& event) override;
     virtual bool ProcessListenerEvent(const Event& event) override;
 
+    void SetOrigin(Vec2<int> origin);
+    void SetXOrigin(int origin_x);
+    void SetYOrigin(int origin_y);
+    const Rectangle& GetShownPart() const;
+    const Vec2<int>& GetMaxSize() const;
+
 private:
     APITexture tool_texture_;
+    Rectangle shown_part_;
+
+    Vec2<int> max_size_;
 };
+
+void Canvas::Render()
+{
+    Renderer::GetInstance()->CopyTexture(texture_, shown_part_, placement_);
+
+    for (auto it = children_.end(); it != children_.begin();)
+    {
+        --it;
+        (*it)->Render();
+    }
+}
+
+void CanvasHorizontalSliderCallback::Respond(float old_value, float current_value)
+{
+    int max_size = canvas_->GetMaxSize().x;
+    int shown_part_size = canvas_->GetShownPart().w;
+    canvas_->SetXOrigin(current_value * (max_size - shown_part_size));
+}
+
+void CanvasVerticalSliderCallback::Respond(float old_value, float current_value)
+{
+    int max_size = canvas_->GetMaxSize().y;
+    int shown_part_size = canvas_->GetShownPart().h;
+    canvas_->SetYOrigin(current_value * (max_size - shown_part_size));
+}
+
+void Canvas::SetOrigin(Vec2<int> origin)
+{
+    SetXOrigin(origin.x);
+    SetYOrigin(origin.y);
+}
+
+void Canvas::SetXOrigin(int origin_x)
+{
+    shown_part_.x0 = origin_x;
+
+    shown_part_.x0 = std::max(0, shown_part_.x0);
+    shown_part_.x0 = std::min(max_size_.x - shown_part_.w, shown_part_.x0);
+}
+
+void Canvas::SetYOrigin(int origin_y)
+{
+    shown_part_.y0 = origin_y;
+    
+    shown_part_.y0 = std::max(0, shown_part_.y0);
+    shown_part_.y0 = std::min(max_size_.y - shown_part_.h, shown_part_.y0);
+}
+
+const Rectangle& Canvas::GetShownPart() const
+{
+    return shown_part_;
+}
+
+const Vec2<int>& Canvas::GetMaxSize() const
+{
+    return max_size_;
+}
 
 bool Canvas::ProcessListenerEvent(const Event& event)
 {
@@ -118,6 +195,7 @@ bool Canvas::ProcessListenerEvent(const Event& event)
         case kMouseMotion:
         {
             Vec2<int> start = event.GetValue().mouse.coordinates - placement_.Start();
+            start += shown_part_.Start();
 
             ITool* active_tool = Manager<ITool>::GetInstance()->GetActive();
             active_tool->Action(&tool_texture_, start.x, start.y,
@@ -128,6 +206,7 @@ bool Canvas::ProcessListenerEvent(const Event& event)
         case kMouseButtonRelease:
         {
             Vec2<int> coordinates = event.GetValue().mouse.coordinates - placement_.Start();
+            coordinates += shown_part_.Start();
 
             ITool* active_tool = Manager<ITool>::GetInstance()->GetActive();
 
@@ -153,6 +232,7 @@ bool Canvas::ProcessMouseEvent(const Event& event)
         case kMouseButtonPress:
         {
             Vec2<int> coordinates = event.GetValue().mouse.coordinates - placement_.Start();
+            coordinates += shown_part_.Start();
 
             ITool* active_tool = Manager<ITool>::GetInstance()->GetActive();
 

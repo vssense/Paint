@@ -6,12 +6,12 @@ bool IsInsideRectangle(const Rectangle& rect, Vec2<int> point)
            rect.y0 <= point.y && point.y <= rect.y0 + rect.h;
 }
 
-Vec2<int> Rectangle::Start()
+Vec2<int> Rectangle::Start() const
 {
     return Vec2<int>(x0, y0);
 }
 
-Vec2<int> Rectangle::Size()
+Vec2<int> Rectangle::Size() const
 {
     return Vec2<int>(w, h);
 }

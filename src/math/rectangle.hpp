@@ -11,8 +11,8 @@ struct Rectangle
     int w;
     int h;
 
-    Vec2<int> Start();
-    Vec2<int> Size();
+    Vec2<int> Start() const;
+    Vec2<int> Size()  const;
 };
 
 bool IsInsideRectangle(const Rectangle& rect, Vec2<int> point);
