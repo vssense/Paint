@@ -1,5 +1,6 @@
 #include "canvas.hpp"
 #include "../gui_system/button.hpp"
+#include "../gui_system/slider.hpp"
 #include "../api/api_texture.hpp"
 
 class CanvasClose : public ICommand
@@ -74,12 +75,34 @@ bool CanvasTitle::ProcessMouseEvent(const Event& event)
     return true;
 }
 
+class Canvas;
+
+class CanvasSliderCallback : public ISliderCallback
+{
+public:
+    CanvasSliderCallback(Canvas* canvas) : canvas_(canvas) {}
+    virtual void Respond(float old_value, float current_value) override
+    {
+        printf("%lf\n", current_value);
+    }
+
+private:
+    Canvas* canvas_;
+};
+
 class Canvas : public GUIComponent
 {
 public:
     Canvas(const Rectangle& placement) :
         GUIComponent(new Texture(placement.w, placement.h, kWhite), placement),
-        tool_texture_(texture_) {}
+        tool_texture_(texture_)
+    {
+        Attach(new HorizontalSlider(Rectangle{0, placement_.h, placement_.w, 30},
+                                    new Texture(placement_.w, 30, kWhite), new CanvasSliderCallback(this)));
+        Attach(new VerticalSlider  (Rectangle{placement_.w, 0, 30, placement_.h},
+                                    new Texture(30, placement_.h, kWhite), new CanvasSliderCallback(this)));
+
+    }
 
     virtual bool ProcessMouseEvent   (const Event& event) override;
     virtual bool ProcessListenerEvent(const Event& event) override;

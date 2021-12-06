@@ -19,6 +19,7 @@ public:
     Thumb(Vec2<int> size);
 
     int GetWidth() const;
+    int GetHeight() const;
     void SetSlider(Slider* slider);
     void SetPosition(Vec2<int> position);
     virtual bool ProcessMouseEvent(const Event& event) override;
@@ -32,21 +33,18 @@ class Slider : public GUIComponent
 {
 public:
     Slider(const Rectangle& rectangle, Texture* texture, ISliderCallback* callback,
-           float range_min = 0, float range_max = 1);
-    Slider(const Rectangle& rectangle, Texture* texture, ISliderCallback* callback,
            Thumb* thumb, float range_min = 0, float range_max = 1);
 
     virtual ~Slider();
 
-    virtual bool ProcessMouseEvent(const Event& event) override;
 
     float GetValue() const;
     float GetStep() const;
     int GetTrackStart() const;
-    void SetValue(float value);
+    virtual void SetValue(float value) = 0;
+    virtual void SetValue(Vec2<int> coordinates) = 0;
 
-
-private:
+protected:
     Thumb* thumb_;
     ISliderCallback* callback_;
     
@@ -55,6 +53,34 @@ private:
     float cur_value_;
 
     Vec2<int> track_;
+};
+
+class HorizontalSlider : public Slider
+{
+public:
+    HorizontalSlider(const Rectangle& rectangle, Texture* texture, ISliderCallback* callback,
+                     float range_min = 0, float range_max = 1);
+    HorizontalSlider(const Rectangle& rectangle, Texture* texture, ISliderCallback* callback,
+                     Thumb* thumb, float range_min = 0, float range_max = 1);
+
+    virtual void Move(Vec2<int> d) override;
+    virtual bool ProcessMouseEvent(const Event& event) override;
+    virtual void SetValue(float value) override;
+    virtual void SetValue(Vec2<int> coordinates) override;
+};
+
+class VerticalSlider : public Slider
+{
+public:
+    VerticalSlider(const Rectangle& rectangle, Texture* texture, ISliderCallback* callback,
+                   float range_min = 0, float range_max = 1);
+    VerticalSlider(const Rectangle& rectangle, Texture* texture, ISliderCallback* callback,
+                   Thumb* thumb, float range_min = 0, float range_max = 1);
+
+    virtual void Move(Vec2<int> d) override;
+    virtual bool ProcessMouseEvent(const Event& event) override;
+    virtual void SetValue(float value) override;
+    virtual void SetValue(Vec2<int> coordinates) override;
 };
 
 #endif /* _SLIDER_HPP_INCLUDED */

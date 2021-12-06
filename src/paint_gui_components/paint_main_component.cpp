@@ -137,24 +137,12 @@ MainTitleBar::MainTitleBar(PaintMainComponent* component) :
     Attach(new TextIcon(placement_, "Paint", kBlack));
 }
 
-class Callback : public ISliderCallback
-{
-public:
-    Callback() {}
-    virtual void Respond(float old_value, float cur) override
-    {
-        printf("%lf\n", old_value);
-    }
-};
-
 PaintMainComponent::PaintMainComponent(Texture* texture) :
     GUIComponent(texture, Rectangle{0, 0, kWindowWidth, kWindowHeight})
 {
 
     Attach(new MainTitleBar(this));
     Attach(new Border(kBorderColor, placement_));
-    // Attach(new Palette(kDefaultPalettePlacement));
 
     Attach(new Bagel(Vec2<int>(400, 400), 200, 150, kRed));
-    Attach(new Slider({100, 100, 400, 50}, new Texture(400, 50, kBlue), new Callback));
 }
