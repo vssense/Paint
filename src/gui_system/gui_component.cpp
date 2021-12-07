@@ -126,6 +126,10 @@ GUISystem* GUIComponent::GetSystem()
     return system_;
 }
 
+const Rectangle& GUIComponent::GetPlacement() const
+{
+    return placement_;
+}
 
 Bagel::Bagel(Vec2<int> center, uint32_t r1, uint32_t r2, Color color) :
     GUIComponent(new Texture(2 * r1, 2 * r1),

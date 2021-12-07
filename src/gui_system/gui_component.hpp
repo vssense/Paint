@@ -31,6 +31,8 @@ public:
     GUIComponent* GetParent() const;
     GUISystem* GetSystem();
 
+    const Rectangle& GetPlacement() const;
+
 protected:
     Texture* texture_;
     Rectangle placement_;

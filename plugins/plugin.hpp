@@ -30,10 +30,10 @@ class ITexture {
     virtual void Clear(Color color) = 0;
     virtual void Present() = 0;
 
-    virtual void DrawLine(int32_t x0, int32_t y0, int32_t x1, int32_t y1, Color color) = 0;
+    virtual void DrawLine     (int32_t x0, int32_t y0, int32_t x1, int32_t y1, Color color) = 0;
     virtual void DrawThickLine(int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_t thickness, Color color) = 0;
-    virtual void DrawCircle(int32_t x, int32_t y, int32_t radius, Color color) = 0;
-    virtual void DrawRect(int32_t x, int32_t y, int32_t width, int32_t height, Color color) = 0;
+    virtual void DrawCircle   (int32_t x,  int32_t y,  int32_t radius, Color color) = 0;
+    virtual void DrawRect     (int32_t x,  int32_t y,  int32_t width, int32_t height, Color color) = 0;
 
     virtual void CopyTexture(ITexture* texture, int32_t x, int32_t y, int32_t width, int32_t height) = 0;
 };
@@ -81,7 +81,7 @@ class ISlider : public IWidget {
 
     virtual void SetSliderCallback(ISliderCallback* callback) = 0;
 
-    virtual float GetValue() = 0;
+    virtual float GetValue() = 0;  //const
     virtual void SetValue(float value) = 0;
 };
 
@@ -123,7 +123,7 @@ class IAPI {
     virtual ~IAPI() {}
 
     virtual IWidgetFactory*  GetWidgetFactory () = 0;
-    virtual ITextureFactory* GetTextureFactory() = 0;
+    virtual ITextureFactory* GetTextureFactory() = 0; //const
 };
 
 class IFilter {

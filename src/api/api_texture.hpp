@@ -5,11 +5,17 @@
 #include "../graphics/texture.hpp"
 #include "../graphics/renderer.hpp"
 
-typedef plugin::ITexture ITexture;
-typedef plugin::IPreferencesPanel IPreferencesPanel;
-typedef plugin::Buffer Buffer;
+using namespace plugin;
 
 #define GetHeight GetHieght
+
+class TextureFactory : public ITextureFactory
+{
+public:
+    TextureFactory() {}
+    virtual ITexture* CreateTexture(const char* filename) override;
+    virtual ITexture* CreateTexture(int32_t width, int32_t height) override;
+};
 
 class APITexture : public ITexture
 {

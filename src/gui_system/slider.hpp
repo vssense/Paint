@@ -5,10 +5,10 @@
 
 class Slider;
 
-class ISliderCallback
+class ISliderResponse
 {
 public:
-    virtual ~ISliderCallback() {}
+    virtual ~ISliderResponse() {}
     virtual void Respond(float old_value, float current_value) = 0;
 };
 
@@ -32,7 +32,7 @@ private:
 class Slider : public GUIComponent
 {
 public:
-    Slider(const Rectangle& rectangle, Texture* texture, ISliderCallback* callback,
+    Slider(const Rectangle& rectangle, Texture* texture, ISliderResponse* callback,
            Thumb* thumb, float range_min = 0, float range_max = 1);
 
     virtual ~Slider();
@@ -46,7 +46,7 @@ public:
 
 protected:
     Thumb* thumb_;
-    ISliderCallback* callback_;
+    ISliderResponse* callback_;
     
     float range_min_;
     float range_max_;
@@ -58,9 +58,9 @@ protected:
 class HorizontalSlider : public Slider
 {
 public:
-    HorizontalSlider(const Rectangle& rectangle, Texture* texture, ISliderCallback* callback,
+    HorizontalSlider(const Rectangle& rectangle, Texture* texture, ISliderResponse* callback,
                      float range_min = 0, float range_max = 1);
-    HorizontalSlider(const Rectangle& rectangle, Texture* texture, ISliderCallback* callback,
+    HorizontalSlider(const Rectangle& rectangle, Texture* texture, ISliderResponse* callback,
                      Thumb* thumb, float range_min = 0, float range_max = 1);
 
     virtual void Move(Vec2<int> d) override;
@@ -72,9 +72,9 @@ public:
 class VerticalSlider : public Slider
 {
 public:
-    VerticalSlider(const Rectangle& rectangle, Texture* texture, ISliderCallback* callback,
+    VerticalSlider(const Rectangle& rectangle, Texture* texture, ISliderResponse* callback,
                    float range_min = 0, float range_max = 1);
-    VerticalSlider(const Rectangle& rectangle, Texture* texture, ISliderCallback* callback,
+    VerticalSlider(const Rectangle& rectangle, Texture* texture, ISliderResponse* callback,
                    Thumb* thumb, float range_min = 0, float range_max = 1);
 
     virtual void Move(Vec2<int> d) override;

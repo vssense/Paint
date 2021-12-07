@@ -1,5 +1,15 @@
 #include "api_texture.hpp"
 
+ITexture* TextureFactory::CreateTexture(const char* filename)
+{
+    return new APITexture(new Texture(filename));
+}
+
+ITexture* TextureFactory::CreateTexture(int32_t width, int32_t height)
+{
+    return new APITexture(new Texture(width, height));
+}
+
 int32_t APITexture::GetWidth()
 {
     return texture_->GetSize().x;
@@ -61,7 +71,10 @@ void APITexture::DrawRect(int32_t x, int32_t y, int32_t width, int32_t height, C
 }
 
 void APITexture::CopyTexture(ITexture* texture, int32_t x, int32_t y,
-                              int32_t width, int32_t height)
+                             int32_t width, int32_t height)
 {
-    Renderer::GetInstance()->CopyTexture(texture_, Rectangle{x, y, width, height});
+    Renderer::GetInstance()->SetRenderTarget(texture_);
+
+    APITexture* api_texture = dynamic_cast<APITexture*>(texture);
+    Renderer::GetInstance()->CopyTexture(api_texture->texture_, Rectangle{x, y, width, height});
 }

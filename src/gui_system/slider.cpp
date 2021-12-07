@@ -72,7 +72,7 @@ bool Thumb::ProcessMouseEvent(const Event& event)
     return true;
 }
 
-Slider::Slider(const Rectangle& placement, Texture* texture, ISliderCallback* callback,
+Slider::Slider(const Rectangle& placement, Texture* texture, ISliderResponse* callback,
                Thumb* thumb, float range_min, float range_max)
     : GUIComponent(texture, placement),
       thumb_(thumb),
@@ -112,7 +112,7 @@ int Slider::GetTrackStart() const
 }
 
 HorizontalSlider::HorizontalSlider(const Rectangle& rectangle, Texture* texture,
-                                   ISliderCallback* callback, Thumb* thumb,
+                                   ISliderResponse* callback, Thumb* thumb,
                                    float range_min, float range_max)
     : Slider(rectangle, texture, callback, thumb, range_min, range_max)
 {
@@ -121,13 +121,13 @@ HorizontalSlider::HorizontalSlider(const Rectangle& rectangle, Texture* texture,
 }
 
 HorizontalSlider::HorizontalSlider(const Rectangle& placement, Texture* texture,
-                                   ISliderCallback* callback, float range_min, float range_max)
+                                   ISliderResponse* callback, float range_min, float range_max)
     : HorizontalSlider(placement, texture, callback,
                        new Thumb(Vec2<int>(placement.h, placement.h)),
                        range_min, range_max) {}
 
 VerticalSlider::VerticalSlider(const Rectangle& rectangle, Texture* texture,
-                               ISliderCallback* callback, Thumb* thumb,
+                               ISliderResponse* callback, Thumb* thumb,
                                float range_min, float range_max)
     : Slider(rectangle, texture, callback, thumb, range_min, range_max)
 {
@@ -136,7 +136,7 @@ VerticalSlider::VerticalSlider(const Rectangle& rectangle, Texture* texture,
 }
 
 VerticalSlider::VerticalSlider(const Rectangle& placement, Texture* texture,
-                               ISliderCallback* callback, float range_min, float range_max)
+                               ISliderResponse* callback, float range_min, float range_max)
     : VerticalSlider(placement, texture, callback,
                      new Thumb(Vec2<int>(placement.w, placement.w)),
                      range_min, range_max) {}

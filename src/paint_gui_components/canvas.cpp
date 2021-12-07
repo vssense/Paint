@@ -77,7 +77,7 @@ bool CanvasTitle::ProcessMouseEvent(const Event& event)
 
 class Canvas;
 
-class CanvasHorizontalSliderCallback : public ISliderCallback
+class CanvasHorizontalSliderCallback : public ISliderResponse
 {
 public:
     CanvasHorizontalSliderCallback(Canvas* canvas) : canvas_(canvas) {}
@@ -87,7 +87,7 @@ private:
     Canvas* canvas_;
 };
 
-class CanvasVerticalSliderCallback : public ISliderCallback
+class CanvasVerticalSliderCallback : public ISliderResponse
 {
 public:
     CanvasVerticalSliderCallback(Canvas* canvas) : canvas_(canvas) {}
