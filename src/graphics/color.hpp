@@ -27,4 +27,9 @@ uint8_t  GetG(Color color);
 uint8_t  GetR(Color color);
 uint8_t  GetA(Color color);
 
+Color SetB(Color color, uint8_t black);
+Color SetG(Color color, uint8_t green);
+Color SetR(Color color, uint8_t red);
+Color SetA(Color color, uint8_t alpha);
+
 #endif /* _COLOR_HPP_INCLUDED */

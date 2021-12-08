@@ -46,7 +46,7 @@ ISlider* APIWidgetFactory::CreateSlider(int32_t width, int32_t height, float ran
 }
 
 ISlider* APIWidgetFactory::CreateSlider(int32_t width, int32_t height, float thumb_width, float thumb_height,
-                                  float range_min, float range_max)
+                                        float range_min, float range_max)
 {
     return CreateSlider(width, height, range_min, range_max);
 }

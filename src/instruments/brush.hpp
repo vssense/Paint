@@ -23,6 +23,8 @@ public:
     virtual IPreferencesPanel* GetPreferencesPanel() const override;
 
 private:
+    Color color_;
+
     APIPreferencesPanel* panel_;
 };
 
