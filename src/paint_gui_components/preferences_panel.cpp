@@ -8,3 +8,4 @@ void PreferencesPanel::AttachWithCoordinates(GUIComponent* component, Vec2<int> 
     Attach(component);
     component->Move(coordinates);
 }
+

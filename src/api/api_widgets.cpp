@@ -32,7 +32,6 @@ IButton* APIWidgetFactory::CreateButtonWithText(int32_t width, int32_t height, c
     return new APIButton(button, callback);
 }
 
-
 ISlider* APIWidgetFactory::CreateDefaultSlider(float range_min, float range_max)
 {
     return CreateSlider(2 * kDefaultButtonsWidth, kDefaultButtonsHeight, range_min, range_max);

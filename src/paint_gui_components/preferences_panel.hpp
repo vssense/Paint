@@ -15,7 +15,7 @@ const Rectangle kDefaultPreferencesPanelPlacement =
 class PreferencesPanel : public GUIComponent
 {
 public:
-    PreferencesPanel(const Rectangle& placement = kDefaultPreferencesPanelPlacement, Color color = kGreen);
+    PreferencesPanel(const Rectangle& placement = kDefaultPreferencesPanelPlacement, Color color = kLightPurple);
 
     void AttachWithCoordinates(GUIComponent* component, Vec2<int> coordinates);
 };

@@ -73,17 +73,27 @@ bool EventManager::PollSDLEvent()
         }
         case SDL_MOUSEBUTTONDOWN:
         {
-            mouse_button_pressed = true;
-            queue_.push(Event(kMouseButtonPress, EventValue(Vec2<int>(event.button.x, event.button.y))));
+            if (event.button.button == SDL_BUTTON_LEFT)
+            {
+                mouse_button_pressed = true;
+                queue_.push(Event(kMouseButtonPress, EventValue(Vec2<int>(event.button.x, event.button.y))));
+            }
+            else
+            {
+                queue_.push(Event(kRightButtonClick, EventValue(Vec2<int>(event.button.x, event.button.y))));
+            }
             break;
         }
         case SDL_MOUSEBUTTONUP:
         {
-            mouse_button_pressed = false;
-            queue_.push(Event(kMouseButtonRelease,
-                              EventValue(Vec2<int>(event.button.x, event.button.y))));
-            queue_.push(Event(kMouseHover,
-                              EventValue(Vec2<int>(event.button.x, event.button.y))));
+            if (event.button.button == SDL_BUTTON_LEFT)
+            {
+                mouse_button_pressed = false;
+                queue_.push(Event(kMouseButtonRelease,
+                                EventValue(Vec2<int>(event.button.x, event.button.y))));
+                queue_.push(Event(kMouseHover,
+                                EventValue(Vec2<int>(event.button.x, event.button.y))));
+            }
             break;
         }
         case SDL_MOUSEMOTION:

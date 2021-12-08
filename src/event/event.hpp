@@ -20,6 +20,7 @@ enum EventType
     kMouseButtonRelease,
     kMouseMotion,
     kCanvasClose,
+    kRightButtonClick,
 
     kEventsCount
 };

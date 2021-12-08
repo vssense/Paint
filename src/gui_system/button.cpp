@@ -2,7 +2,7 @@
 #include "gui_system.hpp"
 
 BasicButton::BasicButton(const Rectangle& placement, ICommand* command, Texture* texture) :
-    GUIComponent(texture, placement), command_(command), pressed_(false)
+    GUIComponent(texture, placement), command_(command), right_button_pressed_(nullptr), pressed_(false)
 {
     assert(command_);
     assert(texture_);
@@ -64,6 +64,14 @@ bool BasicButton::ProcessMouseEvent(const Event& event)
             pressed_ = true;
             break;
         }
+        case kRightButtonClick:
+        {
+            if (right_button_pressed_ != nullptr)
+            {
+                right_button_pressed_->Execute();
+            }
+            break;
+        }
         default:
         {
             break;
@@ -73,11 +81,21 @@ bool BasicButton::ProcessMouseEvent(const Event& event)
     return true;
 }
 
+void BasicButton::SetRightButtonPressedCommand(ICommand* command)
+{
+    right_button_pressed_ = command;
+}
+
 BasicButton::~BasicButton()
 {
     assert(command_);
 
     delete command_;
+
+    if (right_button_pressed_ != nullptr)
+    {
+        delete right_button_pressed_;
+    }
 }
 
 Button::Button(const Rectangle& placement, ICommand* command, Texture* on_release,
@@ -111,6 +129,7 @@ Button::Button(const Rectangle& placement, ICommand* command, Color on_release, 
 
     Attach(new TextIcon(placement, text, font_color));
 }
+
 
 Button::~Button()
 {
@@ -189,6 +208,14 @@ bool Button::ProcessMouseEvent(const Event& event)
             }
 
             system_->Subscribe(this, kMouseHover);
+            break;
+        }
+        case kRightButtonClick:
+        {
+            if (right_button_pressed_ != nullptr)
+            {
+                right_button_pressed_->Execute();
+            }
             break;
         }
         default:

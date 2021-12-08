@@ -16,7 +16,7 @@ public:
     virtual bool HitTest(Vec2<int> coordinates) const override;
     virtual void Render() override;
 
-    void AttachButton(const char* title, ICommand* command);
+    void AttachButton(const char* title, ICommand* command, ICommand* right_button_press = nullptr);
 
     void Hide();
     void Show();

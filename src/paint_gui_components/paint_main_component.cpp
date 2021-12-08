@@ -2,6 +2,7 @@
 #include "canvas.hpp"
 #include "../instruments/plugin_manager.hpp"
 #include "../gui_system/slider.hpp"
+#include "../api/api_widgets.hpp"
 
 class MainTitleBar : public GUIComponent
 {
@@ -64,13 +65,36 @@ private:
     ITool* tool_;
 };
 
+class PreferencesPanelOpener : public ICommand
+{
+public:
+    PreferencesPanelOpener(ITool* tool, MainTitleBar* title_bar)
+        : tool_(tool), title_bar_(title_bar) {}
+
+    virtual void Execute() override
+    {
+        APIPreferencesPanel* panel = dynamic_cast<APIPreferencesPanel*>(tool_->GetPreferencesPanel());
+
+        printf("Try to attach\n");
+
+        if (panel != nullptr)
+        {
+            title_bar_->Attach(panel->GetBasicWidget());
+        }
+    }
+
+private:
+    ITool* tool_;
+    MainTitleBar* title_bar_;
+};
+
 Button* MainTitleBar::CreateTools(const Rectangle& placement)
 {
     DropDownList* tools = new DropDownList(Rectangle{0, placement.h, 3 * placement.w / 2, kWindowHeight / 2},
                                                      kTitleWidth, kLightPurple, kWhite);
 
     Brush* brush = new Brush;
-    tools->AttachButton("Brush", new ToolSetter(brush));
+    tools->AttachButton("Brush", new ToolSetter(brush), new PreferencesPanelOpener(brush, this));
 
     Manager<ITool>::GetInstance()->Add(brush);
     Button* tool = new Button(placement, new DropDownListOpener(tools), kTitleColor,
@@ -100,7 +124,8 @@ void MainTitleBar::AttachPluginsTools(DropDownList* tools)
 
         for (ITool* tool : plugin->GetTools())
         {
-            tools->AttachButton(tool->GetIconFileName(), new ToolSetter(tool));
+            tools->AttachButton(tool->GetIconFileName(), new ToolSetter(tool),
+                                new PreferencesPanelOpener(tool, this));
         }
     }
 }

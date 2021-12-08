@@ -25,8 +25,12 @@ public:
     virtual bool ProcessMouseEvent   (const Event& event) override;
     virtual bool ProcessListenerEvent(const Event& event) override;
 
+    void SetRightButtonPressedCommand(ICommand* command);
+
 protected:
     ICommand* command_;
+    ICommand* right_button_pressed_;
+
     bool pressed_;
 };
 
@@ -36,7 +40,7 @@ public:
     Button(const Rectangle& placement, ICommand* command, Texture* on_release,
            Texture* on_press = nullptr, Texture* on_hover = nullptr);
     Button(const Rectangle& placement, ICommand* command, Color on_release,
-           Color on_press, Color on_hover, const char* text, Color font_color);
+           Color on_press, Color on_hover, const char* text, Color font_color = kBlack);
 
     virtual ~Button();
     virtual bool ProcessMouseEvent   (const Event& event) override;

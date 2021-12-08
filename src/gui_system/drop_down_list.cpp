@@ -9,7 +9,7 @@ DropDownList::DropDownList(const Rectangle& placement, uint32_t button_height,
       button_hover_color_(button_hover_color),
       is_hidden_(true) {}
 
-void DropDownList::AttachButton(const char* title, ICommand* command)
+void DropDownList::AttachButton(const char* title, ICommand* command, ICommand* right_button_press)
 {
     if (button_height_ + current_height_ > placement_.h)
     {
@@ -24,6 +24,7 @@ void DropDownList::AttachButton(const char* title, ICommand* command)
                                 title, kBlack);
 
     button->AddBorder(kBlack);
+    button->SetRightButtonPressedCommand(right_button_press);
 
     Attach(button);
 

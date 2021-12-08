@@ -1,5 +1,13 @@
 #include "brush.hpp"
 
+Brush::Brush() : panel_(new APIPreferencesPanel(new PreferencesPanel)) {}
+
+Brush::~Brush()
+{
+    delete panel_;
+}
+
+
 void Brush::ActionBegin(ITexture* canvas, int x, int y)
 {
     assert(canvas);
@@ -28,5 +36,5 @@ const char* Brush::GetIconFileName() const
 
 IPreferencesPanel* Brush::GetPreferencesPanel() const
 {
-    return nullptr;
+    return panel_;
 }

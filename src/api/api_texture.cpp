@@ -41,6 +41,7 @@ void APITexture::LoadBuffer(Buffer buffer)
 
 void APITexture::Clear(Color color)
 {
+    Renderer::GetInstance()->SetColor(color);
     Renderer::GetInstance()->FillRect(texture_, Rectangle{0, 0, GetWidth(), GetHeight()});
 }
 
@@ -70,8 +71,7 @@ void APITexture::DrawRect(int32_t x, int32_t y, int32_t width, int32_t height, C
     Renderer::GetInstance()->DrawRect(texture_, Rectangle{x, y, width, height});
 }
 
-void APITexture::CopyTexture(ITexture* texture, int32_t x, int32_t y,
-                             int32_t width, int32_t height)
+void APITexture::CopyTexture(ITexture* texture, int32_t x, int32_t y, int32_t width, int32_t height)
 {
     Renderer::GetInstance()->SetRenderTarget(texture_);
 
