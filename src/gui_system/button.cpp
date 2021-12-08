@@ -94,9 +94,11 @@ BasicButton::~BasicButton()
 }
 
 Button::Button(const Rectangle& placement, ICommand* command, Texture* on_release,
-               Texture* on_press, Texture* on_hover) :
-    BasicButton(placement, command, on_release), on_release_(on_release),
-    on_press_(on_press), on_hover_(on_hover)
+               Texture* on_press, Texture* on_hover)
+    : BasicButton(placement, command, on_release),
+      on_release_(on_release),
+      on_press_(on_press),
+      on_hover_(on_hover)
 {
     assert(on_release_);
 
@@ -112,8 +114,15 @@ Button::Button(const Rectangle& placement, ICommand* command, Texture* on_releas
 }
 
 Button::Button(const Rectangle& placement, ICommand* command, Color on_release, Color on_press,
-               Color on_hover, const char* text, Color font_color) :
-    BasicButton(placement, command, new Texture(placement.w, placement.h, on_release))
+               Color on_hover, const char* text, Color font_color)
+    : Button(placement, command, on_release, on_press, on_hover)
+{
+    Attach(new TextIcon(placement, text, font_color));
+}
+
+Button::Button(const Rectangle& placement, ICommand* command, Color on_release,
+               Color on_press, Color on_hover)
+    : BasicButton(placement, command, new Texture(placement.w, placement.h, on_release))
 {
     assert(command_);
     assert(texture_);
@@ -121,8 +130,6 @@ Button::Button(const Rectangle& placement, ICommand* command, Color on_release, 
     on_release_ = texture_;
     on_press_   = new Texture(placement_.w, placement_.h, on_press);
     on_hover_   = new Texture(placement_.w, placement_.h, on_hover);
-
-    Attach(new TextIcon(placement, text, font_color));
 }
 
 Button::~Button()

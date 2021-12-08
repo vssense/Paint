@@ -8,7 +8,21 @@
 class Icon : public GUIComponent
 {
 public:
-    using GUIComponent::GUIComponent;
+    Icon(Texture* texture, const Rectangle& placement)
+        : GUIComponent(texture, placement)
+    {
+        assert(texture_);
+
+        Vec2<int> size = Vec2<int>(texture_->GetSize());
+
+        size.x = Min(size.x, placement.w);
+        size.y = Min(size.y, placement.h);
+
+        placement_.x0 = placement.w / 2 - size.x / 2;
+        placement_.y0 = placement.h / 2 - size.y / 2;
+        placement_.w  = size.x;
+        placement_.h  = size.y;
+    }
 
     virtual bool ProcessMouseEvent(const Event& event) override
     {

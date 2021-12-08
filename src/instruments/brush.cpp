@@ -57,7 +57,7 @@ void Brush::ActionEnd(ITexture* canvas, int x, int y)
 
 const char* Brush::GetIconFileName() const
 {
-    return "Brush";
+    return "img/brush.bmp";
 }
 
 IPreferencesPanel* Brush::GetPreferencesPanel() const

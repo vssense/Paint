@@ -95,7 +95,7 @@ Button* MainTitleBar::CreateTools(const Rectangle& placement)
                                                      kTitleWidth, kLightPurple, kWhite);
 
     Brush* brush = new Brush;
-    tools->AttachButton("Brush", new ToolSetter(brush), new PreferencesPanelOpener(brush, this));
+    tools->AttachButton(new Texture(brush->GetIconFileName()), new ToolSetter(brush), new PreferencesPanelOpener(brush, this));
 
     Manager<ITool>::GetInstance()->Add(brush);
     Button* tool = new Button(placement, new DropDownListOpener(tools), kTitleColor,
@@ -125,7 +125,7 @@ void MainTitleBar::AttachPluginsTools(DropDownList* tools)
 
         for (ITool* tool : plugin->GetTools())
         {
-            tools->AttachButton(tool->GetIconFileName(), new ToolSetter(tool),
+            tools->AttachButton(new Texture(tool->GetIconFileName()), new ToolSetter(tool),
                                 new PreferencesPanelOpener(tool, this));
         }
     }

@@ -17,12 +17,15 @@ public:
     virtual void Render() override;
 
     void AttachButton(const char* title, ICommand* command, ICommand* right_button_press = nullptr);
+    void AttachButton(Texture* texture, ICommand* command, ICommand* right_button_press = nullptr);
 
     void Hide();
     void Show();
     void ChangeVisibility();
 
 private:
+    Button* AttachButton(ICommand* command, ICommand* right_button_press = nullptr);
+
     int current_height_;
 
     int button_height_;

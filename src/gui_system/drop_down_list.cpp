@@ -9,19 +9,36 @@ DropDownList::DropDownList(const Rectangle& placement, uint32_t button_height,
       button_hover_color_(button_hover_color),
       is_hidden_(true) {}
 
+void DropDownList::AttachButton(Texture* texture, ICommand* command, ICommand* right_button_press)
+{
+    Button* button = AttachButton(command, right_button_press);
+    if (button != nullptr)
+    {
+        button->Attach(new Icon(texture, button->GetPlacement()));
+    }
+}
+
 void DropDownList::AttachButton(const char* title, ICommand* command, ICommand* right_button_press)
+{
+    Button* button = AttachButton(command, right_button_press);
+    if (button != nullptr)
+    {
+        button->Attach(new TextIcon(button->GetPlacement(), title, kBlack));
+    }
+}
+
+Button* DropDownList::AttachButton(ICommand* command, ICommand* right_button_press)
 {
     if (button_height_ + current_height_ > placement_.h)
     {
-        return;
+        return nullptr;
     }
-
+    
     Button* button = new Button(Rectangle{0, 0 + current_height_, placement_.w, button_height_},
                                 command,
                                 button_color_,
                                 button_hover_color_,
-                                button_hover_color_,
-                                title, kBlack);
+                                button_hover_color_);
 
     button->AddBorder(kBlack);
     button->SetRightButtonPressedCommand(right_button_press);
@@ -29,6 +46,8 @@ void DropDownList::AttachButton(const char* title, ICommand* command, ICommand* 
     Attach(button);
 
     current_height_ += button_height_;
+
+    return button;
 }
 
 bool DropDownList::ProcessListenerEvent(const Event& event)

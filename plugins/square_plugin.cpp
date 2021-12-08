@@ -256,7 +256,7 @@ void SquareTool::ActionEnd(ITexture* canvas, int x, int y)
 
 const char* SquareTool::GetIconFileName() const
 {
-    return "Square";
+    return "img/square.bmp";
 }
 
 IPreferencesPanel* SquareTool::GetPreferencesPanel() const

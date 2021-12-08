@@ -92,10 +92,6 @@ public:
         shown_part_{0, 0, placement.w, placement.h},
         max_size_(max_size)
     {
-        Attach(new HorizontalSlider(Rectangle{0, placement_.h, placement_.w, 30},
-                                    new Texture(placement_.w, 30, kWhite), new CanvasHorizontalSliderCallback(this)));
-        Attach(new VerticalSlider  (Rectangle{placement_.w, 0, 30, placement_.h},
-                                    new Texture(30, placement_.h, kWhite), new CanvasVerticalSliderCallback(this)));
 
     }
 
@@ -241,7 +237,21 @@ CanvasComponent::CanvasComponent(const Rectangle& placement) : GUIComponent(null
 {
     Attach(new CanvasTitle(Rectangle{0, 0, placement_.w, kTitleWidth}, this));
 
-    Attach(new Canvas(Rectangle{0, kTitleWidth, placement_.w, placement_.h - kTitleWidth}));
+    Canvas* canvas = new Canvas(Rectangle{0, kTitleWidth, placement_.w - kTitleWidth, placement_.h - 2 * kTitleWidth});
+    Attach(canvas);
+
+    Texture* vthumb_texture = new Texture("img/vthumb.bmp");
+    Texture* hthumb_texture = new Texture("img/hthumb.bmp");
+
+    Attach(new HorizontalSlider(Rectangle{0, placement_.h - kTitleWidth, placement_.w - kTitleWidth, kTitleWidth},
+                                new Texture(placement_.w, kTitleWidth, kWhite, kBlack),
+                                new CanvasHorizontalSliderCallback(canvas),
+                                new Thumb(static_cast<Vec2<int>>(vthumb_texture->GetSize()), vthumb_texture)));
+
+    Attach(new VerticalSlider  (Rectangle{placement_.w - kTitleWidth, kTitleWidth, kTitleWidth, placement_.h - 2 * kTitleWidth},
+                                new Texture(kTitleWidth, placement_.h, kWhite, kBlack),
+                                new CanvasVerticalSliderCallback(canvas),
+                                new Thumb(static_cast<Vec2<int>>(hthumb_texture->GetSize()), hthumb_texture)));
 
     AddBorder(kBorderColor);
 }

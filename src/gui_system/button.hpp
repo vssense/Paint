@@ -13,6 +13,7 @@ public:
     BasicButton(const Rectangle& placement, ICommand* command, Texture* texture);
     BasicButton(const Rectangle& placement, ICommand* command, Color bg = kWhite,
                 Color border = kBlack);
+                
     BasicButton(const Rectangle& placement, ICommand* command, Color bg,
                 Color border, Texture* icon);
     BasicButton(const Rectangle& placement, ICommand* command, Color bg, Color border,
@@ -37,8 +38,12 @@ class Button : public BasicButton
 public:
     Button(const Rectangle& placement, ICommand* command, Texture* on_release,
            Texture* on_press = nullptr, Texture* on_hover = nullptr);
+        
     Button(const Rectangle& placement, ICommand* command, Color on_release,
            Color on_press, Color on_hover, const char* text, Color font_color = kBlack);
+
+    Button(const Rectangle& placement, ICommand* command, Color on_release,
+           Color on_press, Color on_hover);
 
     virtual ~Button();
     virtual bool ProcessMouseEvent   (const Event& event) override;
