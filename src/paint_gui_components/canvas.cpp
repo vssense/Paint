@@ -3,20 +3,6 @@
 #include "../gui_system/slider.hpp"
 #include "../api/api_texture.hpp"
 
-class CanvasClose : public ICommand
-{
-public:
-    CanvasClose(CanvasComponent* canvas) : canvas_(canvas) {}
-
-    virtual void Execute() override
-    {
-        EventManager::GetInstance()->PushEvent(Event(kCanvasClose, EventValue(canvas_)));
-    }
-
-private:
-    CanvasComponent* canvas_;
-};
-
 class CanvasTitle : public GUIComponent
 {
 public:
@@ -33,7 +19,7 @@ CanvasTitle::CanvasTitle(const Rectangle& placement, CanvasComponent* canvas) :
 {
     Attach(new Border(kBorderColor, placement_));
     Attach(new Button(Rectangle{placement.w - kTitleWidth, 0, kTitleWidth, kTitleWidth},
-                      new CanvasClose(canvas_), new Texture("img/close.bmp"),
+                      new ComponentClose(canvas_), new Texture("img/close.bmp"),
                       new Texture("img/close2.bmp")));
 
     Attach(new TextIcon(placement, "Canvas", kBlack));

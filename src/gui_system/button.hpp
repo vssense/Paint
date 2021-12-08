@@ -52,4 +52,36 @@ protected:
     Texture* on_hover_;
 };
 
+class ComponentClose : public ICommand
+{
+public:
+    ComponentClose(GUIComponent* component) : component_(component) {}
+
+    virtual void Execute() override
+    {
+        EventManager::GetInstance()->PushEvent(Event(kComponentClose, EventValue(component_)));
+    }
+
+private:
+    GUIComponent* component_;
+};
+
+class UnpinComponent : public ICommand
+{
+public:
+    UnpinComponent(GUIComponent* component) : component_(component) {}
+
+    virtual void Execute() override
+    {
+        GUIComponent* parent = component_->GetParent();
+        if (parent != nullptr)
+        {
+            parent->Detach(component_);
+        }
+    }
+
+private:
+    GUIComponent* component_;
+};
+
 #endif /* _BUTTON_HPP_INCLUDED */

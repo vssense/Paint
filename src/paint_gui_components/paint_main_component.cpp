@@ -79,6 +79,7 @@ public:
 
         if (panel != nullptr)
         {
+            title_bar_->Detach(panel->GetBasicWidget());
             title_bar_->Attach(panel->GetBasicWidget());
         }
     }

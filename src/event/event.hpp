@@ -19,7 +19,7 @@ enum EventType
     kMouseButtonPress,
     kMouseButtonRelease,
     kMouseMotion,
-    kCanvasClose,
+    kComponentClose,
     kRightButtonClick,
 
     kEventsCount
@@ -40,14 +40,14 @@ union EventValue
 {
     int scancode;
     MouseData mouse;
-    GUIComponent* canvas;
+    GUIComponent* component;
 
     EventValue() {}
     EventValue(int scancode) : scancode(scancode) {}
     EventValue(Vec2<int> coordinates) : mouse(coordinates) {}
     EventValue(Vec2<int> coordinates, Vec2<int> d) :
                mouse(coordinates, d) {}
-    EventValue(GUIComponent* canvas) : canvas(canvas) {}
+    EventValue(GUIComponent* component) : component(component) {}
     ~EventValue() {}
 };
 
