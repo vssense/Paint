@@ -1,4 +1,6 @@
 #include "plugin_manager.hpp"
+#include "../api/api.hpp"
+
 #include <dirent.h>
 #include <cstring>
 
@@ -14,7 +16,7 @@ Plugin::Plugin(const char* path, plugin::IAPI* api)
       plugin_(nullptr)
 {
     assert(path);
-    // assert(api);
+    assert(api);
 
     handle_ = dlopen(path, RTLD_NOW);
     if (handle_ == nullptr)
@@ -82,7 +84,7 @@ void Plugin::InitFunctions()
 }
 
 PluginManager::PluginManager()
-    : api_(nullptr)
+    : api_(new API)
 {
     DIR* plugins_dir = opendir(kPluginDir);
     if (plugins_dir == nullptr)
@@ -123,12 +125,28 @@ PluginManager* PluginManager::GetInstance()
     return instance_;
 }
 
+void PluginManager::Destruct()
+{
+    if (instance_ != nullptr)
+    {
+        delete instance_;
+        instance_ = nullptr;
+    }
+}
+
 PluginManager::~PluginManager()
 {
     if (api_ != nullptr)
     {
         delete api_;
     }
+
+    for (Plugin* plugin : loaded_)
+    {
+        delete plugin;
+    }
+
+    loaded_.clear();
 }
 
 const std::vector<Plugin*>& PluginManager::GetPlugins() const

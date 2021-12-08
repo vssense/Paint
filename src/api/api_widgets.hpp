@@ -44,6 +44,7 @@ class APIClickCallback : public ICommand
 {
 public:
     APIClickCallback(IClickCallback* callback = nullptr);
+
     void SetCallback(IClickCallback* callback);
 
     virtual void Execute() override;
@@ -56,9 +57,11 @@ class APISliderCallback : public ISliderResponse
 {
 public:
     APISliderCallback(ISliderCallback* callback = nullptr);
+    
     void SetCallback(ISliderCallback* callback);
 
     virtual void Respond(float old_value, float current_value) override;
+
 
 private:
     ISliderCallback* callback_;
@@ -125,6 +128,7 @@ class APIPreferencesPanel : public IPreferencesPanel, public APIWidget
 {
 public:
     APIPreferencesPanel(PreferencesPanel* panel);
+    ~APIPreferencesPanel();
 
     virtual void Attach(IWidget* widget, int32_t x, int32_t y) override;
 

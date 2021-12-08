@@ -17,10 +17,10 @@ private:
 CanvasTitle::CanvasTitle(const Rectangle& placement, CanvasComponent* canvas) :
     GUIComponent(new Texture(placement.w, placement.h, kTitleColor), placement), canvas_(canvas)
 {
-    Attach(new Border(kBorderColor, placement_));
+    AddBorder(kBorderColor);
     Attach(new Button(Rectangle{placement.w - kTitleWidth, 0, kTitleWidth, kTitleWidth},
                       new ComponentClose(canvas_), new Texture("img/close.bmp"),
-                      new Texture("img/close2.bmp")));
+                      nullptr, new Texture("img/close2.bmp")));
 
     Attach(new TextIcon(placement, "Canvas", kBlack));
 }
@@ -243,5 +243,11 @@ CanvasComponent::CanvasComponent(const Rectangle& placement) : GUIComponent(null
 
     Attach(new Canvas(Rectangle{0, kTitleWidth, placement_.w, placement_.h - kTitleWidth}));
 
-    Attach(new Border(kBorderColor, Rectangle{0, 0, placement_.w, placement.h}));
+    AddBorder(kBorderColor);
+}
+
+void CanvasComponent::AddBorder(Color color, int rounding_size)
+{
+    border_ = new Border(Vec2<int>(placement_.w, placement_.h), color, rounding_size);
+    border_->SetParent(this);
 }

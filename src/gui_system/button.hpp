@@ -20,8 +20,6 @@ public:
 
     virtual ~BasicButton();
 
-    void AddBorder(Color color);
-
     virtual bool ProcessMouseEvent   (const Event& event) override;
     virtual bool ProcessListenerEvent(const Event& event) override;
 

@@ -1,11 +1,11 @@
 #include "api_texture.hpp"
 
-ITexture* TextureFactory::CreateTexture(const char* filename)
+ITexture* APITextureFactory::CreateTexture(const char* filename)
 {
     return new APITexture(new Texture(filename));
 }
 
-ITexture* TextureFactory::CreateTexture(int32_t width, int32_t height)
+ITexture* APITextureFactory::CreateTexture(int32_t width, int32_t height)
 {
     return new APITexture(new Texture(width, height));
 }

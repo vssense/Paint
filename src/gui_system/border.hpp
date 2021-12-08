@@ -3,18 +3,17 @@
 
 #include "gui_component.hpp"
 
+const float kPower = 4;
+
 class Border : public GUIComponent
 {
 public:
-    Border(Color color, const Rectangle& placement) :
-        GUIComponent(new Texture(placement.w, placement.h, kTransparent, color), placement) {}
+    Border(Texture* to_border, Color color, int rounding_size = kDefaultRoundingSize);
+    Border(Vec2<int> size, Color color, int rounding_size);
 
-    virtual ~Border() override {}
 
-    virtual bool ProcessMouseEvent(const Event& event) override
-    {
-        return false;
-    }
+    virtual bool ProcessMouseEvent(const Event& event) override;
+    virtual void Render() override;
 };
 
 #endif /* _BORDER_HPP_INCLUDED */

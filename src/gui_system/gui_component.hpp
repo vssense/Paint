@@ -8,6 +8,8 @@
 #include "../graphics/renderer.hpp"
 #include <list>
 
+const int kDefaultRoundingSize = 15;
+
 class GUISystem;
 
 class GUIComponent : public IListener
@@ -23,11 +25,14 @@ public:
 
     virtual void Move(Vec2<int> d);
     virtual void Render();
+
+    virtual void AddBorder(Color color, int rounding_size = kDefaultRoundingSize);
  
     void Attach(GUIComponent* component);
     void Detach(GUIComponent* component);
     void SetGUISystem(GUISystem* system);
 
+    void SetParent(GUIComponent* parent);
     GUIComponent* GetParent() const;
     GUISystem* GetSystem();
 
@@ -36,6 +41,8 @@ public:
 protected:
     Texture* texture_;
     Rectangle placement_;
+
+    GUIComponent* border_;
 
     GUIComponent* parent_;
     GUISystem* system_;

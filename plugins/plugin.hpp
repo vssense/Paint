@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <list>
+#include <iostream>
 
 namespace plugin {
 
@@ -52,6 +53,7 @@ class IClickCallback {
 
     virtual void RespondOnClick() = 0;
 };
+
 
 class ISliderCallback {
 public:

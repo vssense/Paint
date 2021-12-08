@@ -24,26 +24,3 @@ uint8_t GetA(Color color)
 {
     return (color >> (3 * kByteSize)) & 0xFF;
 }
-
-Color SetB(Color color, uint8_t black)
-{
-    return (color & 0x00) | black;
-}
-
-Color SetG(Color color, uint8_t green)
-{
-    color = (color >> kByteSize) & 0x00; 
-    return (color >> kByteSize) | green;
-}
-
-Color SetR(Color color, uint8_t red)
-{
-    color = (color >> 2 * kByteSize) & 0x00; 
-    return (color >> 2 * kByteSize) | red;
-}
-
-Color SetA(Color color, uint8_t alpha)
-{
-    color = (color >> 3 * kByteSize) & 0x00; 
-    return (color >> 3 * kByteSize) | alpha;
-}

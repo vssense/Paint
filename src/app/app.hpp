@@ -6,6 +6,8 @@
 #include "../event/event.hpp"
 #include "../paint_gui_system/paint_gui_system.hpp"
 #include "../paint_gui_components/paint_main_component.hpp"
+#include "../instruments/tool.hpp"
+#include "../instruments/filter.hpp"
 
 class App
 {

@@ -9,10 +9,10 @@ using namespace plugin;
 
 #define GetHeight GetHieght
 
-class TextureFactory : public ITextureFactory
+class APITextureFactory : public ITextureFactory
 {
 public:
-    TextureFactory() {}
+    APITextureFactory() {}
     virtual ITexture* CreateTexture(const char* filename) override;
     virtual ITexture* CreateTexture(int32_t width, int32_t height) override;
 };

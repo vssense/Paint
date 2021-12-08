@@ -4,19 +4,21 @@
 #include "color.hpp"
 #include "texture.hpp"
 #include "window.hpp"
+#include "../instruments/plugin_manager.hpp"
+#include "../instruments/instrument_manager.hpp"
 #include "../math/rectangle.hpp"
 #include "../math/vector2.hpp"
 
 class Renderer
 {
+private:
+    Renderer(Window* window);
+    ~Renderer();
+
 public:
     static Renderer* GetInstance();
     static void      Construct(Window* window);
-private:
-    Renderer(Window* window);
-
-public:
-    ~Renderer();
+    static void      Destruct();
 
     void DrawLine(Texture* texture, int x1, int y1, int x2, int y2, uint32_t thickness);
     void DrawLine(int x1, int y1, int x2, int y2, uint32_t thickness);

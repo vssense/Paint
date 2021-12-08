@@ -2,10 +2,7 @@
 
 //TODO:
 // Add border as a field to GUIComponent? Also make it more beautiful
-// PluginManager - loads all plugins from plugins directory
-// FilterManager - as tool manager, just for filters
-
-// who delete tools? now it does ToolManager and also plugin in Destroy()
+// WHO DELETE SINGLETONS BLYAT
 
 void App::Run()
 {
@@ -52,4 +49,9 @@ void App::Run()
         system.Render();
         renderer->Present();
     }
+
+    Renderer::Destruct();
+    PluginManager::Destruct();
+    // Manager<ITool*>::Destruct();
+    // Manager<IFilter*>::Destruct();
 }

@@ -75,7 +75,7 @@ public:
     {
         APIPreferencesPanel* panel = dynamic_cast<APIPreferencesPanel*>(tool_->GetPreferencesPanel());
 
-        printf("Try to attach\n");
+        Manager<ITool>::GetInstance()->SetActive(tool_);
 
         if (panel != nullptr)
         {
@@ -137,7 +137,7 @@ MainTitleBar::MainTitleBar(PaintMainComponent* component) :
 {
     Attach(new Button(Rectangle{kWindowWidth - kTitleWidth, 0, kTitleWidth, kTitleWidth},
                       new MainTitleClose, new Texture("img/close.bmp"),
-                      new Texture("img/close2.bmp")));
+                      nullptr, new Texture("img/close2.bmp")));
 
     DropDownList* list = new DropDownList(Rectangle{0, kTitleWidth, 3 * kTitleButtonsWidth / 2, kWindowHeight - kTitleWidth},
                                           kTitleWidth, kLightPurple, kWhite);
@@ -159,7 +159,7 @@ MainTitleBar::MainTitleBar(PaintMainComponent* component) :
 
     Attach(canvas);
     Attach(CreateTools(Rectangle{2 * kTitleButtonsWidth, 0, kTitleButtonsWidth, kTitleWidth}));
-    Attach(new Border(kBorderColor, placement_));
+    AddBorder(kBorderColor);
     Attach(new TextIcon(placement_, "Paint", kBlack));
 }
 
@@ -168,7 +168,8 @@ PaintMainComponent::PaintMainComponent(Texture* texture) :
 {
 
     Attach(new MainTitleBar(this));
-    Attach(new Border(kBorderColor, placement_));
+
+    AddBorder(kBorderColor);
 
     Attach(new Bagel(Vec2<int>(400, 400), 200, 150, kRed));
 }

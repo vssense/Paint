@@ -35,11 +35,6 @@ BasicButton::BasicButton(const Rectangle& placement, ICommand* command, uint32_t
     Attach(new TextIcon(placement, text, font_color));
 }
 
-void BasicButton::AddBorder(Color color)
-{
-    Attach(new Border(color, Rectangle{0, 0, placement_.w, placement_.h}));
-}
-
 bool BasicButton::ProcessListenerEvent(const Event& event)
 {
     return true;
@@ -129,7 +124,6 @@ Button::Button(const Rectangle& placement, ICommand* command, Color on_release, 
 
     Attach(new TextIcon(placement, text, font_color));
 }
-
 
 Button::~Button()
 {

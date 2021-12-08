@@ -9,6 +9,7 @@ class ISliderResponse
 {
 public:
     virtual ~ISliderResponse() {}
+
     virtual void Respond(float old_value, float current_value) = 0;
 };
 

@@ -86,9 +86,6 @@ Slider::Slider(const Rectangle& placement, Texture* texture, ISliderResponse* ca
 
     Attach(thumb_);
     thumb_->SetSlider(this);
-
-    Renderer::GetInstance()->SetColor(kBlack);
-    Renderer::GetInstance()->DrawRect(texture_, Rectangle{0, 0, placement_.w, placement_.h});
 }
 
 Slider::~Slider()

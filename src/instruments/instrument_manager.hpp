@@ -9,10 +9,11 @@ class Manager
 {
 private:
     Manager();
+    ~Manager();
 
 public:
-    static Manager<Instrument>* GetInstance();
-    ~Manager();
+    static Manager* GetInstance();
+    static void Destruct();
 
     void Add(Instrument* tool);
     void SetActive(Instrument* tool);
@@ -24,6 +25,9 @@ private:
     std::vector<Instrument*> instruments_;
     static Manager* instance_;
 };
+
+template <class Instrument>
+Manager<Instrument>* Manager<Instrument>::instance_ = nullptr;
 
 template <class Instrument>
 Manager<Instrument>::Manager() :
@@ -42,7 +46,14 @@ Manager<Instrument>* Manager<Instrument>::GetInstance()
 }
 
 template <class Instrument>
-Manager<Instrument>* Manager<Instrument>::instance_ = nullptr;
+void Manager<Instrument>::Destruct()
+{
+    if (instance_ != nullptr)
+    {
+        delete instance_;
+        instance_ = nullptr;
+    }
+}
 
 template <class Instrument>
 void Manager<Instrument>::Add(Instrument* instrument)

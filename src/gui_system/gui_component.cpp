@@ -1,8 +1,13 @@
 #include "gui_component.hpp"
 #include "gui_system.hpp"
+#include "border.hpp"
 
 GUIComponent::GUIComponent(Texture* texture, const Rectangle& relative_placement) :
-    texture_(texture), placement_(relative_placement), parent_(nullptr), system_(nullptr) {}
+    texture_(texture),
+    placement_(relative_placement),
+    border_(nullptr),
+    parent_(nullptr),
+    system_(nullptr) {}
 
 GUIComponent::~GUIComponent()
 {
@@ -14,6 +19,11 @@ GUIComponent::~GUIComponent()
     for (auto it = children_.begin(); it != children_.end(); ++it)
     {
         delete (*it);
+    }
+
+    if (border_ != nullptr)
+    {
+        delete border_;
     }
 }
 
@@ -66,6 +76,11 @@ void GUIComponent::Move(Vec2<int> d)
     {
         (*it)->Move(d);
     }
+
+    if (border_ != nullptr)
+    {
+        border_->Move(d);
+    }
 }
 
 void GUIComponent::Render()
@@ -80,6 +95,17 @@ void GUIComponent::Render()
         --it;
         (*it)->Render();
     }
+
+    if (border_ != nullptr)
+    {
+        border_->Render();
+    }
+}
+
+void GUIComponent::AddBorder(Color color, int rounding_size)
+{
+    border_ = new Border(texture_, kBlack, rounding_size);
+    border_->parent_ = this;
 }
 
 void GUIComponent::Attach(GUIComponent* component)
@@ -103,7 +129,7 @@ void GUIComponent::Detach(GUIComponent* component)
             children_.erase(it);
             break;
         }
-    }    
+    }
 }
 
 void GUIComponent::SetGUISystem(GUISystem* system)
@@ -114,6 +140,11 @@ void GUIComponent::SetGUISystem(GUISystem* system)
     {
         (*it)->SetGUISystem(system);
     }
+}
+
+void GUIComponent::SetParent(GUIComponent* parent)
+{
+    parent_ = parent;
 }
 
 GUIComponent* GUIComponent::GetParent() const

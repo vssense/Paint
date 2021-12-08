@@ -1,8 +1,14 @@
 #include "api.hpp"
 
-API::API(IWidgetFactory* widget_factory, ITextureFactory* texture_factory)
-    : widget_factory_(widget_factory),
-      texture_factory_(texture_factory) {}
+API::API()
+    : widget_factory_(new APIWidgetFactory),
+      texture_factory_(new APITextureFactory) {}
+
+API::~API()
+{
+    delete widget_factory_;
+    delete texture_factory_;
+}
 
 IWidgetFactory* API::GetWidgetFactory()
 {
@@ -13,3 +19,5 @@ ITextureFactory* API::GetTextureFactory()
 {
     return texture_factory_;
 }
+
+

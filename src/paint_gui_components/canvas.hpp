@@ -11,6 +11,8 @@ class CanvasComponent : public GUIComponent
 {
 public:
     CanvasComponent(const Rectangle& placement);
+
+    virtual void AddBorder(Color color, int rounding_size = kDefaultRoundingSize) override;
 };
 
 #endif /* _CANVAS_HPP_INCLUDED */

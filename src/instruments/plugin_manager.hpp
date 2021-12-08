@@ -31,10 +31,12 @@ class PluginManager
 {
 private:
     PluginManager();
+    ~PluginManager();
 
 public:
     static PluginManager* GetInstance();
-    ~PluginManager();
+    static void Destruct();
+
 
     const std::vector<Plugin*>& GetPlugins() const;
 

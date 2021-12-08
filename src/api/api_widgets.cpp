@@ -34,15 +34,16 @@ IButton* APIWidgetFactory::CreateButtonWithText(int32_t width, int32_t height, c
 
 ISlider* APIWidgetFactory::CreateDefaultSlider(float range_min, float range_max)
 {
-    return CreateSlider(2 * kDefaultButtonsWidth, kDefaultButtonsHeight, range_min, range_max);
+    return CreateSlider(kDefaultPreferencesPanelWidth - 2 * kTabSize, kDefaultButtonsHeight, 0, 1);
 }
 
 ISlider* APIWidgetFactory::CreateSlider(int32_t width, int32_t height, float range_min, float range_max)
 {
-    APISliderCallback* callback = new APISliderCallback; 
+    APISliderCallback* callback = new APISliderCallback;
+    Thumb* thumb = new Thumb(Vec2<int>(height, height), new Texture("img/thumb.bmp")); 
     return new APISlider(new HorizontalSlider(Rectangle{0, 0, width, height},
-                                              new Texture(width, height, kDefaultOnReleaseColor),
-                                              callback, range_min, range_max), callback);
+                                              new Texture("img/track.bmp"),
+                                              callback, thumb, range_min, range_max), callback);
 }
 
 ISlider* APIWidgetFactory::CreateSlider(int32_t width, int32_t height, float thumb_width, float thumb_height,
@@ -54,7 +55,7 @@ ISlider* APIWidgetFactory::CreateSlider(int32_t width, int32_t height, float thu
 
 ILabel* APIWidgetFactory::CreateDefaultLabel(const char* text)
 {
-    return CreateLabel(kDefaultButtonsWidth, kDefaultButtonsHeight, text, 0);
+    return CreateLabel(kDefaultPreferencesPanelWidth - 2 * kTabSize, kDefaultButtonsHeight, text, 0);
 }
 
 ILabel* APIWidgetFactory::CreateLabel(int32_t width, int32_t height, const char* text, int32_t char_size)
@@ -181,10 +182,12 @@ GUIComponent* APILabel::GetBasicWidget() const
 APIPreferencesPanel::APIPreferencesPanel(PreferencesPanel* panel)
     : panel_(panel) {}
 
+APIPreferencesPanel::~APIPreferencesPanel() {}
+
 void APIPreferencesPanel::Attach(IWidget* widget, int32_t x, int32_t y)
 {
     APIWidget* api_widget = dynamic_cast<APIWidget*>(widget);
-    panel_->AttachWithCoordinates(api_widget->GetBasicWidget(), Vec2<int32_t>(x, y));
+    panel_->AttachWithCoordinates(api_widget->GetBasicWidget(), Vec2<int32_t>(x, 30 + y));
 }
 
 int32_t APIPreferencesPanel::GetWidth()

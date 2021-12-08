@@ -8,7 +8,9 @@
 class API : public IAPI
 {
 public:
-    API(IWidgetFactory* widget_factory, ITextureFactory* texture_factory);
+    API();
+    ~API();
+
     virtual IWidgetFactory*  GetWidgetFactory () override;
     virtual ITextureFactory* GetTextureFactory() override;
 
