@@ -37,7 +37,7 @@ void APITexture::LoadBuffer(Buffer buffer)
 {
     assert(this == buffer.texture);
 
-    texture_->ReleaseBuffer(buffer.pixels);
+    texture_->LoadBuffer(buffer.pixels);
 }
 
 void APITexture::Clear(Color color)

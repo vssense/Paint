@@ -107,20 +107,22 @@ Color* Texture::ReadBuffer()
 {
     Vec2<uint32_t> size = GetSize();
     Color* buffer = new Color[size.x * size.y];
+    assert(buffer);
 
     Renderer* renderer = Renderer::GetInstance();
     renderer->SetRenderTarget(this);
-    assert(!SDL_RenderReadPixels(renderer->GetRenderer(), NULL, 0, buffer, size.x));
+    assert(!SDL_RenderReadPixels(renderer->GetRenderer(), NULL, SDL_PIXELFORMAT_RGBA8888,
+                                 buffer, size.x * sizeof(Color)));
 
     return buffer;
 }
 
 void Texture::LoadBuffer(Color* buffer)
 {
-    ;//FIXME:
+    assert(!SDL_UpdateTexture(texture_, NULL, buffer, GetSize().x * sizeof(Color)));
 }
 
 void Texture::ReleaseBuffer(Color* buffer)
 {
-    delete buffer;
+    delete[] buffer;
 }

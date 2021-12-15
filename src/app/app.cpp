@@ -1,7 +1,6 @@
 #include "app.hpp"
 
 //TODO:
-// Add border as a field to GUIComponent? Also make it more beautiful
 // WHO DELETE SINGLETONS BLYAT
 
 void App::Run()
@@ -52,6 +51,5 @@ void App::Run()
 
     Renderer::Destruct();
     PluginManager::Destruct();
-    // Manager<ITool*>::Destruct();
-    // Manager<IFilter*>::Destruct();
+    TextureManager::Destruct();
 }

@@ -21,7 +21,7 @@ GUIComponent::~GUIComponent()
 
     for (auto it = children_.begin(); it != children_.end(); ++it)
     {
-        delete (*it);
+        delete *it;
     }
 
     if (border_ != nullptr)
