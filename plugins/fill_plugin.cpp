@@ -19,6 +19,7 @@ public:
     virtual void Action     (ITexture* canvas, int x, int y, int dx, int dy);
     virtual void ActionEnd  (ITexture* canvas, int x, int y);
 
+    virtual const char* GetName() const override;
     virtual const char* GetIconFileName() const;
     virtual IPreferencesPanel* GetPreferencesPanel() const;
 
@@ -27,6 +28,11 @@ private:
 
     IPreferencesPanel* panel_;
 };
+
+const char* FillTool::GetName() const
+{
+    return "Fill";
+}
 
 FillTool::FillTool()
     : color_(0xFF'00'00'00),

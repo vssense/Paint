@@ -119,8 +119,8 @@ Button* MainTitleBar::CreateTools(const Rectangle& placement)
                                                      kTitleWidth, kLightPurple, kWhite);
 
     ITool* brush = new Brush;
-    tools->AttachButton(manager->GetTexture(brush->GetIconFileName()), new Setter<ITool>(brush),
-                        new PreferencesPanelOpener<ITool>(brush, this));
+    tools->AttachButton(manager->GetTexture(brush->GetIconFileName()), brush->GetName(),
+                        new Setter<ITool>(brush), new PreferencesPanelOpener<ITool>(brush, this));
 
     Manager<ITool>::GetInstance()->Add(brush);
     Button* tool = new Button(placement, new DropDownListOpener(tools), kTitleColor,
@@ -175,7 +175,7 @@ void MainTitleBar::AttachPluginsTools(DropDownList* tools)
 
         for (ITool* tool : plugin->GetTools())
         {
-            tools->AttachButton(texture_manager->GetTexture(tool->GetIconFileName()),
+            tools->AttachButton(texture_manager->GetTexture(tool->GetIconFileName()), tool->GetName(),
                                 new Setter<ITool>(tool), new PreferencesPanelOpener<ITool>(tool, this));
         }
     }
@@ -188,15 +188,11 @@ MainTitleBar::MainTitleBar(PaintMainComponent* component) :
     TextureManager* manager = TextureManager::GetInstance();
 
     Attach(new Button(Rectangle{kWindowWidth - kTitleWidth, 0, kTitleWidth, kTitleWidth},
-                      new MainTitleClose, manager->GetTexture("img/close.bmp"),
-                      nullptr,            manager->GetTexture("img/close2.bmp")));
+                      new MainTitleClose, manager->GetTexture(kCloseButtonPath),
+                      nullptr,            manager->GetTexture(kClose2ButtonPath)));
 
     DropDownList* list = new DropDownList(Rectangle{0, kTitleWidth, 3 * kTitleButtonsWidth / 2, kWindowHeight - kTitleWidth},
                                           kTitleWidth, kLightPurple, kWhite);
-
-    list->AttachButton("button1", new ListButtonCommand("button1"));
-    list->AttachButton("button2", new ListButtonCommand("button2"));
-    list->AttachButton("button3", new ListButtonCommand("button3"));
 
     Button* file = new Button(Rectangle{0, 0, kTitleButtonsWidth, kTitleWidth},
                               new DropDownListOpener(list), kTitleColor, kGray, kWhite, "File", kBlack);

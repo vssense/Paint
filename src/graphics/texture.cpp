@@ -30,7 +30,8 @@ Texture::Texture(uint32_t width, uint32_t height, Color bg, Color border) :
 }
 
 Texture::Texture(const char* path)
-    : manager_owns_(false)
+    : texture_(nullptr),
+      manager_owns_(false)
 {
     assert(path);
 
@@ -38,7 +39,7 @@ Texture::Texture(const char* path)
     if (surface == nullptr)
     {
         printf("Can't load bmp from %s\n", path);
-        assert(0);
+        return;
     }
 
     Renderer* renderer = Renderer::GetInstance();

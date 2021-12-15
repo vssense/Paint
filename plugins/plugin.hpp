@@ -146,6 +146,7 @@ class ITool {
     virtual void ActionEnd  (ITexture* canvas, int x, int y) = 0;
 
     virtual const char* GetIconFileName() const = 0;
+    virtual const char* GetName() const = 0;
     virtual IPreferencesPanel* GetPreferencesPanel() const = 0;
 };
 

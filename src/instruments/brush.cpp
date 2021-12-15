@@ -55,6 +55,11 @@ void Brush::ActionEnd(ITexture* canvas, int x, int y)
     canvas->DrawCircle(x, y, 10, color_);
 }
 
+const char* Brush::GetName() const
+{
+    return "Brush";
+}
+
 const char* Brush::GetIconFileName() const
 {
     return "img/brush.bmp";

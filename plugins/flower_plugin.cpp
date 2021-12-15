@@ -17,6 +17,7 @@ public:
     virtual void ActionEnd  (ITexture* canvas, int x, int y);
 
     virtual const char* GetIconFileName() const;
+    virtual const char* GetName() const override;
     virtual IPreferencesPanel* GetPreferencesPanel() const;
 
     void SetHeight(int height);
@@ -71,6 +72,11 @@ public:
 private:
     FlowerTool* tool_;
 };
+
+const char* FlowerTool::GetName() const
+{
+    return "Flower";
+}
 
 void FlowerTool::SetHeight(int height)
 {

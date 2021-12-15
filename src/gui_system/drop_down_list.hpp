@@ -18,6 +18,7 @@ public:
 
     void AttachButton(const char* title, ICommand* command, ICommand* right_button_press = nullptr);
     void AttachButton(Texture* texture, ICommand* command, ICommand* right_button_press = nullptr);
+    void AttachButton(Texture* texture, const char* name, ICommand* command, ICommand* right_button_press);
 
     void Hide();
     void Show();

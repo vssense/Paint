@@ -7,8 +7,8 @@ PreferencesPanel::PreferencesPanel(const Rectangle& placement, Color color)
 {
     TextureManager* manager = TextureManager::GetInstance();
     Attach(new Button(Rectangle{placement_.w - kTitleWidth, 0, kTitleWidth, kTitleWidth},
-                     new UnpinComponent(this), manager->GetTexture("img/close.bmp"),
-                     nullptr,                  manager->GetTexture("img/close2.bmp")));
+                     new UnpinComponent(this), manager->GetTexture(kCloseButtonPath),
+                     nullptr,                  manager->GetTexture(kClose2ButtonPath)));
 }
 
 void PreferencesPanel::AttachWithCoordinates(GUIComponent* component, Vec2<int> coordinates)

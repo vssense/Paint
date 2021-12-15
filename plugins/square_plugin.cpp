@@ -21,6 +21,7 @@ public:
     virtual void Action     (ITexture* canvas, int x, int y, int dx, int dy) override;
     virtual void ActionEnd  (ITexture* canvas, int x, int y) override;
 
+    virtual const char* GetName() const override;
     virtual const char* GetIconFileName() const override;
     virtual IPreferencesPanel* GetPreferencesPanel() const override;
 
@@ -48,6 +49,11 @@ private:
     Color color_;
     uint32_t thickness_;
 };
+
+const char* SquareTool::GetName() const
+{
+    return "Square";
+}
 
 Color SquareTool::GetColor() const
 {

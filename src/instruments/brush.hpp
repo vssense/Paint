@@ -19,6 +19,7 @@ public:
     virtual void Action     (ITexture* canvas, int x, int y, int dx, int dy) override;
     virtual void ActionEnd  (ITexture* canvas, int x, int y) override;
 
+    virtual const char* GetName() const override;
     virtual const char* GetIconFileName() const override;
     virtual IPreferencesPanel* GetPreferencesPanel() const override;
 

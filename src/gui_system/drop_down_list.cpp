@@ -1,4 +1,5 @@
 #include "drop_down_list.hpp"
+#include "../graphics/texture_manager.hpp"
 
 DropDownList::DropDownList(const Rectangle& placement, uint32_t button_height,
                            Color button_color, Color button_hover_color)
@@ -21,10 +22,34 @@ void DropDownList::AttachButton(Texture* texture, ICommand* command, ICommand* r
 void DropDownList::AttachButton(const char* title, ICommand* command, ICommand* right_button_press)
 {
     Button* button = AttachButton(command, right_button_press);
+    
     if (button != nullptr)
     {
-        button->Attach(new TextIcon(button->GetPlacement(), title, kBlack));
+        TextIcon* icon = new TextIcon(button->GetPlacement(), title, kBlack);
+        button->Attach(icon);
     }
+}
+
+void DropDownList::AttachButton(Texture* texture, const char* name, ICommand* command, ICommand* right_button_press)
+{
+    Button* button = AttachButton(command, right_button_press);
+
+    if (button != nullptr)
+    {
+        Rectangle left = button->GetPlacement();
+        left.w = texture->GetSize().x;
+        Icon* icon = new Icon(texture, left);
+        button->Attach(icon);
+
+        int move = left.w;
+        left.w = button->GetPlacement().w - left.w;
+
+        TextIcon* text_icon = new TextIcon(left, name, kBlack);
+        text_icon->Move({move, 0});
+
+        button->Attach(text_icon);
+    }
+
 }
 
 Button* DropDownList::AttachButton(ICommand* command, ICommand* right_button_press)
@@ -33,7 +58,7 @@ Button* DropDownList::AttachButton(ICommand* command, ICommand* right_button_pre
     {
         return nullptr;
     }
-    
+
     Button* button = new Button(Rectangle{0, 0 + current_height_, placement_.w, button_height_},
                                 command,
                                 button_color_,

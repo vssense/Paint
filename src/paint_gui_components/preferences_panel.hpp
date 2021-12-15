@@ -4,8 +4,8 @@
 #include "../gui_system/gui_component.hpp"
 #include "../gui_system/button.hpp"
 
-const int kDefaultPreferencesPanelWidth  = 250;
-const int kDefaultPreferencesPanelHeight = 300;
+const int kDefaultPreferencesPanelWidth  = 300;
+const int kDefaultPreferencesPanelHeight = 400;
 const int kTabSize = 10;
 
 const Rectangle kDefaultPreferencesPanelPlacement = 

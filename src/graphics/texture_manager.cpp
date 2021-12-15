@@ -1,9 +1,29 @@
 #include "texture_manager.hpp"
 #include "texture.hpp"
 
+const int kDefaultSize = 30;
+
 TextureManager* TextureManager::instance_ = nullptr;
 
-TextureManager::TextureManager() {}
+TextureManager::TextureManager()
+    : default_texture_(nullptr)
+{
+    default_texture_ = GetTexture(kNotFoundPath);
+
+    if (default_texture_ == nullptr)
+    {
+        assert(0);
+        default_texture_ = new Texture(kDefaultSize, kDefaultSize, kRed, kYellow);
+    }
+
+    GetTexture(kCloseButtonPath);
+    GetTexture(kClose2ButtonPath);
+    GetTexture(kHorizontalThumbPath);
+    GetTexture(kVerticalThumbPath);
+    GetTexture(kNotFoundPath);
+    GetTexture(kSliderThumbPath);
+    GetTexture(kSliderTrackPath);
+}
 
 TextureManager* TextureManager::GetInstance()
 {
@@ -42,14 +62,19 @@ Texture* TextureManager::GetTexture(const std::string& path)
     }
 
     Texture* new_texture = new Texture(path.c_str());
-    if (new_texture == nullptr)
+    if (new_texture->GetTexture() == nullptr)
     {
-        fprintf(stderr, "Can't load texture from %s\n", path.c_str());
-        return nullptr;
+        delete new_texture;
+        return default_texture_;
     }
 
     new_texture->SetManagerOwner();
     loaded_textures_.insert(std::pair<std::string, Texture*>(path, new_texture));
 
     return new_texture;
+}
+
+Texture* TextureManager::GetDefaulTexture() const
+{
+    return default_texture_;
 }

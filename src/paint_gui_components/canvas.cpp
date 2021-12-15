@@ -22,8 +22,8 @@ CanvasTitle::CanvasTitle(const Rectangle& placement, CanvasComponent* canvas) :
     TextureManager* manager = TextureManager::GetInstance();
 
     Attach(new Button(Rectangle{placement.w - kTitleWidth, 0, kTitleWidth, kTitleWidth},
-                      new ComponentClose(canvas_), manager->GetTexture("img/close.bmp"),
-                      nullptr,                     manager->GetTexture("img/close2.bmp")));
+                      new ComponentClose(canvas_), manager->GetTexture(kCloseButtonPath),
+                      nullptr,                     manager->GetTexture(kClose2ButtonPath)));
 
     Attach(new TextIcon(placement, "Canvas", kBlack));
 }
@@ -255,8 +255,8 @@ CanvasComponent::CanvasComponent(const Rectangle& placement) : GUIComponent(null
     Canvas* canvas = new Canvas(Rectangle{0, kTitleWidth, placement_.w - kTitleWidth, placement_.h - 2 * kTitleWidth});
     Attach(canvas);
 
-    Texture* vthumb_texture = manager->GetTexture("img/vthumb.bmp");
-    Texture* hthumb_texture = manager->GetTexture("img/hthumb.bmp");
+    Texture* vthumb_texture = manager->GetTexture(kVerticalThumbPath);
+    Texture* hthumb_texture = manager->GetTexture(kHorizontalThumbPath);
 
     Attach(new HorizontalSlider(Rectangle{0, placement_.h - kTitleWidth, placement_.w - kTitleWidth, kTitleWidth},
                                 new Texture(placement_.w, kTitleWidth, kWhite, kBlack),

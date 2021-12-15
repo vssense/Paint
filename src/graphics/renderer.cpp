@@ -140,7 +140,10 @@ void Renderer::CopyTexture(Texture* texture, const Rectangle& dst_rect)
     assert(texture);
     SDL_Rect dst_rectangle{dst_rect.x0, dst_rect.y0, dst_rect.w,  dst_rect.h};
 
-    assert(!SDL_RenderCopy(renderer_, texture->GetTexture(), NULL, &dst_rectangle));
+    if (SDL_RenderCopy(renderer_, texture->GetTexture(), NULL, &dst_rectangle) != 0)
+    {
+        printf("SDL error = %s\n", SDL_GetError());
+    }
 }
 
 void Renderer::CopyTexture(Texture* src, Texture* dst, const Rectangle& src_rect, const Rectangle& dst_rect)
