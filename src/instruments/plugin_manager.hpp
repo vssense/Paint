@@ -37,7 +37,6 @@ public:
     static PluginManager* GetInstance();
     static void Destruct();
 
-
     const std::vector<Plugin*>& GetPlugins() const;
 
 private:

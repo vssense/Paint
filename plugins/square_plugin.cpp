@@ -217,20 +217,18 @@ SquareTool::SquareTool()
 
 SquareTool::~SquareTool()
 {
-    if (panel_ != nullptr)
-    {
-        delete panel_;
-    }
-
-    if (thickness_slider_ != nullptr)
-    {
-        delete thickness_slider_;
-    }
-
-    if (callback_ != nullptr)
-    {
-        delete callback_;
-    }
+    delete panel_;
+    
+    delete thickness_slider_;
+    delete callback_;
+    
+    delete color_label_;
+    delete color_slider_r;
+    delete color_slider_g;
+    delete color_slider_b;
+    delete color_callback_r;
+    delete color_callback_g;
+    delete color_callback_b;
 }
 
 void SquareTool::ActionBegin(ITexture* canvas, int x, int y)
