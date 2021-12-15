@@ -24,8 +24,13 @@ public:
     void   LoadBuffer(Color* buffer);
     void   ReleaseBuffer(Color* buffer);
 
+    void SetManagerOwner();
+    bool IsManagerOwner();
+
 private:
     SDL_Texture* texture_;
+
+    bool manager_owns_;
 };
 
 #endif /* _TEXTURE_H_INCLUDED */

@@ -91,11 +91,13 @@ private:
 
 Button* MainTitleBar::CreateTools(const Rectangle& placement)
 {
+    TextureManager* manager = TextureManager::GetInstance();
     DropDownList* tools = new DropDownList(Rectangle{0, placement.h, 3 * placement.w / 2, kWindowHeight / 2},
                                                      kTitleWidth, kLightPurple, kWhite);
 
     Brush* brush = new Brush;
-    tools->AttachButton(new Texture(brush->GetIconFileName()), new ToolSetter(brush), new PreferencesPanelOpener(brush, this));
+    tools->AttachButton(manager->GetTexture(brush->GetIconFileName()), new ToolSetter(brush),
+                        new PreferencesPanelOpener(brush, this));
 
     Manager<ITool>::GetInstance()->Add(brush);
     Button* tool = new Button(placement, new DropDownListOpener(tools), kTitleColor,
@@ -114,6 +116,8 @@ void MainTitleBar::AttachPluginsTools(DropDownList* tools)
     assert(tools);
 
     PluginManager* manager = PluginManager::GetInstance();
+    TextureManager* texture_manager = TextureManager::GetInstance();
+
     for (Plugin* loaded : manager->GetPlugins())
     {
         IPlugin* plugin = loaded->GetPlugin();
@@ -125,8 +129,8 @@ void MainTitleBar::AttachPluginsTools(DropDownList* tools)
 
         for (ITool* tool : plugin->GetTools())
         {
-            tools->AttachButton(new Texture(tool->GetIconFileName()), new ToolSetter(tool),
-                                new PreferencesPanelOpener(tool, this));
+            tools->AttachButton(texture_manager->GetTexture(tool->GetIconFileName()),
+                                new ToolSetter(tool), new PreferencesPanelOpener(tool, this));
         }
     }
 }
@@ -135,16 +139,18 @@ MainTitleBar::MainTitleBar(PaintMainComponent* component) :
     GUIComponent(new Texture(kWindowWidth, kTitleWidth, kTitleColor),
                  Rectangle{0, 0, kWindowWidth, kTitleWidth})
 {
+    TextureManager* manager = TextureManager::GetInstance();
+
     Attach(new Button(Rectangle{kWindowWidth - kTitleWidth, 0, kTitleWidth, kTitleWidth},
-                      new MainTitleClose, new Texture("img/close.bmp"),
-                      nullptr, new Texture("img/close2.bmp")));
+                      new MainTitleClose, manager->GetTexture("img/close.bmp"),
+                      nullptr,            manager->GetTexture("img/close2.bmp")));
 
     DropDownList* list = new DropDownList(Rectangle{0, kTitleWidth, 3 * kTitleButtonsWidth / 2, kWindowHeight - kTitleWidth},
                                           kTitleWidth, kLightPurple, kWhite);
 
-    list->AttachButton("button1", new ListButtonCommand("button1"));
-    list->AttachButton("button2", new ListButtonCommand("button2"));
-    list->AttachButton("button3", new ListButtonCommand("button3"));
+    // list->AttachButton("button1", new ListButtonCommand("button1"));
+    // list->AttachButton("button2", new ListButtonCommand("button2"));
+    // list->AttachButton("button3", new ListButtonCommand("button3"));
 
     Button* file = new Button(Rectangle{0, 0, kTitleButtonsWidth, kTitleWidth},
                               new DropDownListOpener(list), kTitleColor, kGray, kWhite, "File", kBlack);

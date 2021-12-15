@@ -138,12 +138,18 @@ Button::~Button()
 
     if (on_hover_ != on_release_)
     {
-        delete on_hover_;
+        if (!on_hover_->IsManagerOwner())
+        {
+            delete on_hover_;
+        }
     }
 
     if (on_press_ != on_release_ && on_press_ != on_hover_)
     {
-        delete on_press_;
+        if (!on_press_->IsManagerOwner())
+        {
+            delete on_press_;
+        }
     }
 
 

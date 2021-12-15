@@ -13,7 +13,10 @@ GUIComponent::~GUIComponent()
 {
     if (texture_ != nullptr)
     {
-        delete texture_;
+        if (!texture_->IsManagerOwner())
+        {
+            delete texture_;
+        }
     }
 
     for (auto it = children_.begin(); it != children_.end(); ++it)

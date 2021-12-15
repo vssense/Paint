@@ -3,6 +3,7 @@
 
 #include <dlfcn.h>
 
+#include "../graphics/texture_manager.hpp" 
 #include "../gui_system/gui_component.hpp"
 #include "../gui_system/button.hpp"
 #include "../gui_system/drop_down_list.hpp"

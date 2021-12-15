@@ -1,12 +1,14 @@
 #include "preferences_panel.hpp"
 #include "../paint_gui_components/paint_main_component.hpp"
+#include "../graphics/texture_manager.hpp"
 
 PreferencesPanel::PreferencesPanel(const Rectangle& placement, Color color)
     : GUIComponent(new Texture(placement.w, placement.h, color, kBlack), placement)
 {
+    TextureManager* manager = TextureManager::GetInstance();
     Attach(new Button(Rectangle{placement_.w - kTitleWidth, 0, kTitleWidth, kTitleWidth},
-                     new UnpinComponent(this), new Texture("img/close.bmp"),
-                     nullptr, new Texture("img/close2.bmp")));
+                     new UnpinComponent(this), manager->GetTexture("img/close.bmp"),
+                     nullptr,                  manager->GetTexture("img/close2.bmp")));
 }
 
 void PreferencesPanel::AttachWithCoordinates(GUIComponent* component, Vec2<int> coordinates)

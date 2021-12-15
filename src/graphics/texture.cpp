@@ -3,6 +3,7 @@
 #include "renderer.hpp"
 
 Texture::Texture(uint32_t width, uint32_t height)
+    : manager_owns_(false)
 {
     texture_ = SDL_CreateTexture(Renderer::GetInstance()->GetRenderer(), SDL_PIXELFORMAT_RGBA8888,
                                  SDL_TEXTUREACCESS_TARGET,
@@ -29,6 +30,7 @@ Texture::Texture(uint32_t width, uint32_t height, Color bg, Color border) :
 }
 
 Texture::Texture(const char* path)
+    : manager_owns_(false)
 {
     assert(path);
 
@@ -58,6 +60,7 @@ Texture::Texture(const char* path)
 }
 
 Texture::Texture(Text* text)
+    : manager_owns_(false)
 {
     assert(text);
 
@@ -73,6 +76,16 @@ Texture::Texture(Text* text)
     SDL_RenderCopy(renderer->GetRenderer(), text->GetTexture(), NULL, NULL);
     SDL_SetRenderTarget(renderer->GetRenderer(), NULL);
     SDL_SetTextureBlendMode(texture_, SDL_BLENDMODE_BLEND);
+}
+
+void Texture::SetManagerOwner()
+{
+    manager_owns_ = true;
+}
+
+bool Texture::IsManagerOwner()
+{
+    return manager_owns_;
 }
 
 Texture::~Texture()

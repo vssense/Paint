@@ -18,9 +18,12 @@ CanvasTitle::CanvasTitle(const Rectangle& placement, CanvasComponent* canvas) :
     GUIComponent(new Texture(placement.w, placement.h, kTitleColor), placement), canvas_(canvas)
 {
     AddBorder(kBorderColor);
+
+    TextureManager* manager = TextureManager::GetInstance();
+
     Attach(new Button(Rectangle{placement.w - kTitleWidth, 0, kTitleWidth, kTitleWidth},
-                      new ComponentClose(canvas_), new Texture("img/close.bmp"),
-                      nullptr, new Texture("img/close2.bmp")));
+                      new ComponentClose(canvas_), manager->GetTexture("img/close.bmp"),
+                      nullptr,                     manager->GetTexture("img/close2.bmp")));
 
     Attach(new TextIcon(placement, "Canvas", kBlack));
 }
@@ -235,13 +238,15 @@ bool Canvas::ProcessMouseEvent(const Event& event)
 
 CanvasComponent::CanvasComponent(const Rectangle& placement) : GUIComponent(nullptr, placement)
 {
+    TextureManager* manager = TextureManager::GetInstance();
+
     Attach(new CanvasTitle(Rectangle{0, 0, placement_.w, kTitleWidth}, this));
 
     Canvas* canvas = new Canvas(Rectangle{0, kTitleWidth, placement_.w - kTitleWidth, placement_.h - 2 * kTitleWidth});
     Attach(canvas);
 
-    Texture* vthumb_texture = new Texture("img/vthumb.bmp");
-    Texture* hthumb_texture = new Texture("img/hthumb.bmp");
+    Texture* vthumb_texture = manager->GetTexture("img/vthumb.bmp");
+    Texture* hthumb_texture = manager->GetTexture("img/hthumb.bmp");
 
     Attach(new HorizontalSlider(Rectangle{0, placement_.h - kTitleWidth, placement_.w - kTitleWidth, kTitleWidth},
                                 new Texture(placement_.w, kTitleWidth, kWhite, kBlack),

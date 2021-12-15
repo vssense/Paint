@@ -1,8 +1,9 @@
 #include "api_texture.hpp"
+#include "../graphics/texture_manager.hpp"
 
 ITexture* APITextureFactory::CreateTexture(const char* filename)
 {
-    return new APITexture(new Texture(filename));
+    return new APITexture(TextureManager::GetInstance()->GetTexture(filename));
 }
 
 ITexture* APITextureFactory::CreateTexture(int32_t width, int32_t height)
