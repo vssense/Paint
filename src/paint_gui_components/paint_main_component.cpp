@@ -8,8 +8,12 @@ class MainTitleBar : public GUIComponent
 {
 public:
     MainTitleBar(PaintMainComponent* component);
-    Button* CreateTools(const Rectangle& placement);
-    void AttachPluginsTools(DropDownList* tools);
+
+    Button* CreateTools  (const Rectangle& placement);
+    Button* CreateFilters(const Rectangle& placement);
+
+    void AttachPluginsTools  (DropDownList* tools);
+    void AttachPluginsFilters(DropDownList* filters);
 };
 
 class MainTitleClose : public ICommand
@@ -52,30 +56,32 @@ private:
     PaintMainComponent* component_;
 };
 
-class ToolSetter : public ICommand
+template <typename Instrument>
+class Setter : public ICommand
 {
 public:
-    ToolSetter(ITool* tool) : tool_(tool) {}
+    Setter(Instrument* instrument) : instrument_(instrument) {}
     virtual void Execute() override
     {
-        Manager<ITool>::GetInstance()->SetActive(tool_);
+        Manager<Instrument>::GetInstance()->SetActive(instrument_);
     }
 
 private:
-    ITool* tool_;
+    Instrument* instrument_;
 };
 
+template <typename Instrument>
 class PreferencesPanelOpener : public ICommand
 {
 public:
-    PreferencesPanelOpener(ITool* tool, MainTitleBar* title_bar)
-        : tool_(tool), title_bar_(title_bar) {}
+    PreferencesPanelOpener(Instrument* instrument, MainTitleBar* title_bar)
+        : instrument_(instrument), title_bar_(title_bar) {}
 
     virtual void Execute() override
     {
-        APIPreferencesPanel* panel = dynamic_cast<APIPreferencesPanel*>(tool_->GetPreferencesPanel());
+        APIPreferencesPanel* panel = dynamic_cast<APIPreferencesPanel*>(instrument_->GetPreferencesPanel());
 
-        Manager<ITool>::GetInstance()->SetActive(tool_);
+        Manager<Instrument>::GetInstance()->SetActive(instrument_);
 
         if (panel != nullptr)
         {
@@ -85,9 +91,26 @@ public:
     }
 
 private:
-    ITool* tool_;
+    Instrument* instrument_;
     MainTitleBar* title_bar_;
 };
+
+Button* MainTitleBar::CreateFilters(const Rectangle& placement)
+{
+    DropDownList* filters = new DropDownList(Rectangle{0, placement.h, 3 * placement.w / 2, kWindowHeight / 2},
+                                                     kTitleWidth, kLightPurple, kWhite);
+
+    Button* filter = new Button(placement, new DropDownListOpener(filters), kTitleColor,
+                              kGray, kWhite, "Filter", kBlack);
+
+    filter->Attach(filters);
+
+    AttachPluginsFilters(filters);
+
+    filter->AddBorder(kBorderColor);
+    
+    return filter;
+}
 
 Button* MainTitleBar::CreateTools(const Rectangle& placement)
 {
@@ -95,9 +118,9 @@ Button* MainTitleBar::CreateTools(const Rectangle& placement)
     DropDownList* tools = new DropDownList(Rectangle{0, placement.h, 3 * placement.w / 2, kWindowHeight / 2},
                                                      kTitleWidth, kLightPurple, kWhite);
 
-    Brush* brush = new Brush;
-    tools->AttachButton(manager->GetTexture(brush->GetIconFileName()), new ToolSetter(brush),
-                        new PreferencesPanelOpener(brush, this));
+    ITool* brush = new Brush;
+    tools->AttachButton(manager->GetTexture(brush->GetIconFileName()), new Setter<ITool>(brush),
+                        new PreferencesPanelOpener<ITool>(brush, this));
 
     Manager<ITool>::GetInstance()->Add(brush);
     Button* tool = new Button(placement, new DropDownListOpener(tools), kTitleColor,
@@ -109,6 +132,29 @@ Button* MainTitleBar::CreateTools(const Rectangle& placement)
     tool->AddBorder(kBorderColor);
 
     return tool;
+}
+
+void MainTitleBar::AttachPluginsFilters(DropDownList* filters)
+{
+    assert(filters);
+
+    PluginManager* manager = PluginManager::GetInstance();
+
+    for (Plugin* loaded : manager->GetPlugins())
+    {
+        IPlugin* plugin = loaded->GetPlugin();
+
+        if (plugin == nullptr)
+        {
+            continue;
+        }
+
+        for (IFilter* filter : plugin->GetFilters())
+        {
+            filters->AttachButton(filter->GetName(), new Setter<IFilter>(filter),
+                                  new PreferencesPanelOpener<IFilter>(filter, this));
+        }
+    }
 }
 
 void MainTitleBar::AttachPluginsTools(DropDownList* tools)
@@ -130,7 +176,7 @@ void MainTitleBar::AttachPluginsTools(DropDownList* tools)
         for (ITool* tool : plugin->GetTools())
         {
             tools->AttachButton(texture_manager->GetTexture(tool->GetIconFileName()),
-                                new ToolSetter(tool), new PreferencesPanelOpener(tool, this));
+                                new Setter<ITool>(tool), new PreferencesPanelOpener<ITool>(tool, this));
         }
     }
 }
@@ -148,9 +194,9 @@ MainTitleBar::MainTitleBar(PaintMainComponent* component) :
     DropDownList* list = new DropDownList(Rectangle{0, kTitleWidth, 3 * kTitleButtonsWidth / 2, kWindowHeight - kTitleWidth},
                                           kTitleWidth, kLightPurple, kWhite);
 
-    // list->AttachButton("button1", new ListButtonCommand("button1"));
-    // list->AttachButton("button2", new ListButtonCommand("button2"));
-    // list->AttachButton("button3", new ListButtonCommand("button3"));
+    list->AttachButton("button1", new ListButtonCommand("button1"));
+    list->AttachButton("button2", new ListButtonCommand("button2"));
+    list->AttachButton("button3", new ListButtonCommand("button3"));
 
     Button* file = new Button(Rectangle{0, 0, kTitleButtonsWidth, kTitleWidth},
                               new DropDownListOpener(list), kTitleColor, kGray, kWhite, "File", kBlack);
@@ -165,6 +211,7 @@ MainTitleBar::MainTitleBar(PaintMainComponent* component) :
 
     Attach(canvas);
     Attach(CreateTools(Rectangle{2 * kTitleButtonsWidth, 0, kTitleButtonsWidth, kTitleWidth}));
+    Attach(CreateFilters(Rectangle{3 * kTitleButtonsWidth, 0, kTitleButtonsWidth, kTitleWidth}));
     AddBorder(kBorderColor);
     Attach(new TextIcon(placement_, "Paint", kBlack));
 }

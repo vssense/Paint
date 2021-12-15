@@ -220,11 +220,21 @@ bool Canvas::ProcessMouseEvent(const Event& event)
             coordinates += shown_part_.Start();
 
             ITool* active_tool = Manager<ITool>::GetInstance()->GetActive();
+            assert(active_tool);
 
             active_tool->ActionBegin(&tool_texture_, coordinates.x, coordinates.y);
 
             system_->Subscribe(this, kMouseMotion);
             system_->Subscribe(this, kMouseButtonRelease);
+            break;
+        }
+        case kRightButtonClick:
+        {
+            IFilter* active_filter = Manager<IFilter>::GetInstance()->GetActive();
+            if (active_filter != nullptr)
+            {
+                active_filter->Apply(&tool_texture_);
+            }
             break;
         }
         default:
