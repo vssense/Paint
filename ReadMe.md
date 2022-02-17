@@ -9,4 +9,6 @@ $ make
 $ ./paint
 ```
 
+### Screenshots
+
 ![Paint](/screenshots/paint.png)
