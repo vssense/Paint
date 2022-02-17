@@ -8,3 +8,5 @@ $ make init
 $ make
 $ ./paint
 ```
+
+![Paint](/screenshots/paint.png)
